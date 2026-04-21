@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Panel</title>
+    <link rel="stylesheet" href="css/style.css">
+
+</head>
+
+<body>
+    <div id="panel-doctor" class="dash-panel">
+        <div class="nav-bar">
+            <span class="nav-logo">ClinicBook</span>
+            <div class="nav-links">
+                <a href="#"> Home</a>
+                <a href="#"> Availability</a>
+                <a href="profile.html"> Profile</a>
+            </div>
+            <div class="row-flex" style="gap:8px;">
+                <div class="av av-blue" style="width:32px;height:32px;font-size:12px;">US</div>
+                <span style="font-size:13px;font-weight:500;color:var(--text-primary);">Doctor</span>
+            </div>
+        </div>
+
+        <div class="stat-grid">
+            <div class="stat-card">
+                <div class="stat-val appointment-count">1</div>
+                <div class="stat-lbl">Appointments</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-val patient-count">1</div>
+                <div class="stat-lbl">Patients</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-val">1</div>
+                <!-- <div class="stat-lbl">This week total</div> -->
+            </div>
+        </div>
+
+        <div class="card">
+            <p class="section-label">Upcoming appointments</p>
+            <!-- <div class="appt-row">
+                <div>
+                    <div style="font-size:13px;font-weight:500;">Jane Doe</div>
+                    <div style="font-size:12px;color:var(--text-secondary)">General checkup</div>
+                </div>
+                <span style="color:var(--text-secondary)">9:00 AM</span>
+                <div class="row-flex" style="gap:6px">
+                    <button class="btn-primary">Confirm</button>
+                    <button class="btn-outline">Decline</button>
+                </div>
+            </div>
+            <div class="appt-row">
+                <div>
+                    <div style="font-size:13px;font-weight:500;">Samuel Otieno</div>
+                    <div style="font-size:12px;color:var(--text-secondary)">Follow-up visit</div>
+                </div>
+                <span style="color:var(--text-secondary)">11:00 AM</span>
+                <span class="badge badge-green">Confirmed</span>
+            </div>
+            <div class="appt-row">
+                <div>
+                    <div style="font-size:13px;font-weight:500;">Mary Wanjiku</div>
+                    <div style="font-size:12px;color:var(--text-secondary)">Vaccination</div>
+                </div>
+                <span style="color:var(--text-secondary)">2:30 PM</span>
+                <span class="badge badge-green">Confirmed</span>
+            </div>
+            <div class="appt-row">
+                <div>
+                    <div style="font-size:13px;font-weight:500;">Peter Kariuki</div>
+                    <div style="font-size:12px;color:var(--text-secondary)">Blood pressure review</div>
+                </div>
+                <span style="color:var(--text-secondary)">4:00 PM</span>
+                <div class="row-flex" style="gap:6px">
+                    <button class="btn-primary">Confirm</button>
+                    <button class="btn-outline">Decline</button>
+                </div>
+            </div> -->
+
+            <div class="appointment-cards">
+
+            </div>
+        </div>
+
+        <div class="card">
+            <p class="section-label">Set availability</p>
+            <div class="row-flex" style="flex-wrap:wrap;">
+                <div class="btn-container">
+                    <button class="btn-primary change-availability-btn">Change Availability</button>
+                    <span class=" doctor-status"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/app.js" type="module"></script>
+</body>
+
+</html>

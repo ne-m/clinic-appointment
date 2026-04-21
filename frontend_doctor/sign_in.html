@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign in</title>
+    <link rel="stylesheet" href="css/login.css">
+</head>
+
+<body>
+    <div class="registration-container">
+        <div class="form-card">
+            <div class="form-header">
+                <h1>Clinicbook</h1>
+                <p>Sign in to view booked appointments</p>
+            </div>
+
+            <form id="registrationForm" method="POST" action="">
+                <p id="message"></p>
+
+                <!-- Email -->
+                <div class="form-group">
+                    <label for="email">Email Address *</label>
+                    <input type="email" id="email" name="email" class="input-mock">
+                </div>
+
+                <!-- Password -->
+                <div class="form-group">
+                    <label for="password">Password *</label>
+                    <input type="password" id="password" name="password" class="input-mock">
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="btn-submit">Login</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/sign_in.js" type="module"></script>
+</body>
+
+</html>

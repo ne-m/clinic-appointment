@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/profile.css">
+</head>
+
+<body>
+    <!-- Nav -->
+    <div class="nav-bar">
+        <span class="nav-logo">ClinicBook</span>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="appointments.html">My appointments</a>
+            <a href="profile.html">Profile</a>
+        </div>
+        <div class="row-flex" style="gap:8px;">
+            <div class="av av-blue" style="width:32px;height:32px;font-size:12px;">US</div>
+            <span style="font-size:13px;font-weight:500;color:var(--text-primary);">Doctor</span>
+        </div>
+    </div>
+
+    <div id="panel-profile" class="dash-panel">
+
+        <!-- Profile hero card -->
+        <div class="profile-hero">
+            <div class="profile-avatar-wrap">
+                <div class="profile-avatar"><span class="initials"></span></div>
+            </div>
+            <div>
+                <div class="profile-name">Jane Doe</div>
+                <div class="profile-meta">Doctor · Member since </div>
+                <div class="profile-uuid">UUID: </div>
+            </div>
+        </div>
+
+        <!-- ── Personal info ── -->
+        <div id="ptab-personal" class="ptab-panel active">
+            <div class="card">
+                <div class="row-flex" style="justify-content:space-between;margin-bottom:16px;">
+                    <p class="section-label">Personal details</p>
+                    <button class="btn-outline" id="toggle-edit" style="font-size:12px;padding:5px 12px;">Edit</button>
+                </div>
+                <div id="personal-form" data-editing="false">
+                    <div class="field-grid">
+                        <div class="field-group">
+                            <label class="field-label">First name</label>
+                            <input class="field-input editable" id="first_name" value="First name" readonly />
+                        </div>
+                        <div class="field-group">
+                            <label class="field-label">Last name</label>
+                            <input class="field-input editable" id="last_name" value="Last Name" readonly />
+                        </div>
+
+                        <div class="field-group">
+                            <label class="field-label">Phone number</label>
+                            <input class="field-input editable" id="phone" value="+254 7220 000 000" readonly />
+                        </div>
+                        <div class="field-group">
+                            <label class="field-label">Email address</label>
+                            <input class="field-input editable" id="email" value="email@gmail.com" readonly />
+                        </div>
+                        <div class="field-group">
+                            <label class="field-label">Start time</label>
+                            <input class="field-input editable" id="start_time" value="09:00" readonly />
+                        </div>
+                        <div class="field-group">
+                            <label class="field-label">End time</label>
+                            <input class="field-input editable" id="end_time" value="15:00" readonly />
+                        </div>
+                        <div class="field-group">
+                            <label class="field-label">Specialization</label>
+                            <input class="field-input" id="specialization" value="general" readonly />
+                        </div>
+                        <div class="field-group">
+                            <label class="field-label">Day of Week</label>
+                            <input class="field-input" id="day_of_week" value="2" readonly />
+                        </div>
+                        <div class="field-group" style="grid-column:1/-1;">
+                            <label class="field-label">Bio</label>
+                            <textarea class="field-input editable" id="bio" value="" readonly></textarea>
+                            <!-- <input class="field-input" id="bio" value="" readonly /> -->
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <p id="message"></p>
+            <div id="personal-save-row" style="display:none;margin-top:14px;" class="row-flex" style="gap:8px;">
+                <button class="btn-primary" id="save-edit">Save changes</button>
+                <button class="btn-outline" id="cancel-edit">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    </div>
+
+
+    </div>
+
+    <script src="js/profile.js" type="module"></script>
+</body>
+
+</html>

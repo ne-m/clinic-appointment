@@ -1,0 +1,206 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #e8e6de;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+/* CSS Variables */
+:root {
+    --border-secondary: #ccc;
+    --text-secondary: #333;
+    --bg-secondary: #fff;
+    --primary-color: #1A4B7A;
+    --primary-hover: #0f3a5e;
+    --error-color: #dc3545;
+    --success-color: #28a745;
+}
+
+/* Registration Container */
+.registration-container {
+    width: 100%;
+    max-width: 480px;
+}
+
+/* Form Card */
+.form-card {
+    background: white;
+    border-radius: 16px;
+    padding: 32px 28px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* Header Section */
+.form-header {
+    text-align: center;
+    margin-bottom: 28px;
+}
+
+.form-header h1 {
+    color: #1A4B7A;
+    font-size: 28px;
+    margin-bottom: 8px;
+}
+
+.form-header p {
+    color: #666;
+    font-size: 14px;
+}
+
+/* Form Group */
+.form-group {
+    margin-bottom: 12px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    color: #444;
+    margin-bottom: 6px;
+}
+
+/* Input Mock Class */
+.input-mock {
+    width: 100%;
+    padding: 8px 10px;
+    border: 0.5px solid var(--border-secondary);
+    border-radius: 6px;
+    font-size: 13px;
+    color: var(--text-secondary);
+    background: var(--bg-secondary);
+    margin-bottom: 8px;
+    font-family: inherit;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.input-mock:focus {
+    outline: none;
+    /* border-color: #1A4B7A; */
+    box-shadow: 0 0 0 2px rgba(26, 75, 122, 0.1);
+}
+
+/* Name Row (First & Last Name) */
+.name-row {
+    display: flex;
+    gap: 12px;
+}
+
+.name-row .form-group {
+    flex: 1;
+}
+
+/* Role Selection */
+.role-group {
+    margin: 16px 0;
+}
+
+.role-label {
+    font-size: 13px;
+    font-weight: 500;
+    color: #444;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.role-options {
+    display: flex;
+    gap: 20px;
+}
+
+.role-option {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+}
+
+.role-option input[type="radio"] {
+    accent-color: #1A4B7A;
+    cursor: pointer;
+}
+
+.role-option span {
+    font-size: 13px;
+    color: #555;
+}
+
+/* Submit Button */
+.btn-submit {
+    width: 100%;
+    background-color: #1A4B7A;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background-color 0.2s ease;
+    margin-top: 8px;
+}
+
+.btn-submit:hover {
+    background-color: #0f3a5e;
+}
+
+.btn-submit:active {
+    transform: scale(0.98);
+}
+
+/* Login Link */
+.login-link {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 13px;
+    color: #666;
+}
+
+.login-link a {
+    color: #1A4B7A;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.login-link a:hover {
+    text-decoration: underline;
+}
+
+input:focus {
+    background-color: hsl(48, 18%, 95%);
+}
+
+/* Error/Success Messages */
+.error-message {
+    color: var(--error-color);
+    font-size: 11px;
+    margin-top: -4px;
+    margin-bottom: 4px;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    .form-card {
+        padding: 24px 20px;
+    }
+
+    .name-row {
+        flex-direction: column;
+        gap: 0;
+    }
+
+    .role-options {
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+}

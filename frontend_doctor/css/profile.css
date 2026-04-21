@@ -1,0 +1,266 @@
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body{
+    width: 85%;
+    margin: auto;
+}
+
+/* Profile hero */
+
+.profile-hero {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    background: var(--bg-primary);
+    border: 0.5px solid var(--border-tertiary);
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+}
+
+.profile-avatar-wrap {
+    position: relative;
+    flex-shrink: 0;
+}
+
+.profile-avatar {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #1D9E75, #185fa5);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    font-weight: 500;
+}
+
+.avatar-edit-btn {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: #185fa5;
+    border: 2px solid var(--bg-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.profile-name {
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.profile-meta, .profile-uuid {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-top: 2px;
+}
+
+/* Profile sub-tabs */
+.profile-tabs {
+    display: flex;
+    gap: 2px;
+    background: var(--bg-primary);
+    border: 0.5px solid var(--border-tertiary);
+    border-radius: 10px;
+    padding: 4px;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+}
+
+.ptab {
+    flex: 1;
+    min-width: 80px;
+    padding: 8px 10px;
+    border: none;
+    border-radius: 7px;
+    background: transparent;
+    color: var(--text-secondary);
+    font-size: 13px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all .15s;
+    text-align: center;
+}
+
+.ptab.active {
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+.ptab:hover:not(.active) {
+    background: var(--bg-secondary);
+    opacity: 0.7;
+}
+
+.ptab-panel {
+    display: none;
+}
+
+.ptab-panel.active {
+    display: block;
+}
+
+/* Field grid */
+.field-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.field-group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.field-label {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: .05em;
+}
+
+.field-input {
+    padding: 9px 12px;
+    border: 0.5px solid var(--border-tertiary);
+    border-radius: 8px;
+    font-size: 13px;
+    color: var(--text-primary);
+    background: var(--bg-secondary);
+    font-family: inherit;
+    transition: border-color .15s, background .15s;
+}
+
+.field-input.editable:not([readonly]) {
+    background: var(--bg-primary);
+    border-color: var(--border-info);
+}
+
+.field-input:focus {
+    outline: none;
+    border-color: var(--border-info);
+}
+
+/* Insurance card */
+.insurance-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 14px;
+    background: var(--bg-secondary);
+    border-radius: 10px;
+    gap: 10px;
+}
+
+/* Session row */
+.session-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 0.5px solid var(--border-tertiary);
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.session-row:last-child {
+    border-bottom: none;
+}
+
+/* Notification row */
+.notif-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 0.5px solid var(--border-tertiary);
+    gap: 12px;
+}
+
+.notif-row:last-child {
+    border-bottom: none;
+}
+
+/* Toggle switch */
+.toggle-label {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.toggle-label input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggle-track2 {
+    width: 40px;
+    height: 22px;
+    background: var(--border-secondary);
+    border-radius: 11px;
+    display: flex;
+    align-items: center;
+    padding: 2px;
+    transition: background .2s;
+}
+
+.toggle-label.on .toggle-track2 {
+    background: #1D9E75;
+}
+
+.toggle-thumb {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: white;
+    transition: transform .2s;
+}
+
+.toggle-label.on .toggle-thumb {
+    transform: translateX(18px);
+}
+
+/* Password strength bars */
+.strength-bar {
+    height: 4px;
+    flex: 1;
+    border-radius: 2px;
+    background: var(--border-tertiary);
+    transition: background .2s;
+}
+
+@media (max-width: 500px) {
+    .field-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .profile-tabs {
+        gap: 0;
+    }
+
+    .ptab {
+        font-size: 11px;
+        padding: 7px 6px;
+    }
+}
