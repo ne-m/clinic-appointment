@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Appointments</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/profile.css">
+    <link rel="stylesheet" href="css/appointment.css">
+
+</head>
+
+<body>
+    <div class="nav-bar">
+        <span class="nav-logo">ClinicBook</span>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="appointments.html">My appointments</a>
+            <a href="profile.html">Profile</a>
+        </div>
+        <div class="row-flex" style="gap:8px;">
+            <div class="av av-blue" style="width:32px;height:32px;font-size:12px;">US</div>
+            <span style="font-size:13px;font-weight:500;color:var(--text-primary);">User</span>
+        </div>
+    </div>
+
+
+    <!-- Appointment history summary -->
+    <div class="card">
+        <p class="section-label" style="margin-bottom:12px;">Appointment history</p>
+        <div class="appt-row">
+            <div style="display:flex;align-items:center;gap:10px;">
+                <div class="avatar av-blue" style="width:34px;height:34px;font-size:11px;border-radius:8px;">DM</div>
+                <div>
+                    <div style="font-size:13px;font-weight:500;">Dr. David Mwangi</div>
+                    <div style="font-size:12px;color:var(--text-secondary);">General checkup · 10 Jan 2026</div>
+                </div>
+            </div>
+            <span class="badge badge-green">Completed</span>
+        </div>
+        <div class="appt-row">
+            <div style="display:flex;align-items:center;gap:10px;">
+                <div class="avatar av-teal" style="width:34px;height:34px;font-size:11px;border-radius:8px;">AK</div>
+                <div>
+                    <div style="font-size:13px;font-weight:500;">Dr. Amina Kamau</div>
+                    <div style="font-size:12px;color:var(--text-secondary);">Vaccination · 5 Nov 2025</div>
+                </div>
+            </div>
+            <span class="badge badge-green">Completed</span>
+        </div>
+        <div class="appt-row">
+            <div style="display:flex;align-items:center;gap:10px;">
+                <div class="avatar av-coral" style="width:34px;height:34px;font-size:11px;border-radius:8px;">RO</div>
+                <div>
+                    <div style="font-size:13px;font-weight:500;">Dr. Ruth Odhiambo</div>
+                    <div style="font-size:12px;color:var(--text-secondary);">Urgent Care · 22 Sep 2025</div>
+                </div>
+            </div>
+            <span class="badge badge-red">Cancelled</span>
+        </div>
+        <!-- <button class="btn-outline" style="width:100%;margin-top:10px;font-size:13px;">View full history</button> -->
+    </div>
+
+    <script type="module" src="js/appointment.js"></script>
+</body>
+
+</html>

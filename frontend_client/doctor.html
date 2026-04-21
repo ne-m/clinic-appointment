@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Profile</title>
+    <link rel="stylesheet" href="css/style.css">
+    <!-- <link rel="stylesheet" href="css/profile.css"> -->
+    <link rel="stylesheet" href="css/doctor.css">
+
+    <style>
+        .time-slots {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.slot {
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.slot.selected {
+    background: #1D9E75;
+    color: white;
+}
+    </style>
+</head>
+
+<body>
+    <!-- Nav -->
+    <div class="nav-bar">
+        <span class="nav-logo">ClinicBook</span>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="appointments.html">My appointments</a>
+            <a href="profile.html">Profile</a>
+        </div>
+        <div class="row-flex" style="gap:8px;">
+            <div class="av av-blue" style="width:32px;height:32px;font-size:12px;">US</div>
+            <span style="font-size:13px;font-weight:500;color:var(--text-primary);">Doctor</span>
+        </div>
+    </div>
+
+    <div class="hero">
+        <div class="hero-inner">
+            <div class="hero-top">
+                <div class="doc-avatar" id="docAvatar" style="background: linear-gradient(135deg,#1D9E75,#185fa5);">
+                    <span id="docInitials">DM</span>
+                    <div class="avail-dot" id="availDot"></div>
+                </div>
+                <div style="flex:1;min-width:200px;">
+                    <div class="doc-name" id="docName">Dr. David Mwangi</div>
+                    <div class="doc-spec" id="docSpec">General Practice</div>
+                    <div class="doc-meta">
+                    </div>
+                    <div style="display:flex;gap:6px;flex-wrap:wrap;">
+                        <span class="badge badge-green" id="availBadge">Available today</span>
+                        <span class="badge badge-blue" id="langBadge">English · Swahili</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">Bio</div>
+                <p class="bio-text" id="docBio">
+                    Dr. David Mwangi is a highly regarded General Practitioner with over 10 years of experience
+                    serving patients across Nairobi and Central Kenya. He holds an MBChB from the University of
+                    Nairobi and a Postgraduate Diploma in Family Medicine. Dr. Mwangi is known for his patient-centred
+                    approach — taking time to listen, explain, and involve patients in their own care decisions.
+                    He is fluent in English and Swahili and regularly participates in community health outreach
+                    programmes.
+                </p>
+            </div>
+
+            <div class="booking-container">
+
+                <!-- <h2 id="doctorName">Dr. Name</h2>
+                <p id="doctorBio">Doctor bio here...</p> -->
+
+                <!-- Date Picker -->
+                <div class="form-group">
+                    <label>Select Date</label>
+                    <input type="date" id="appointmentDate" />
+                </div>
+
+                <!-- Time Slots -->
+                <div class="form-group">
+                    <label>Available Time Slots</label>
+                    <div id="timeSlots" class="time-slots"></div>
+                </div>
+
+                <!-- Reason -->
+                <div class="form-group">
+                    <label>Reason</label>
+                    <textarea id="reason"></textarea>
+                </div>
+
+                <!-- Book Button -->
+                <button id="bookBtn" class="btn-primary">Book Appointment</button>
+
+            </div>
+
+        </div>
+    </div>
+
+
+
+    <script src="js/doctor.js" type="module"></script>
+</body>
+
+</html>

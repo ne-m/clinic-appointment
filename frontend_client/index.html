@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body>
+    <div class="nav-bar">
+        <span class="nav-logo">ClinicBook</span>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="appointments.html">My appointments</a>
+            <a href="profile.html">Profile</a>
+        </div>
+        <div class="row-flex" style="gap:8px;">
+            <div class="av av-blue" style="width:32px;height:32px;font-size:12px;">US</div>
+            <span style="font-size:13px;font-weight:500;color:var(--text-primary);">User</span>
+        </div>
+    </div>
+
+    <main>
+        <div class="hero-banner">
+            <div class="hero-content">
+                <div class="hero-date">Saturday, 28 March 2026</div>
+
+                <h1 class="hero-greeting">
+                    Good morning, <span class="username">User</span> 👋
+                </h1>
+
+                <p class="hero-sub">
+                    Ready to take care of your health today? Book an appointment in seconds.
+                </p>
+
+                <div class="hero-actions">
+                    <button class="btn-primary">Book Appointment</button>
+                    <button class="btn-secondary">View Schedule</button>
+                </div>
+            </div>
+
+            <!-- Decorative element -->
+            <div class="hero-blob"></div>
+        </div>
+
+        <h2 class="section-label" style="margin-bottom:10px;">What do you need?</h2>
+        <div class="quick-actions">
+            <!-- <button class="quick-btn" onclick="">
+            <div class="quick-icon" style="background:#e6f1fb;">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <rect x="3" y="4" width="14" height="13" rx="2" stroke="#185fa5" stroke-width="1.5" />
+                    <path d="M7 2v4M13 2v4M3 8h14M10 11v4M8 13h4" stroke="#185fa5" stroke-width="1.5"
+                        stroke-linecap="round" />
+                </svg>
+            </div>
+            <span>Book appointment</span>
+        </button> -->
+            <button class="quick-btn">
+                <a href="#"
+                    style="display: flex; flex-direction: column; align-items: center; text-decoration: none; color: inherit; width: 100%; height: 100%; padding: 14px 8px 12px;">
+                    <div class="quick-icon" style="background:#E1F5EE;">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <circle cx="10" cy="8" r="4" stroke="#0F6E56" stroke-width="1.5" />
+                            <path d="M3 17c0-3 3-5 7-5s7 2 7 5" stroke="#0F6E56" stroke-width="1.5"
+                                stroke-linecap="round" />
+                        </svg>
+                    </div>
+                    <span>Find a doctor</span>
+                </a>
+
+            </button>
+            <button class="quick-btn">
+                <a href="appointments.html"
+                    style="display: flex; flex-direction: column; align-items: center; text-decoration: none; color: inherit; width: 100%; height: 100%; padding: 14px 8px 12px;">
+                    <div class="quick-icon" style="background:#FAEEDA;">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M10 3v14M3 10h14" stroke="#854F0B" stroke-width="1.5" stroke-linecap="round" />
+                            <rect x="3" y="3" width="14" height="14" rx="3" stroke="#854F0B" stroke-width="1.5" />
+                        </svg>
+                    </div>
+                    <span> My history</span>
+                </a>
+
+            </button>
+            <!-- <button class="quick-btn">
+            <div class="quick-icon" style="background:#FAECE7;">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M15 10a5 5 0 11-10 0 5 5 0 0110 0z" stroke="#993C1D" stroke-width="1.5" />
+                    <path d="M10 8v2l1.5 1.5" stroke="#993C1D" stroke-width="1.5" stroke-linecap="round" />
+                </svg>
+            </div>
+            <span>Reschedule</span>
+        </button> -->
+        </div>
+
+        <!-- Specialization -->
+        <!-- <div class="card" style="margin-bottom:12px;">
+        <h2 class="section-label">Find a doctor</h2>
+        <div class="spec-filters">
+            <div class="spec-pill" onclick="setPill(this,'general')">
+                <img src="assests/medical.png" class="spec-img" alt="">
+                General
+            </div>
+            <div class="spec-pill" onclick="setPill(this,'general')">
+                <img src="assests/pediatric.png" class="spec-img" alt="">
+                Pediatrics
+            </div>
+            <div class="spec-pill" onclick="setPill(this,'general')">
+                <img src="assests/bed.png" class="spec-img" alt="">
+                Urgent Care
+            </div>
+            <div class="spec-pill" onclick="setPill(this,'general')">
+                <img src="assests/expert.png" class="spec-img" alt="">
+                Specialist
+            </div>
+        </div>
+    </div> -->
+        <div class="card spec-card">
+            <h2 class="section-label">Find a doctor</h2>
+
+            <div class="spec-filters">
+                <button class="spec-pill" data-type="general">
+                    <img src="assets/medical.png" class="spec-img" alt="General doctor">
+                    <span>General</span>
+                </button>
+
+                <button class="spec-pill" data-type="pediatrics">
+                    <img src="assets/pediatric.png" class="spec-img" alt="Pediatrics">
+                    <span>Pediatrics</span>
+                </button>
+
+                <button class="spec-pill" data-type="urgent">
+                    <img src="assets/bed.png" class="spec-img" alt="Urgent Care">
+                    <span>Urgent Care</span>
+                </button>
+
+                <button class="spec-pill" data-type="specialist">
+                    <img src="assets/expert.png" class="spec-img" alt="Specialist">
+                    <span>Specialist</span>
+                </button>
+            </div>
+
+            <br> <hr> <br>
+
+            <div class="doctor-list">
+                <!-- Doctor Card -->
+                <div class="doctor-card">
+                    <img src="assets/doc1.jpg" class="doctor-img" alt="Doctor">
+
+                    <div class="doctor-info">
+                        <h3 class="doctor-name">Dr. Sarah Kim</h3>
+                        <p class="doctor-spec">General Practitioner</p>
+
+                        <div class="doctor-meta">
+                            <span class="doctor-rating">⭐ 4.8</span>
+                            <span class="doctor-status available">Available</span>
+                        </div>
+
+                        <button class="btn-book">Book</button>
+                    </div>
+                </div>
+
+                <!-- Repeat -->
+                <div class="doctor-card">
+                    <img src="assets/doc2.jpg" class="doctor-img" alt="Doctor">
+
+                    <div class="doctor-info">
+                        <h3 class="doctor-name">Dr. John Doe</h3>
+                        <p class="doctor-spec">Pediatrics</p>
+
+                        <div class="doctor-meta">
+                            <span class="doctor-rating">⭐ 4.5</span>
+                            <span class="doctor-status busy">Busy</span>
+                        </div>
+
+                        <button class="btn-book">Book</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+    </main>
+
+
+
+    <script type="module" src="js/app.js"></script>
+</body>
+
+</html>
