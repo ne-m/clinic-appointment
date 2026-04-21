@@ -32,16 +32,14 @@ async function fetchDoctors() {
 }
 
 async function loadDashboard() {
+    doctorHTML = ""
+    appointmentHTML =""
     doctors = await fetchDoctors()
     dashboard = await fetchDashboard()
     appointments = await fetchAppointments()
     renderDoctors()
     renderDashboard()
     renderAppointments()
-    // console.log(doctors);
-    // console.log(dashboard);
-    console.log(appointments);
-
 }
 loadDashboard()
 
@@ -56,7 +54,7 @@ function renderDoctors() {
                     <p class="doctor-spec">General Practitioner</p>
 
                     <div class="doctor-meta">
-                        <span class="doctor-rating">⭐ <i>To do</i> </span>
+                        <span class="doctor-rating"><small>rating</small> </span>
                         <span class="doctor-status ${doctor.is_working ? "available" : "busy"} ">${doctor.is_working ? "Available" : "Not available"}</span>
                     </div>
 
@@ -64,7 +62,6 @@ function renderDoctors() {
                         <button class="btn-primary" onclick="changeAvailability('${doctor.doctor_id}')" >Change Availability</button>                    
                         <button class="btn-danger" onclick="deleteDoctor('${doctor.doctor_id}')">Remove</button>
                     </div>
-                    
                 </div>
             </div>
                 `
@@ -91,8 +88,6 @@ window.changeAvailability = async function changeAvailability(docID) {
 
         if (data.success) {
             alert("Availability changed successfully");
-            doctorHTML = ""
-
             loadDashboard()
         } else {
             alert(data.message || "Failed to change availability");
@@ -121,7 +116,6 @@ window.deleteDoctor = async function deleteDoctor(docID) {
 
         if (data.success) {
             alert("Doctor successfully");
-            doctorHTML = ""
             loadDashboard()
         } else {
             alert(data.message || "Failed to delete doctor");
@@ -176,7 +170,7 @@ async function fetchAppointments() {
 
 function renderAppointments() {
     appointments.forEach(appointment => {
-        let badgeColor = "red"; // default
+        let badgeColor = "red";
         if (appointment.status === "scheduled") badgeColor = "green";
         else if (appointment.status === "confirmed") badgeColor = "blue";
         else if (appointment.status === "completed") badgeColor = "gray";

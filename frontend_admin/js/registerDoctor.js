@@ -29,14 +29,12 @@ form.addEventListener('submit', async (e) => {
         formData.append("password", password);
         formData.append("role", "doctor");
 
-        // Doctor-specific fields
         formData.append("specialization", document.getElementById("specialization").value);
         formData.append("bio", document.getElementById("bio").value);
         formData.append("start_time", document.getElementById("start_time").value);
         formData.append("end_time", document.getElementById("end_time").value);
         formData.append("day_of_week", document.getElementById("day_of_week").value);
 
-        // File
         const imageFile = document.getElementById("image").files[0];
         formData.append("image", imageFile);
 

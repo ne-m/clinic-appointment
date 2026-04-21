@@ -14,9 +14,9 @@
     <div class="nav-bar">
         <span class="nav-logo">ClinicBook</span>
         <div class="nav-links">
-            <a href="index.html">Home</a>
-            <a href="appointments.html">My appointments</a>
-            <a href="profile.html">Profile</a>
+            <a href="index.html"> Home</a>
+            <a href="#"> Availability</a>
+            <a href="profile.html"> Profile</a>
         </div>
         <div class="row-flex" style="gap:8px;">
             <div class="av av-blue" style="width:32px;height:32px;font-size:12px;">US</div>
@@ -32,13 +32,13 @@
                 <div class="profile-avatar"><span class="initials"></span></div>
             </div>
             <div>
-                <div class="profile-name">Jane Doe</div>
-                <div class="profile-meta">Doctor · Member since </div>
+                <div class="profile-name">Name: </div>
+                <div class="profile-meta">Doctor · Member since: </div>
                 <div class="profile-uuid">UUID: </div>
             </div>
         </div>
 
-        <!-- ── Personal info ── -->
+        <!--  Personal info -->
         <div id="ptab-personal" class="ptab-panel active">
             <div class="card">
                 <div class="row-flex" style="justify-content:space-between;margin-bottom:16px;">
@@ -55,7 +55,6 @@
                             <label class="field-label">Last name</label>
                             <input class="field-input editable" id="last_name" value="Last Name" readonly />
                         </div>
-
                         <div class="field-group">
                             <label class="field-label">Phone number</label>
                             <input class="field-input editable" id="phone" value="+254 7220 000 000" readonly />
@@ -83,7 +82,6 @@
                         <div class="field-group" style="grid-column:1/-1;">
                             <label class="field-label">Bio</label>
                             <textarea class="field-input editable" id="bio" value="" readonly></textarea>
-                            <!-- <input class="field-input" id="bio" value="" readonly /> -->
                         </div>
                     </div>
                 </div>
@@ -95,11 +93,6 @@
                 <button class="btn-outline" id="cancel-edit">Cancel</button>
             </div>
         </div>
-    </div>
-
-    </div>
-
-
     </div>
 
     <script src="js/profile.js" type="module"></script>

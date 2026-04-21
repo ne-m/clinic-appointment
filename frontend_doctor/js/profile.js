@@ -1,9 +1,4 @@
-// import { userDetails } from "../data/user.js";
-// import {getProfile} from "../data/user.js"
-
 const dtoken = localStorage.getItem("dtoken");
-// let userDetails;
-
 
 const message = document.getElementById("message")
 const av = document.querySelector(".av");
@@ -28,9 +23,6 @@ async function getProfile(dtoken) {
     let data = await res.json();
 
     if (data.success) {
-        // userDetails = data.userData;
-        console.log(data.profileData);
-
         return data.profileData;
     } else {
         console.log(data.message);
@@ -53,7 +45,6 @@ function profile() {
     profileMeta.innerHTML = `Doctor · Member since ${userDetails.created_at.split('T')[0]}`
     profileUuid.innerHTML = `UUID: ${userDetails.user_id}`
     console.log();
-
 
     document.getElementById("first_name").value = userDetails.first_name
     document.getElementById("last_name").value = userDetails.last_name
@@ -141,11 +132,7 @@ async function saveEdit(formId) {
     } catch (error) {
         console.error(error);
         message.textContent = "Something went wrong.";
-
     }
-
-
-
 }
 
 function cancelEdit(formId) {

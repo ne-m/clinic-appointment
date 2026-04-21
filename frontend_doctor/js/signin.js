@@ -1,4 +1,3 @@
-// Simple client-side validation
 const form = document.getElementById('registrationForm')
 const message = document.getElementById("message")
 
@@ -8,7 +7,6 @@ form.addEventListener('submit', async (e) => {
     const password = document.getElementById('password').value;
     const email = document.getElementById('email').value;
 
-    // Remove existing error messages
     const existingErrors = document.querySelectorAll('.error-message');
     existingErrors.forEach(error => error.remove());
 
@@ -45,14 +43,10 @@ form.addEventListener('submit', async (e) => {
 
 
         if (result.success) {
-            console.log(result.token);
-            // Save token
             localStorage.setItem("dtoken", result.token);
-
             message.style.color = "green";
             message.textContent = "Logged in successful!";
 
-            // Redirect (optional)
             setTimeout(() => {
                 window.location.href = "index.html";
             }, 1000);

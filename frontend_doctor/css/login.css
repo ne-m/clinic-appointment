@@ -31,7 +31,6 @@ body {
     max-width: 480px;
 }
 
-/* Form Card */
 .form-card {
     background: white;
     border-radius: 16px;
@@ -39,7 +38,6 @@ body {
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
 }
 
-/* Header Section */
 .form-header {
     text-align: center;
     margin-bottom: 28px;
@@ -56,7 +54,6 @@ body {
     font-size: 14px;
 }
 
-/* Form Group */
 .form-group {
     margin-bottom: 12px;
 }
@@ -69,7 +66,6 @@ body {
     margin-bottom: 6px;
 }
 
-/* Input Mock Class */
 .input-mock {
     width: 100%;
     padding: 8px 10px;
@@ -89,7 +85,6 @@ body {
     box-shadow: 0 0 0 2px rgba(26, 75, 122, 0.1);
 }
 
-/* Name Row (First & Last Name) */
 .name-row {
     display: flex;
     gap: 12px;
@@ -99,7 +94,6 @@ body {
     flex: 1;
 }
 
-/* Role Selection */
 .role-group {
     margin: 16px 0;
 }
@@ -134,7 +128,6 @@ body {
     color: #555;
 }
 
-/* Submit Button */
 .btn-submit {
     width: 100%;
     background-color: #1A4B7A;
@@ -158,7 +151,6 @@ body {
     transform: scale(0.98);
 }
 
-/* Login Link */
 .login-link {
     text-align: center;
     margin-top: 20px;
@@ -180,7 +172,6 @@ input:focus {
     background-color: hsl(48, 18%, 95%);
 }
 
-/* Error/Success Messages */
 .error-message {
     color: var(--error-color);
     font-size: 11px;
@@ -188,7 +179,6 @@ input:focus {
     margin-bottom: 4px;
 }
 
-/* Responsive */
 @media (max-width: 480px) {
     .form-card {
         padding: 24px 20px;

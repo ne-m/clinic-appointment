@@ -1,6 +1,6 @@
 const dtoken = localStorage.getItem("dtoken");
 if (!dtoken) {
-    window.location.href = "sign_in.html";
+    window.location.href = "signin.html";
 }
 
 const doctorList = document.querySelector(".doctor-list")
@@ -21,11 +21,14 @@ const appointmentCards = document.querySelector(".appointment-cards")
 
 
 async function loadDashboard() {
+    doctorHTML = ""
+    dashboardHTML = ""
+    appointmentHTML = ""
     dashboard = await fetchDashboard()
     appointments = await fetchAppointments()
     renderDashboard()
     renderAppointments()
-    console.log(appointments);
+    // console.log(appointments);
 
 }
 loadDashboard()
@@ -35,7 +38,6 @@ changeAvailabilityBtn.addEventListener("click", () => {
         return JSON.parse(atob(dtoken.split('.')[1]));
     }
     let { id } = parseJwt(dtoken)
-    // console.log(id);   
 
     changeAvailability(id)
 })
@@ -48,8 +50,8 @@ async function changeAvailability(docID) {
         const res = await fetch("http://localhost:4000/api/doctor/change-availability", {
             method: "PUT",
             headers: {
-                "Content-Type": "application/json"
-                // "token": `${token}`
+                "Content-Type": "application/json",
+                "dtoken": `${dtoken}`
             },
             body: JSON.stringify({ docID })
         });
@@ -65,8 +67,6 @@ async function changeAvailability(docID) {
 
             data.availability.is_working ? document.querySelector(".doctor-status").classList.add("available") : document.querySelector(".doctor-status").classList.add("busy");
             data.availability.is_working ? document.querySelector(".doctor-status").textContent = "Available" : document.querySelector(".doctor-status").textContent = "Not available"
-            doctorHTML = ""
-
             loadDashboard()
         } else {
             alert(data.message || "Failed to change availability");
@@ -125,9 +125,8 @@ async function fetchAppointments() {
 
 function renderAppointments() {
     appointments.forEach(appointment => {
-        // console.log(appointment);
 
-        let badgeColor = "red"; // default
+        let badgeColor = "red";
         if (appointment.status === "scheduled") badgeColor = "green";
         else if (appointment.status === "confirmed") badgeColor = "blue";
         else if (appointment.status === "completed") badgeColor = "gray";
@@ -183,7 +182,6 @@ window.confirmAppt = async function confirmAppt(appointmentId,status) {
 
         if (data.success) {
             alert("Appointment confirmed successfully");
-            // Refresh the appointments list
             appointmentHTML = "";
             loadDashboard();
         } else {
@@ -199,8 +197,6 @@ window.declineAppt = async function declineAppt(appointmentId,status) {
     const confirmed = confirm("Are you sure you want to decline this appointment?");
     if (!confirmed) return;
 
-    // let status
-
     try {
         const res = await fetch("http://localhost:4000/api/doctor/appointment-status", {
             method: "PUT",
@@ -215,8 +211,6 @@ window.declineAppt = async function declineAppt(appointmentId,status) {
 
         if (data.success) {
             alert("Appointment declined successfully");
-            // Refresh the appointments list
-            appointmentHTML = "";
             loadDashboard();
         } else {
             alert(data.message || "Failed to decline the appointment");
