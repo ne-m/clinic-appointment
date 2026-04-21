@@ -3,9 +3,7 @@ import bcrypt from "bcrypt"
 import { v2 as cloudinary } from "cloudinary"
 import 'dotenv/config';
 import jwt from "jsonwebtoken"
-//api for adding doctor
 import pool from "../config/db.js";
-
 
 const addDoctor = async (req, res) => {
     try {
@@ -77,7 +75,7 @@ const addDoctor = async (req, res) => {
 
     } catch (error) {
         console.error(error);
-        res.json({ success: false, message: "Error in addDoctor" })
+        res.json({ success: false, message: `${req.body.email} exists` })
     }
 };
 
@@ -87,7 +85,6 @@ const loginAdmin = async (req, res) => {
         const { email, password } = req.body;
 
         if (email === process.env.ADMIN_EMAIL && password === process.env.ADMIN_PASSWORD) {
-            // CORRECTED: Proper JWT sign syntax
             const token = jwt.sign(
                 { email: email, password: password },  // Payload
                 process.env.JWT_SECRET            // Secret //session to be added later
@@ -110,7 +107,8 @@ const loginAdmin = async (req, res) => {
 // api to get all doc list for admin panel
 const allDoctors = async (req, res) => {
     try {
-        const doctors = await pool.query("SELECT u.id AS user_id, u.first_name, u.last_name, u.email, u.phone, u.image, u.created_at, d.user_id AS doctor_id, d.specialization, d.bio, d.start_time, d.end_time, d.day_of_week, d.is_working, d.created_at AS doctor_active FROM users u INNER JOIN doctors d ON u.id = d.user_id WHERE u.role = 'doctor';")
+        const doctorsDB = await pool.query("SELECT u.id AS user_id, u.first_name, u.last_name, u.phone, u.image, u.created_at, d.user_id AS doctor_id, d.specialization, d.bio, d.start_time, d.end_time, d.day_of_week, d.is_working, d.created_at AS doctor_active FROM users u INNER JOIN doctors d ON u.id = d.user_id WHERE u.role = 'doctor'")
+        const doctors = doctorsDB.rows
         res.json({ success: true, doctors })
     } catch (error) {
         console.error(error);
@@ -122,7 +120,23 @@ const allDoctors = async (req, res) => {
 //api to get all appointments list
 const appointmentsAdmin = async (req, res) => {
     try {
-        const appointments = await pool.query("SELECT * FROM appointment;")
+        // const appointments = await pool.query("SELECT * FROM appointment;")
+        const appointmentsDB = await pool.query(`
+            SELECT 
+                a.*,
+                p.first_name || ' ' || p.last_name AS patient_name,
+                d_u.first_name || ' ' || d_u.last_name AS doctor_name
+
+            FROM appointment a
+
+            JOIN users p ON a.patient_id = p.id
+            JOIN doctors d ON a.doctor_id = d.user_id
+            JOIN users d_u ON d.user_id = d_u.id
+
+            ORDER BY a.appointment_date DESC
+        `);
+
+        const appointments = appointmentsDB.rows
         res.json({ success: true, appointments })
     } catch (error) {
         console.error(error);
@@ -155,20 +169,6 @@ const adminDashboard = async (req, res) => {
     }
 }
 
-export { addDoctor, loginAdmin, allDoctors, appointmentsAdmin, adminDashboard }
+//api to delete doc
 
-// const result = await pool.query(
-//             `SELECT 
-//                 a.id,
-//                 a.appointment_date,
-//                 a.slot_time,
-//                 a.status,
-//                 a.created_at,
-//                 p.first_name AS patient_name,
-//                 d.first_name AS doctor_name
-//              FROM appointment a
-//              JOIN users p ON a.patient_id = p.id
-//              JOIN users d ON a.doctor_id = d.id
-//              ORDER BY a.created_at DESC 
-//              LIMIT 5`
-//         );
+export { addDoctor, loginAdmin, allDoctors, appointmentsAdmin, adminDashboard }

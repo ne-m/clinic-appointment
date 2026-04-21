@@ -16,7 +16,7 @@ connectCloudinary()
 
 //middlewares
 app.use(express.json());
-app.use(cors());
+app.use(cors( {origin: "http://127.0.0.1:5501"}));
 
 //api endpoints
 app.use('/api/admin', adminRouter); //localhost:4000/api/admin/add-doctor

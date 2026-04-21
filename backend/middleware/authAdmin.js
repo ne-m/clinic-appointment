@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken"
+import 'dotenv/config';
 
 //admin auth middleware
 const authAdmin = async (req,res,next)=>{
