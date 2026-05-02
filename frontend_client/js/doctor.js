@@ -60,7 +60,7 @@ async function loadSlots(date) {
     if (!date) return;
     if (!docDetails) return;
     const res = await fetch(
-        `http://localhost:4000/api/user/booked-slots/${doctorId}/${date}`, {
+        `https://clinic-appointment-4lxl.onrender.com/api/user/booked-slots/${doctorId}/${date}`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
