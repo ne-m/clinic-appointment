@@ -6,11 +6,11 @@ const doctorRouter = express.Router();
 
 doctorRouter.get('/list', doctorList);
 doctorRouter.post('/login', loginDoctor)
-doctorRouter.get('/appointments', authDoctor,appointmentsDoctor)
+doctorRouter.get('/appointments', authDoctor, appointmentsDoctor)
 doctorRouter.put('/appointment-status', authDoctor, appointmentStatus)
-doctorRouter.get('/dashboard', authDoctor,doctorDashboard)
+doctorRouter.get('/dashboard', authDoctor, doctorDashboard)
 doctorRouter.get('/profile', authDoctor, doctorProfile);
 doctorRouter.put('/update-profile', authDoctor, updateDoctorProfile)
-doctorRouter.put('/change-availability',  changeAvailability)
+doctorRouter.put('/change-availability', changeAvailability)
 
 export default doctorRouter;

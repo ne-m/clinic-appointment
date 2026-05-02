@@ -5,8 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Doctor Profile</title>
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
     <link rel="stylesheet" href="css/style.css">
-    <!-- <link rel="stylesheet" href="css/profile.css"> -->
+    <link rel="stylesheet" href="css/profile.css">
     <link rel="stylesheet" href="css/doctor.css">
 
     <style>
@@ -40,8 +41,8 @@
             <a href="profile.html">Profile</a>
         </div>
         <div class="row-flex" style="gap:8px;">
-            <div class="av av-blue" style="width:32px;height:32px;font-size:12px;">US</div>
-            <span style="font-size:13px;font-weight:500;color:var(--text-primary);">Doctor</span>
+            <div class="av av-blue" style="width:32px;height:32px;font-size:12px;"></div>
+            <span style="font-size:13px;font-weight:500;color:var(--text-primary);">User</span>
         </div>
     </div>
 
@@ -80,19 +81,29 @@
                         <button id="nextMonth">→</button>
                     </div>
 
+                    <div class="calendar-days">
+                        <span>S</span>
+                        <span>M</span>
+                        <span>T</span>
+                        <span>W</span>
+                        <span>T</span>
+                        <span>F</span>
+                        <span>S</span>
+                    </div>
+
                     <div class="calendar-grid" id="calendar"></div>
                 </div>
 
-                                <!-- Time Slots -->
-                <div class="form-group">
-                    <label>Available Time Slots</label>
+                <!-- Time Slots -->
+                <div class="field-group slot-container" style="margin-bottom: 20px;">
+                    <h3 class="">Available Time Slots</h3>
                     <div id="timeSlots" class="time-slots"></div>
                 </div>
 
                 <!-- Reason -->
-                <div class="form-group">
-                    <label>Reason</label>
-                    <textarea id="reason"></textarea>
+                <div class="field-group">
+                    <label class="field-label">Reason For Visit</label>
+                    <textarea id="reason" class="field-input"></textarea>
                 </div>
 
                 <!-- Book Button -->

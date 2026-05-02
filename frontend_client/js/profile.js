@@ -1,10 +1,10 @@
 // import { userDetails } from "../data/user.js";
-import {getProfile} from "../data/user.js"
+import { getProfile, getInitials } from "../data/user.js"
 
 const token = localStorage.getItem("token");
 // let userDetails;
 
-
+const av = document.querySelector(".av");
 const message = document.getElementById("message")
 const initials = document.querySelector(".initials");
 const profileName = document.querySelector(".profile-name");
@@ -14,7 +14,7 @@ const profileUuid = document.querySelector(".profile-uuid")
 if (!token) {
     window.location.href = "signin.html";
 }
-
+getInitials(av)
 
 let userDetails;
 
@@ -31,7 +31,7 @@ function profile() {
     profileMeta.innerHTML = `Patient since ${userDetails.created_at.split('T')[0]}`
     profileUuid.innerHTML = `UUID: ${userDetails.user_id}`
     console.log();
-    
+
 
     document.getElementById("first_name").value = userDetails.first_name
     document.getElementById("last_name").value = userDetails.last_name
@@ -98,8 +98,8 @@ async function saveEdit(formId) {
         const res = await fetch("https://clinic-appointment-4lxl.onrender.com/api/user/update/profile", {
             method: "PUT",
             headers: {
-            "Content-Type": "application/json",
-            "token": `${token}`
+                "Content-Type": "application/json",
+                "token": `${token}`
             },
             body: JSON.stringify(data)
         });
@@ -113,7 +113,7 @@ async function saveEdit(formId) {
             message.style.color = "red";
             message.textContent = result.message;
         }
-            loadProfile()
+        loadProfile()
     } catch (error) {
         console.error(error);
         message.textContent = "Something went wrong.";

@@ -1,5 +1,5 @@
 import express from "express"
-import { bookAppointment, cancelAppointment, doctorList, getProfile, listAppointment, loginUser, registerUser, updateProfile,doctorProfile } from "../controllers/userController.js"
+import { bookAppointment, cancelAppointment, doctorList, getProfile, listAppointment, loginUser, registerUser, updateProfile,doctorProfile, getBookedSlots } from "../controllers/userController.js"
 import authUser from "../middleware/authUser.js";
 // import {bookAppointmentTwo} from "../controllers/book.js";
 
@@ -16,6 +16,7 @@ userRouter.put("/cancel-appointment", authUser, cancelAppointment)
 
 userRouter.get('/list-doctors', authUser,doctorList);
 userRouter.get('/doctor/:id', authUser,doctorProfile);
+userRouter.get("/booked-slots/:doctorId/:date", authUser, getBookedSlots)
 
 
 export default userRouter;

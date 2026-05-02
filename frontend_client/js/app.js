@@ -1,11 +1,11 @@
-// import { userDetails } from "./profile.js";
-import { getProfile } from "../data/user.js";
+import { getInitials, getProfile } from "../data/user.js";
 
 const token = localStorage.getItem("token");
 if (!token) {
     window.location.href = "signin.html";
 }
 
+const av = document.querySelector(".av");
 const greeting = document.querySelector('.hero-greeting');
 const heroDate = document.querySelector(".hero-date")
 const doctorList = document.querySelector(".doctor-list")
@@ -25,6 +25,7 @@ const formattedDate = today.toLocaleDateString("en-GB", {
 });
 heroDate.innerHTML = formattedDate
 
+getInitials(av)
 
 if (hour < 12) text = "Good morning";
 else if (hour < 18) text = "Good afternoon";
@@ -32,7 +33,6 @@ else if (hour < 18) text = "Good afternoon";
 async function loadProfile() {
     userDetails = await getProfile(token);
     greeting.innerHTML = `${text}, <span class="username">${userDetails.first_name}</span> 👋`;
-    console.log(userDetails);
 }
 
 loadProfile();
@@ -58,8 +58,6 @@ async function fetchDoctors() {
 async function loadDoctors() {
     doctors = await fetchDoctors()
     renderDoctors()
-    console.log(doctors);
-    
 }
 loadDoctors()
 
@@ -90,12 +88,6 @@ function renderDoctors() {
 window.openDoctor = function openDoctor(doctorId) {
     window.location.href = `doctor.html?id=${doctorId}`;
 }
-
-
-
-
-
-
 
 document.querySelectorAll(".spec-pill").forEach(pill => {
     pill.addEventListener("click", () => {

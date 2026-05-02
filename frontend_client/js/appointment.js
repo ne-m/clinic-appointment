@@ -1,12 +1,14 @@
+import { getInitials } from "../data/user.js";
 // check for token
 const token = localStorage.getItem("token");
 if (!token) {
     window.location.href = "signin.html";
 }
 
+const av = document.querySelector(".av");
 const appointmentsCard = document.querySelector(".card")
 let appointmentHTML = `<p class="section-label" style="margin-bottom:12px;">Appointment history</p>`
-
+    getInitials(av)
 
 let appointments;
 

@@ -4,6 +4,7 @@ import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
 import 'dotenv/config';
 import { v2 as cloudinary } from "cloudinary"
+import { json } from "express";
 
 //api to register user
 const registerUser = async (req, res) => {
@@ -300,5 +301,32 @@ const doctorProfile = async (req, res) => {
 
 }
 
+const getBookedSlots = async (req, res) => {
+    const { doctorId, date } = req.params;
+    console.log(doctorId, date);
 
-export { registerUser, loginUser, getProfile, updateProfile, bookAppointment, listAppointment, cancelAppointment, doctorList, doctorProfile }
+    try {
+        const result = await pool.query(
+            `SELECT TO_CHAR(slot_time, 'HH24:MI') AS slot_time 
+                FROM appointment 
+                WHERE doctor_id = $1 
+                AND appointment_date = $2::date 
+                AND status NOT IN ('cancelled', 'no-show')`,
+            [doctorId, date]
+        );
+
+        const bookedSlots = result.rows.map(r => r.slot_time);
+        res.json({ success: true, bookedSlots });
+
+    } catch (error) {
+        console.error(error);
+        res.json({
+            success: false,
+            message: error.message
+        });
+    }
+}
+
+
+
+export { registerUser, loginUser, getProfile, updateProfile, bookAppointment, listAppointment, cancelAppointment, doctorList, doctorProfile, getBookedSlots }
