@@ -7,6 +7,9 @@ import adminRouter from "./routes/adminRoute.js";
 import dns from "dns";
 import doctorRouter from "./routes/doctorRoute.js";
 import userRouter from "./routes/userRoute.js";
+// import dns from "dns";
+
+// dns.setServers(["8.8.8.8", "8.8.4.4"]);
 
 //app config
 const app = express();

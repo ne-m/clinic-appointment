@@ -117,14 +117,13 @@ const updateProfile = async (req, res) => {
 
             res.json({ success: true, message: "Details updated" });
         } else {
-            const updatePatientDB = await pool.query("UPDATE patients SET gender = $1, dob= $2, address= $3 WHERE id=$4", [gender, dob, address, userId]);
+            const updatePatientDB = await pool.query("UPDATE patients SET gender = $1, dob= $2, address= $3 WHERE user_id=$4", [gender, dob, address, userId]);
 
             res.json({ success: true, message: "Details updated" });
         }
 
 
-        // const data = await pool.query("SELECT * FROM users INNER JOIN  WHERE id = $1 ", [userId]);
-        // const userData = data.rows[0];
+
 
         // const imageFile = req.imageFile
 
@@ -150,6 +149,16 @@ const bookAppointment = async (req, res) => {
         if (!userId || !docId || !slotDate || !slotBooked) {
             return res.status(400).json({ success: false, message: "Missing required fields" });
         }
+
+        const today = new Date().toISOString().split("T")[0];
+
+        if (slotDate < today) {
+            return res.json({
+                success: false,
+                message: "Cannot book past dates"
+            });
+        }
+
         // Check if slot is already booked
         const existing = await pool.query("SELECT * FROM appointment WHERE doctor_id = $1 AND appointment_date = $2 AND slot_time = $3 AND status NOT IN ('cancelled', 'no-show')", [docId, slotDate, slotBooked]);
 
@@ -251,9 +260,9 @@ const cancelAppointment = async (req, res) => {
 //api for doctor profile to book appointment
 const doctorProfile = async (req, res) => {
     try {
-        const {id}  = req.params;
+        const { id } = req.params;
         console.log(id);
-        
+
         const doctorDB = await pool.query(`
             SELECT 
                 u.first_name,
@@ -268,7 +277,7 @@ const doctorProfile = async (req, res) => {
             WHERE d.user_id = $1
         `, [id]);
 
-                if (doctorDB.rows.length === 0) {
+        if (doctorDB.rows.length === 0) {
             return res.status(404).json({
                 success: false,
                 message: "Doctor not found"

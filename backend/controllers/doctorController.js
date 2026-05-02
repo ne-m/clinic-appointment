@@ -90,7 +90,7 @@ const appointmentStatus = async (req, res) => {
     try {
         const { appointmentId, status } = req.body
 
-        const appointmentDB = await pool.query("UPDATE appointment SET status=$1 WHERE id=$2", [status,appointmentId]);
+        const appointmentDB = await pool.query("UPDATE appointment SET status=$1 WHERE id=$2", [status, appointmentId]);
         const appointment = appointmentDB.rows[0]
         console.log(appointment);
 
@@ -151,10 +151,12 @@ const doctorProfile = async (req, res) => {
 const updateDoctorProfile = async (req, res) => {
     try {
         const doctorId = req.doctor.id;
-        const { start_time, end_time, bio } = req.body;
+        const { first_name, last_name, email, phone, start_time, end_time, bio } = req.body;
 
         // const updateAvailability = await pool.query("UPDATE doctors SET is_working = $1 WHERE user_id = $2 RETURNING is_working, user_id", [!isWorking, doctorId])
         const updateDoctorDB = await pool.query("UPDATE doctors SET start_time = $1, end_time=$2, bio=$3 WHERE user_id=$4", [start_time, end_time, bio, doctorId])
+        const updateDoctorUserDB = await pool.query("UPDATE users SET first_name=$1, last_name=$2, email=$3, phone=$4 WHERE id=$5", [first_name, last_name, email, phone, doctorId])
+
         res.json({ success: true, message: `Profile updated` });
 
     } catch (error) {
@@ -163,4 +165,4 @@ const updateDoctorProfile = async (req, res) => {
     }
 }
 
-export { changeAvailability, doctorList, loginDoctor, appointmentsDoctor, appointmentStatus,doctorDashboard, doctorProfile, updateDoctorProfile };
+export { changeAvailability, doctorList, loginDoctor, appointmentsDoctor, appointmentStatus, doctorDashboard, doctorProfile, updateDoctorProfile };

@@ -170,5 +170,19 @@ const adminDashboard = async (req, res) => {
 }
 
 //api to delete doc
+const deleteDoctor = async (req,res) => {
+    try {
+        const {docID} = req.body
+
+        if (!docID) {
+            return res.json({sucess: true, message:"Missing doctor ID!"})
+        }
+
+        const doctorDB = await pool.query("UPDATE doctors SET is_active = NOT is_active WHERE user_id = $1",[docID]);
+        res.json({success: true, message:"Account deactivated"})
+    } catch (error) {
+        
+    }
+}
 
 export { addDoctor, loginAdmin, allDoctors, appointmentsAdmin, adminDashboard }
