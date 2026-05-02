@@ -11,22 +11,22 @@
 
     <style>
         .time-slots {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-}
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
 
-.slot {
-    padding: 8px 12px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    cursor: pointer;
-}
+        .slot {
+            padding: 8px 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            cursor: pointer;
+        }
 
-.slot.selected {
-    background: #1D9E75;
-    color: white;
-}
+        .slot.selected {
+            background: #1D9E75;
+            color: white;
+        }
     </style>
 </head>
 
@@ -73,12 +73,17 @@
 
             <div class="booking-container">
                 <!-- Date Picker -->
-                <div class="form-group">
-                    <label>Select Date</label>
-                    <input type="date" id="appointmentDate" />
+                <div class="calendar-container">
+                    <div class="calendar-header">
+                        <button id="prevMonth">←</button>
+                        <h3 id="monthYear"></h3>
+                        <button id="nextMonth">→</button>
+                    </div>
+
+                    <div class="calendar-grid" id="calendar"></div>
                 </div>
 
-                <!-- Time Slots -->
+                                <!-- Time Slots -->
                 <div class="form-group">
                     <label>Available Time Slots</label>
                     <div id="timeSlots" class="time-slots"></div>

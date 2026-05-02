@@ -47,7 +47,7 @@ async function changeAvailability(docID) {
     if (!confirmed) return;
 
     try {
-        const res = await fetch("http://localhost:4000/api/doctor/change-availability", {
+        const res = await fetch("https://clinic-appointment-4lxl.onrender.com/api/doctor/change-availability", {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -79,7 +79,7 @@ async function changeAvailability(docID) {
 
 
 async function fetchDashboard() {
-    const res = await fetch("http://localhost:4000/api/doctor/dashboard", {
+    const res = await fetch("https://clinic-appointment-4lxl.onrender.com/api/doctor/dashboard", {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
@@ -104,7 +104,7 @@ function renderDashboard() {
 }
 
 async function fetchAppointments() {
-    const res = await fetch("http://localhost:4000/api/doctor/appointments", {
+    const res = await fetch("https://clinic-appointment-4lxl.onrender.com/api/doctor/appointments", {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
@@ -169,7 +169,7 @@ window.confirmAppt = async function confirmAppt(appointmentId,status) {
     if (!confirmed) return;
 
     try {
-        const res = await fetch("http://localhost:4000/api/doctor/appointment-status", {
+        const res = await fetch("https://clinic-appointment-4lxl.onrender.com/api/doctor/appointment-status", {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -198,7 +198,7 @@ window.declineAppt = async function declineAppt(appointmentId,status) {
     if (!confirmed) return;
 
     try {
-        const res = await fetch("http://localhost:4000/api/doctor/appointment-status", {
+        const res = await fetch("https://clinic-appointment-4lxl.onrender.com/api/doctor/appointment-status", {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",

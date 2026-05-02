@@ -5,14 +5,14 @@ if (!token) {
 }
 
 const appointmentsCard = document.querySelector(".card")
-let appointmentHTML = ""
+let appointmentHTML = `<p class="section-label" style="margin-bottom:12px;">Appointment history</p>`
 
 
 let appointments;
 
 async function fetchAppointments() {
     try {
-        const res = await fetch("http://localhost:4000/api/user/appointments", {
+        const res = await fetch("https://clinic-appointment-4lxl.onrender.com/api/user/appointments", {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -35,8 +35,6 @@ async function fetchAppointments() {
     }
 }
 
-// fetchAppointments()
-
 async function loadAppointments() {
     appointments = await fetchAppointments()
     // renderAppointments()
@@ -45,8 +43,6 @@ async function loadAppointments() {
 loadAppointments()
 
 function renderAppointments() {
-    console.log(appointments);
-    
     if (!appointments || appointments.length === 0) {
         appointmentsCard.innerHTML = '<div class="no-appointments">No appointments found</div>';
         return;
@@ -88,7 +84,6 @@ function renderAppointments() {
             </div>
         `
     });
-
     appointmentsCard.innerHTML = appointmentHTML
 }
 
@@ -98,7 +93,7 @@ window.cancelAppointment = async function cancelAppointment(appointmentId) {
     if (!confirmed) return;
 
     try {
-        const res = await fetch("http://localhost:4000/api/user/cancel-appointment", {
+        const res = await fetch("https://clinic-appointment-4lxl.onrender.com/api/user/cancel-appointment", {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",

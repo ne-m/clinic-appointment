@@ -18,7 +18,7 @@ const docBio = document.getElementById("docBio")
 async function fetchDoctorProfile(docId) {
     // console.log(docId);
 
-    const res = await fetch(`http://localhost:4000/api/user/doctor/${docId}`, {
+    const res = await fetch(`https://clinic-appointment-4lxl.onrender.com/api/user/doctor/${docId}`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
@@ -42,7 +42,7 @@ async function loadDoctorProfile() {
     renderDoctorProfile()
 
     generateSlots(docDetails.start_time, docDetails.end_time);
-    
+
 }
 
 loadDoctorProfile();
@@ -79,42 +79,117 @@ function generateSlots(start, end) {
     }
 }
 
-document.getElementById("bookBtn").onclick = async () => {
+// const dateInput = document.getElementById("appointmentDate");
 
-    const date = document.getElementById("appointmentDate").value;
-    const reason = document.getElementById("reason").value;
+// const today = new Date().toISOString().split("T")[0];
+// dateInput.setAttribute("min", today);
 
-    if (!date || !selectedTime) {
-        alert("Please select date and time");
-        return;
+// document.getElementById("bookBtn").onclick = async () => {
+
+//     const date = document.getElementById("appointmentDate").value;
+//     const reason = document.getElementById("reason").value;
+
+//     if (!date || !selectedTime) {
+//         alert("Please select date and time");
+//         return;
+//     }
+
+//     try {
+//         const res = await fetch("http://localhost:4000/api/user/book-appointment", {
+//             method: "POST",
+//             headers: {
+//                 "Content-Type": "application/json",
+//                 "token": `${token}`
+//             },
+//             body: JSON.stringify({
+//                 docId: doctorId,
+//                 slotDate: date,
+//                 slotBooked: selectedTime,
+//                 reason
+//             })
+//         });
+
+//         const data = await res.json();
+
+//         if (data.success) {
+//             alert("Appointment booked successfully!");
+//             window.location.href = "appointments.html";
+//         } else {
+//             alert(data.message);
+//         }
+
+//     } catch (err) {
+//         console.error(err);
+//         alert("Error booking appointment");
+//     }
+// };
+
+const calendarEl = document.getElementById("calendar");
+const monthYear = document.getElementById("monthYear");
+
+let currentDate = new Date();
+let selectedDate = null;
+
+const date = selectedDate;
+
+
+
+function renderCalendar() {
+    calendarEl.innerHTML = "";
+
+    const year = currentDate.getFullYear();
+    const month = currentDate.getMonth();
+
+    const firstDay = new Date(year, month, 1).getDay();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+    monthYear.textContent = currentDate.toLocaleDateString("en-GB", {
+        month: "long",
+        year: "numeric"
+    });
+
+    const today = new Date().toISOString().split("T")[0];
+
+    // empty spaces before first day
+    for (let i = 0; i < firstDay; i++) {
+        calendarEl.innerHTML += `<div></div>`;
     }
 
-    try {
-        const res = await fetch("http://localhost:4000/api/user/book-appointment", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            "token": `${token}`
-            },
-            body: JSON.stringify({
-                doctor_id: doctorId,
-                appointment_date: date,
-                slot_time: selectedTime,
-                reason
-            })
-        });
+    for (let day = 1; day <= daysInMonth; day++) {
+        const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
 
-        const data = await res.json();
+        const div = document.createElement("div");
+        div.classList.add("day");
+        div.textContent = day;
 
-        if (data.success) {
-            alert("Appointment booked successfully!");
-            window.location.href = "appointments.html";
+        // disable past dates
+        if (dateStr < today) {
+            div.classList.add("disabled");
         } else {
-            alert(data.message);
+            div.onclick = () => {
+                document.querySelectorAll(".day").forEach(d => d.classList.remove("selected"));
+                div.classList.add("selected");
+
+                selectedDate = dateStr;
+
+                // load slots for selected date
+                // loadSlots(dateStr);
+            };
         }
 
-    } catch (err) {
-        console.error(err);
-        alert("Error booking appointment");
+        calendarEl.appendChild(div);
     }
+}
+
+document.getElementById("prevMonth").onclick = () => {
+    currentDate.setMonth(currentDate.getMonth() - 1);
+    renderCalendar();
 };
+
+document.getElementById("nextMonth").onclick = () => {
+    currentDate.setMonth(currentDate.getMonth() + 1);
+    renderCalendar();
+};
+
+renderCalendar();
+

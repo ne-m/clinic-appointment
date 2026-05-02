@@ -38,7 +38,7 @@ form.addEventListener('submit', async (e) => {
         const imageFile = document.getElementById("image").files[0];
         formData.append("image", imageFile);
 
-        const res = await fetch("http://localhost:4000/api/admin/add-doctor", {
+        const res = await fetch("https://clinic-appointment-4lxl.onrender.com/api/admin/add-doctor", {
             method: "POST",
             body: formData
             // atoken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsInBhc3N3b3JkIjoicXdlcnR5MTIzNCIsImlhdCI6MTc3NjcxMjE5Nn0.6TfpxqraxOFrPWaX0tEYJtc71rRbhLc-IdtQUOax8Is"

@@ -31,7 +31,7 @@ form.addEventListener('submit', async (e) => {
             email: document.getElementById("email").value,
             password: document.getElementById("password").value
         };
-        const res = await fetch("http://localhost:4000/api/doctor/login", {
+        const res = await fetch("https://clinic-appointment-4lxl.onrender.com/api/doctor/login", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"

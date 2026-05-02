@@ -1,5 +1,5 @@
 export async function getProfile(token) {
-    const res = await fetch("http://localhost:4000/api/user/profile", {
+    const res = await fetch("https://clinic-appointment-4lxl.onrender.com/api/user/profile", {
         method: "GET",
         headers: {
             "Content-Type": "application/json",

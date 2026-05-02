@@ -14,7 +14,7 @@ let appointmentHTML = ""
 const appointmentCards = document.querySelector(".appointment-cards")
 
 async function fetchDoctors() {
-    const res = await fetch("http://localhost:4000/api/admin/all-doctors", {
+    const res = await fetch("https://clinic-appointment-4lxl.onrender.com/api/admin/all-doctors", {
         method: "GET",
         headers: {
             "Content-Type": "application/json"
@@ -60,7 +60,7 @@ function renderDoctors() {
 
                     <div class="btn-container">
                         <button class="btn-primary" onclick="changeAvailability('${doctor.doctor_id}')" >Change Availability</button>                    
-                        <button class="btn-danger" onclick="deleteDoctor('${doctor.doctor_id}')">Remove</button>
+                        <button class="btn-danger" onclick="deleteDoctor('${doctor.doctor_id}','${doctor.first_name + " " + doctor.last_name}')">Remove</button>
                     </div>
                 </div>
             </div>
@@ -75,7 +75,7 @@ window.changeAvailability = async function changeAvailability(docID) {
     if (!confirmed) return;
 
     try {
-        const res = await fetch("http://localhost:4000/api/admin/change-availability", {
+        const res = await fetch("https://clinic-appointment-4lxl.onrender.com/api/admin/change-availability", {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json"
@@ -98,12 +98,12 @@ window.changeAvailability = async function changeAvailability(docID) {
     }
 }
 
-window.deleteDoctor = async function deleteDoctor(docID) {
-    const confirmed = confirm(`Are you sure you want to delete doctor id: ${docID}`);
+window.deleteDoctor = async function deleteDoctor(docID, docName) {
+    const confirmed = confirm(`Are you sure you want to delete doctor id: ${docName}`);
     if (!confirmed) return;
 
     try {
-        const res = await fetch("http://localhost:4000/api/admin/delete-doctor", {
+        const res = await fetch("https://clinic-appointment-4lxl.onrender.com/api/admin/delete-doctor", {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json"
@@ -127,7 +127,7 @@ window.deleteDoctor = async function deleteDoctor(docID) {
 }
 
 async function fetchDashboard() {
-    const res = await fetch("http://localhost:4000/api/admin/dashboard", {
+    const res = await fetch("https://clinic-appointment-4lxl.onrender.com/api/admin/dashboard", {
         method: "GET",
         headers: {
             "Content-Type": "application/json"
@@ -151,7 +151,7 @@ function renderDashboard() {
 }
 
 async function fetchAppointments() {
-    const res = await fetch("http://localhost:4000/api/admin/appointments", {
+    const res = await fetch("https://clinic-appointment-4lxl.onrender.com/api/admin/appointments", {
         method: "GET",
         headers: {
             "Content-Type": "application/json"

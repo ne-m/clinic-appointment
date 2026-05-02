@@ -111,3 +111,31 @@
     background: #FAECE7;
     color: #993C1D;
 }
+
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 6px;
+}
+
+.day {
+    padding: 10px;
+    text-align: center;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.day:hover {
+    background: #eee;
+}
+
+.day.disabled {
+    color: #aaa;
+    pointer-events: none;
+}
+
+.day.selected {
+    background: #1D9E75;
+    color: white;
+}

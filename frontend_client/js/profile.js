@@ -38,7 +38,7 @@ function profile() {
 
     document.getElementById("email").value = userDetails.email
     document.getElementById("phone").value = userDetails.phone
-    userDetails.dob ? document.getElementById('dob').value = userDetails.dob : document.getElementById('dob').setAttribute('placeholder', 'Update DOB');
+    userDetails.dob ? document.getElementById('dob').value = userDetails.dob.split('T')[0] : document.getElementById('dob').setAttribute('placeholder', 'Update DOB');
     userDetails.gender ? document.getElementById('gender').value = userDetails.gender : document.getElementById('gender').setAttribute('placeholder', 'Update gender');
     userDetails.address ? document.getElementById('address').value = userDetails.address : document.getElementById('address').setAttribute('placeholder', 'Update address');
 
@@ -95,7 +95,7 @@ async function saveEdit(formId) {
             address: document.getElementById('address').value
         };
 
-        const res = await fetch("http://localhost:4000/api/user/update/profile", {
+        const res = await fetch("https://clinic-appointment-4lxl.onrender.com/api/user/update/profile", {
             method: "PUT",
             headers: {
             "Content-Type": "application/json",
@@ -113,6 +113,7 @@ async function saveEdit(formId) {
             message.style.color = "red";
             message.textContent = result.message;
         }
+            loadProfile()
     } catch (error) {
         console.error(error);
         message.textContent = "Something went wrong.";
@@ -130,4 +131,5 @@ function cancelEdit(formId) {
     inputs.forEach(i => i.setAttribute('readonly', true));
     if (saveRow) saveRow.style.display = 'none';
     form.dataset.editing = 'false';
+    loadProfile()
 }

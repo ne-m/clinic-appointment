@@ -12,7 +12,7 @@ if (!dtoken) {
 }
 
 async function getProfile(dtoken) {
-    const res = await fetch("http://localhost:4000/api/doctor/profile", {
+    const res = await fetch("https://clinic-appointment-4lxl.onrender.com/api/doctor/profile", {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
@@ -111,7 +111,7 @@ async function saveEdit(formId) {
             bio: document.getElementById('bio').value
         };
 
-        const res = await fetch("http://localhost:4000/api/doctor/update-profile", {
+        const res = await fetch("https://clinic-appointment-4lxl.onrender.com/api/doctor/update-profile", {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -129,6 +129,7 @@ async function saveEdit(formId) {
             message.style.color = "red";
             message.textContent = result.message;
         }
+        loadProfile()
     } catch (error) {
         console.error(error);
         message.textContent = "Something went wrong.";
@@ -142,4 +143,5 @@ function cancelEdit(formId) {
     inputs.forEach(i => i.setAttribute('readonly', true));
     if (saveRow) saveRow.style.display = 'none';
     form.dataset.editing = 'false';
+    loadProfile()
 }

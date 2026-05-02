@@ -40,7 +40,7 @@ form.addEventListener('submit', async (e) => {
             password: document.getElementById("password").value,
             role: "patient"
         };
-        const res = await fetch("http://localhost:4000/api/user/register", {
+        const res = await fetch("https://clinic-appointment-4lxl.onrender.com/api/user/register", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
