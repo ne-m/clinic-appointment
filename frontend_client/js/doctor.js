@@ -179,7 +179,7 @@ document.getElementById("bookBtn").onclick = async () => {
     }
 
     try {
-        const res = await fetch(`http://localhost:4000/api/user/book-appointment`, {
+        const res = await fetch(`https://clinic-appointment-4lxl.onrender.com/api/user/book-appointment`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
