@@ -50,14 +50,27 @@
     justify-content: space-between;
     flex-wrap: wrap;
     gap: 8px;
-    padding: 10px 0;
+    padding: 10px;
+    /* border-top: transparent;
+    border-left: transparent;
+    border-right: transparent; */
     border-bottom: 0.5px solid var(--border-tertiary);
     font-size: 13px;
-    transition: all 0.2s linear;
+    margin: 10px 0;
+    outline: none;
+    cursor: pointer;
+    transition: transform 0.2s linear;
+    
 }
 
 .appt-row:hover{
     transform: scale(1.01);
+    outline: solid 0.5px hsl(0, 1%, 71%);
+    /* border-top: transparent;
+    border-left: transparent;
+    border-right: transparent; */
+    /* border: transparent; */
+    border-radius: 5px;
 }
 
 .appt-row:last-child {

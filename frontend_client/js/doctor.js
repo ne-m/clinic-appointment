@@ -40,7 +40,6 @@ async function fetchDoctorProfile(docId) {
 
 async function loadDoctorProfile() {
     docDetails = await fetchDoctorProfile(doctorId)
-    console.log(docDetails);
     renderDoctorProfile()
     renderCalendar();
     loadSlots(dateStr);

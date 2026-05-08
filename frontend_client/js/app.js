@@ -57,23 +57,26 @@ async function fetchDoctors() {
 
 async function loadDoctors() {
     doctors = await fetchDoctors()
-    renderDoctors()
+    renderDoctors(doctors)
 }
 loadDoctors()
 
-function renderDoctors() {
-    doctors.forEach(doctor =>{
+function renderDoctors(doctorsParam) {
+    doctorHTML = ""
+    doctorsParam.forEach(doctor => {
         doctorHTML += `                
             <div class="doctor-card">
-                <img src=${doctor.image} class="doctor-img" alt="Doctor">
+                <img src=${doctor.image} loading="lazy" class="doctor-img" alt="Doctor">
 
                 <div class="doctor-info">
                     <h3 class="doctor-name">${doctor.first_name + " " + doctor.last_name}</h3>
-                    <p class="doctor-spec">General Practitioner</p>
+                    <p class="doctor-spec">${doctor.specialization}</p>
 
                     <div class="doctor-meta">
-                        <span class="doctor-rating">⭐ <i>To do</i> </span>
-                        <span class="doctor-status ${doctor.is_working ? "available" : "busy"} ">${doctor.is_working? "Available": "Not available"}</span>
+                        <span class="doctor-rating">                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path d="M8 1l1.5 4.5H14l-3.5 2.5 1.5 4.5L8 10l-4 2.5 1.5-4.5L2 5.5h4.5z" fill="#FFC000" />
+                </svg> <!-- <i>To do</i> --> </span>
+                        <span class="doctor-status ${doctor.is_working ? "available" : "busy"} ">${doctor.is_working ? "Available" : "Not available"}</span>
                     </div>
 
                     <button class="btn-book" ${doctor.is_working ? `onclick="openDoctor('${doctor.doctor_id}')"` : "disabled"} >Book</button>
@@ -90,11 +93,21 @@ window.openDoctor = function openDoctor(doctorId) {
 }
 
 document.querySelectorAll(".spec-pill").forEach(pill => {
-    pill.addEventListener("click", () => {
+    pill.addEventListener("click", (e) => {
         const type = pill.dataset.type;
 
-        const filtered = doctors.filter(d => d.specialization === type);
+        if (e.currentTarget.dataset.type === "All Doctors") {
+            const allDoctors = doctors
+            renderDoctors(allDoctors);
+        } else {
+            const filtered = doctors.filter(d => d.specialization === type);
 
-        renderDoctors(filtered);
+            renderDoctors(filtered);
+            // console.log(filtered);
+        }
+        // console.log(e.currentTarget.dataset.type);
+
+
+
     });
 });

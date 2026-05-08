@@ -4,7 +4,6 @@ const token = localStorage.getItem("token");
 const apptid = params.get("apptid");
 const role = params.get("role")
 let apptDetails;
-console.log(apptid, role);
 
 
 const docInitials = document.getElementById("docInitials")
@@ -38,13 +37,10 @@ async function fetchAppointment(apptid, role) {
     } else {
         console.log(data.message);
     }
-
 }
 
 async function loadApptDetails() {
     apptDetails = await fetchAppointment(apptid, role)
-    console.log(apptDetails);
-
     renderApptDetails()
     renderTimeline()
 }
@@ -80,7 +76,6 @@ async function renderApptDetails() {
         // patientActionsStack.classList.add("cancelled")
 
     }
-    console.log(apptDetails.status);
 
     if (apptDetails.status === "scheduled" || apptDetails.status === "confirmed") {
         // patientActionsStack.classList.remove("cancelled")
@@ -104,12 +99,8 @@ async function renderApptDetails() {
                 <p id="notesDisplay" style="font-size:13px;color:var(--text-3);line-height:1.7;font-style:italic;"> ${note.note}</p>
             `
         })
-
         notesViewMode.innerHTML = noteHTML      
     }
-
-    // console.log(cfg);
-
 }
 
 const STATUS_CFG = {
@@ -265,11 +256,11 @@ function renderTimeline() {
         const timeLabel = isActive ? `Updated · ${now}` : "Completed";
 
         return `<div class="${cls}">
-    <div class="tl-dot">${def.icon}</div>
-    <div>
-    <div class="tl-title">${def.label}</div>
-    <div class="tl-time">${timeLabel}</div>
-    </div>
-</div>`;
+                    <div class="tl-dot">${def.icon}</div>
+                    <div>
+                        <div class="tl-title">${def.label}</div>
+                        <div class="tl-time">${timeLabel}</div>
+                    </div>
+                </div>`;
     }).join("");
 }

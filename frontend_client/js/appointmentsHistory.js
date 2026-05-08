@@ -7,10 +7,15 @@ if (!token) {
 
 const av = document.querySelector(".av");
 const appointmentsCard = document.querySelector(".card")
-let appointmentHTML = `<p class="section-label" style="margin-bottom:12px;">Appointment history</p>`
+let appointmentHTML = ''
+let currentTab = "upcoming";
 getInitials(av)
 
 let appointments;
+const params = new URLSearchParams(window.location.search);
+// const doctorId = params.get("tab");
+currentTab = params.get("tab") ? params.get("tab") : "upcoming"
+
 
 async function fetchAppointments() {
     try {
@@ -25,33 +30,50 @@ async function fetchAppointments() {
         let data = await res.json();
 
         if (data.success) {
-            appointments = data.appointmentData
-            // console.log(appointments);
-            renderAppointments()
+            return data.appointmentData
         } else {
             console.log(data.message);
+            return[]
         }
     } catch (error) {
         console.error(error);
         appointmentsCard.innerHTML = `<div class="error-message">Failed to load appointments</div>`
+        return[]
     }
 }
 
 async function loadAppointments() {
     appointments = await fetchAppointments()
-    // renderAppointments()
+    initTabFromURL()
+    renderAppointments()
 }
 
 loadAppointments()
 
 function renderAppointments() {
+    appointmentHTML = `
+        <div style="display:flex; gap:20px; align-items:center; justify-content: space-between">
+            <p class="section-label" style="margin-bottom:12px; font-weight: bold;">Appointment history</p>
+            <p class="section-label" style="margin-bottom:12px; font-size:14px;">Select an appointment to view more details</p>
+        </div>
+    `
     if (!appointments || appointments.length === 0) {
         appointmentsCard.innerHTML = '<div class="no-appointments">No appointments found</div>';
         return;
     }
 
-    appointments.forEach((appointment) => {
-        let badgeColor = "red"; // default
+    let filtered = appointments.filter(a => {
+        if (currentTab === "upcoming") return isUpcoming(a.status);
+        if (currentTab === "history") return isHistory(a.status);
+    });
+    
+    if (filtered.length === 0) {
+        appointmentsCard.innerHTML = `<div>No ${currentTab} appointments</div>`;
+        return;
+    }
+
+    filtered.forEach((appointment) => {
+        let badgeColor = "red";
         if (appointment.status === "scheduled") badgeColor = "green";
         else if (appointment.status === "confirmed") badgeColor = "blue";
         else if (appointment.status === "completed") badgeColor = "gray";
@@ -111,8 +133,7 @@ window.cancelAppointment = async function cancelAppointment(appointmentId) {
         if (data.success) {
             alert("Appointment cancelled successfully");
             // Refresh the appointments list
-            appointmentHTML = "";
-            loadAppointments();
+            await loadAppointments()
         } else {
             alert(data.message || "Failed to cancel appointment");
         }
@@ -126,4 +147,48 @@ window.openAppointment = function openAppointment(apptid, role) {
     window.location.href = `appointment.html?apptid=${apptid}&role=${role}`;
 }
 
+const upcomingTab = document.getElementById("upcomingTab");
+const historyTab = document.getElementById("historyTab");
 
+upcomingTab.addEventListener("click", () => {
+    currentTab = "upcoming";
+    setActiveTab(upcomingTab);
+    updateURL("upcoming");
+    renderAppointments();
+});
+
+historyTab.addEventListener("click", () => {
+    currentTab = "history";
+    setActiveTab(historyTab);
+    updateURL("history");
+    renderAppointments();
+});
+
+function setActiveTab(activeBtn) {
+    document.querySelectorAll(".tab-btn").forEach(btn => btn.classList.remove("active"));
+    activeBtn.classList.add("active");
+}
+
+function isUpcoming(status) {
+    return ["scheduled", "confirmed", "in-progress"].includes(status);
+}
+
+function isHistory(status) {
+    return ["completed", "cancelled", "no-show", "declined"].includes(status);
+}
+
+function initTabFromURL() {
+    const upcomingTab = document.getElementById("upcomingTab");
+    const historyTab = document.getElementById("historyTab");
+
+    if (currentTab === "history") {
+        setActiveTab(historyTab);
+    } else {
+        setActiveTab(upcomingTab);
+    }
+}
+
+function updateURL(tab) {
+    const newURL = `appointments.html?tab=${tab}`;
+    window.history.replaceState(null, "", newURL);
+}

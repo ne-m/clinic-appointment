@@ -63,8 +63,6 @@ toggleCancelBtn.addEventListener("click", () => {
 })
 
 function toggleEdit(formId) {
-    console.log(formId);
-
     const form = document.getElementById(formId);
     const editing = form.dataset.editing === 'true';
     const inputs = form.querySelectorAll('.field-input');
@@ -139,17 +137,17 @@ function cancelEdit(formId) {
 
 logoutBtn.addEventListener("click", (e) => {
     e.preventDefault()
-    alert("Are you sure you want to log out?")
+    confirm("Are you sure you want to log out?")
     localStorage.clear("token")
     localStorage.clear("initials")
     setTimeout(() => {
         location.reload();
-    }, 2000);
+    }, 1000);
 
 })
 
 deleteBtn.addEventListener("click",(e)=>{
     e.preventDefault()
     confirm("Do you want to delete your account?")
-    alert("Sikeeee!!!!! 😂😂")
+    alert("Sikeeee!!!!! 😂😂 ....... I ain't deleting your account")
 })

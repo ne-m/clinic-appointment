@@ -36,7 +36,7 @@
     --radius-xs: 6px;
 }
 
-@media (prefers-color-scheme: dark) {
+/* @media (prefers-color-scheme: dark) {
     :root {
         --text: #F1F5F9;
         --text-2: #94A3B8;
@@ -55,7 +55,7 @@
         --red-light: rgba(220, 38, 38, 0.15);
         --purple-light: rgba(124, 58, 237, 0.15);
     }
-}
+} */
 
 /* body {
     font-family: 'DM Sans', sans-serif;
