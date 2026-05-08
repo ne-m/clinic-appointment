@@ -170,7 +170,6 @@ let pendingAction = null;
 
 window.openModal = function openModal() {
     document.getElementById("modalOverlay").classList.add("open")
-    console.log(document.getElementById("modalOverlay"));
 }
 window.closeModal = function closeModal() {
     document.getElementById("modalOverlay").classList.remove("open");
@@ -182,6 +181,8 @@ document.getElementById("modalOverlay").addEventListener("click", e => {
 
 document.getElementById("modalConfirm").addEventListener("click", () => {
     cancelAppointment(apptDetails.id)
+    document.getElementById("modalOverlay").classList.remove("open");
+
 })
 
 window.cancelAppointment = async function cancelAppointment(appointmentId) {
