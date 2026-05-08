@@ -26,7 +26,7 @@
         --bg-secondary: #2a2a27;
         --bg-info: #0c2a44;
         --text-primary: #e8e6de;
-        --text-secondary: #9c9a92;
+        --text-secondary: #868683;
         --text-info: #85b7eb;
         --border-tertiary: rgba(255, 255, 255, 0.10);
         --border-secondary: rgba(255, 255, 255, 0.20);
@@ -276,6 +276,18 @@ a:hover{
 
 .btn-secondary:hover {
     background: rgba(255, 255, 255, 0.25);
+}
+
+.btn-outline {
+    background: transparent;
+    border: 0.5px solid var(--border-secondary);
+    border-radius: 6px;
+    padding: 6px 14px;
+    font-size: 13px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    font-family: inherit;
+    white-space: nowrap;
 }
 
 /* Decorative blob */

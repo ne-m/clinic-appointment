@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+  <rect width="64" height="64" rx="12" fill="#e8e6de"/> <!-- Tailwind gray-800 -->
+  <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"
+        font-family="Segoe UI, sans-serif" font-size="28" font-weight="bold" fill="#0c2a44">CB</text> <!-- Tailwind emerald-500 -->
+</svg>

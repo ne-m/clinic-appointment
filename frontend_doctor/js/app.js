@@ -135,7 +135,7 @@ function renderAppointments() {
         else if (appointment.status === "declined") badgeColor = "outline";
 
         appointmentHTML += `
-            <div class="appt-row">
+            <div class="appt-row" onclick="openAppointment('${appointment.id}','doctor')">
                 <div>
                     <div style="font-size:13px;font-weight:500;">${appointment.patient_name}</div>
                     <div style="font-size:12px;color:var(--text-secondary)">${appointment.reason}</div>
@@ -219,4 +219,8 @@ window.declineAppt = async function declineAppt(appointmentId,status) {
         console.error("Cancel error:", error);
         alert("An error occurred. Please try again.");
     }
+}
+
+window.openAppointment = function openAppointment(apptid, role) {
+    window.location.href = `appointment.html?apptid=${apptid}&role=${role}`;
 }

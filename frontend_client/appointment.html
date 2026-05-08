@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Appointments</title>
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/profile.css">
+    <link rel="stylesheet" href="css/appointment.css">
+    <!-- <link rel="stylesheet" href="style.css"> -->
+</head>
+
+<body>
+    <div class="nav-bar">
+        <span class="nav-logo">ClinicBook</span>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="appointments.html">My appointments</a>
+            <a href="profile.html">Profile</a>
+        </div>
+        <div class="row-flex" style="gap:8px;">
+            <div class="av av-blue" style="width:32px;height:32px;font-size:12px;"></div>
+            <span style="font-size:13px;font-weight:500;color:var(--text-primary);">User</span>
+        </div>
+    </div>
+
+    <!-- Appointment history -->
+    <div class="status-banner" id="statusBanner">
+    </div>
+
+    <div class="grid-2">
+
+        <div>
+            <div class="card">
+                <div class="card-label">Doctor</div>
+                <div class="doc-row">
+                    <div class="doc-av docInitials" id="docAv"
+                        style="background: linear-gradient(135deg, rgb(29, 158, 117), rgb(24, 95, 165));"></div>
+                    <div>
+                        <div class="doc-name-lg" id="docName"></div>
+                        <div class="doc-spec-sm" id="docSpec"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Appointment details -->
+            <div class="card">
+                <div class="card-label">Appointment details</div>
+                <div class="detail-grid">
+                    <div>
+                        <div class="detail-label">Date</div>
+                        <div class="detail-value" id="apptDate"></div>
+                    </div>
+                    <div>
+                        <div class="detail-label">Time</div>
+                        <div class="detail-value" id="apptTime"></div>
+                    </div>
+                    <div>
+                        <div class="detail-label">Patient</div>
+                        <div class="detail-value" id="apptPatient"></div>
+                    </div>
+                    <div>
+                        <div class="detail-label">Booked on</div>
+                        <div class="detail-value" id="apptBooked"></div>
+                    </div>
+                    <div style="grid-column:1/-1;">
+                        <div class="detail-label">Reason for visit</div>
+                        <div class="reason-box" id="apptReason"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Status timeline -->
+            <div class="card">
+                <div class="card-label">Status timeline</div>
+                <div class="timeline" id="timeline">
+                </div>
+            </div>
+
+            <!-- Doctor notes -->
+            <div class="card">
+                <div class="card-label" style="font-weight: bold;">Doctor's notes</div>
+                <!-- Patient: read-only -->
+                <div id="notesViewMode" style="display: block;">
+                    <p id="notesDisplay" style="font-size:13px;color:var(--text-3);line-height:1.7;font-style:italic;"> No notes added yet.</p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ── RIGHT COLUMN ── -->
+        <div class="sticky-col">
+            <!-- Patient actions card -->
+            <div class="card" id="patientActionsCard" style="display: block;">
+                <div class="card-label">Your options</div>
+                <div id="patientActionsStack">
+
+                </div>
+            </div>
+
+            <!-- Reference card -->
+            <div class="card ref-card">
+                <div class="card-label" style="margin-bottom:8px;">Reference</div>
+                <div style="font-size:11px;color:var(--text-3);margin-bottom:2px;">Appointment ID</div>
+                <div style="font-size:14px;font-weight:600;font-family:monospace;letter-spacing:.06em;color:var(--text);"
+                    id="apptId">#</div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <!-- Modal -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal">
+            <div class="modal-icon" id="modalIcon" style="background-color: rgba(220,38,38,.12);"><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+            <div class="modal-title" id="modalTitle">Cancel your appointment?</div>
+            <div class="modal-sub" id="modalSub">The doctor will be notified and your slot will be freed.</div>
+            <div class="modal-btns">
+                <button class="action-btn btn-outline" onclick="closeModal()">Cancel</button>
+                <button class="action-btn btn-red" id="modalConfirm">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast"></div>
+
+    <script type="module" src="js/appointment.js"></script>
+</body>
+
+</html>

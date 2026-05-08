@@ -165,4 +165,108 @@ const updateDoctorProfile = async (req, res) => {
     }
 }
 
-export { changeAvailability, doctorList, loginDoctor, appointmentsDoctor, appointmentStatus, doctorDashboard, doctorProfile, updateDoctorProfile };
+const appointmentDetails = async (req, res) => {
+    try {
+        const { apptid, role } = req.params;
+        console.log(apptid, role);
+
+        const userId = req.doctor.id
+        const appointmentDB = await pool.query(`
+    SELECT 
+        a.*,
+
+        -- Doctor
+        d_u.first_name || ' ' || d_u.last_name AS doctor_name,
+        d.specialization,
+
+        -- Patient
+        p.first_name || ' ' || p.last_name AS patient_name,
+
+        -- Notes (array of notes)
+        COALESCE(
+            json_agg(
+                json_build_object(
+                    'note', n.note,
+                    'created_at', n.created_at
+                )
+            ) FILTER (WHERE n.id IS NOT NULL),
+            '[]'
+        ) AS notes
+
+    FROM appointment a
+
+    -- Doctor joins
+    JOIN doctors d ON a.doctor_id = d.user_id
+    JOIN users d_u ON d.user_id = d_u.id
+
+    -- Patient join
+    JOIN users p ON a.patient_id = p.id
+
+    -- Notes (LEFT JOIN because may not exist)
+    LEFT JOIN appointment_note n ON n.appointment_id = a.id
+
+    WHERE a.id = $1
+
+    GROUP BY 
+        a.id,
+        d_u.first_name, d_u.last_name,
+        d.specialization,
+        p.first_name, p.last_name
+`, [apptid]);
+
+        const appointmentData = appointmentDB.rows[0];
+
+        res.json({ "success": true, appointmentData })
+    } catch (error) {
+        console.error(error);
+        res.json({
+            success: false,
+            message: error.message
+        });
+
+    }
+}
+
+const addAppointmentNote = async (req, res) => {
+    try {
+        const { apptid } = req.params
+        const { note } = req.body
+        const doctorId = req.doctor.id
+
+        if (!note || note.trim() === "") {
+            return res.status(400).json({
+                success: false,
+                message: "Not complete"
+            });
+        }
+
+        const apptCheck = await pool.query(
+            "SELECT * FROM appointment WHERE id = $1 AND doctor_id = $2",
+            [apptid, doctorId]
+        );
+
+        if (apptCheck.rows.length === 0) {
+            return res.status(403).json({
+                success: false,
+                message: "Unauthorized access"
+            });
+        }
+
+
+        const newNote = await pool.query(
+            `INSERT INTO appointment_note (appointment_id, doctor_id, note)
+            VALUES ($1, $2, $3)
+             RETURNING *`,
+            [apptid, doctorId, note]
+        );
+
+    } catch (error) {
+        console.error(error);
+        res.json({
+            success: false,
+            message: error.message
+        });
+    }
+}
+
+export { changeAvailability, doctorList, loginDoctor, appointmentsDoctor, appointmentStatus, doctorDashboard, doctorProfile, updateDoctorProfile, appointmentDetails, addAppointmentNote };

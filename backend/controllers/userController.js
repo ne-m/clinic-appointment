@@ -327,6 +327,66 @@ const getBookedSlots = async (req, res) => {
     }
 }
 
+const appointmentDetails = async (req, res) => {
+    try {
+        const { apptid, role } = req.params;
+        console.log(apptid, role);
 
+        const userId = req.user.id
+        const appointmentDB = await pool.query(`
+    SELECT 
+        a.*,
 
-export { registerUser, loginUser, getProfile, updateProfile, bookAppointment, listAppointment, cancelAppointment, doctorList, doctorProfile, getBookedSlots }
+        -- Doctor
+        d_u.first_name || ' ' || d_u.last_name AS doctor_name,
+        d.specialization,
+
+        -- Patient
+        p.first_name || ' ' || p.last_name AS patient_name,
+
+        -- Notes (array of notes)
+        COALESCE(
+            json_agg(
+                json_build_object(
+                    'note', n.note,
+                    'created_at', n.created_at
+                )
+            ) FILTER (WHERE n.id IS NOT NULL),
+            '[]'
+        ) AS notes
+
+    FROM appointment a
+
+    -- Doctor joins
+    JOIN doctors d ON a.doctor_id = d.user_id
+    JOIN users d_u ON d.user_id = d_u.id
+
+    -- Patient join
+    JOIN users p ON a.patient_id = p.id
+
+    -- Notes (LEFT JOIN because may not exist)
+    LEFT JOIN appointment_note n ON n.appointment_id = a.id
+
+    WHERE a.id = $1
+
+    GROUP BY 
+        a.id,
+        d_u.first_name, d_u.last_name,
+        d.specialization,
+        p.first_name, p.last_name
+`, [apptid]);
+
+        const appointmentData = appointmentDB.rows[0];
+
+        res.json({ "success": true, appointmentData })
+    } catch (error) {
+        console.error(error);
+        res.json({
+            success: false,
+            message: error.message
+        });
+
+    }
+}
+
+export { registerUser, loginUser, getProfile, updateProfile, bookAppointment, listAppointment, cancelAppointment, doctorList, doctorProfile, getBookedSlots, appointmentDetails }

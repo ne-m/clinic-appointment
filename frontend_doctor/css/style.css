@@ -329,6 +329,12 @@ body {
     padding: 10px 0;
     border-bottom: 0.5px solid var(--border-tertiary);
     font-size: 13px;
+    cursor: pointer;
+}
+
+.appt-row:hover{
+    /* background-color: ; */
+    transform: scale(1.01);
 }
 
 .appt-row:last-child {

@@ -10,6 +10,8 @@ const initials = document.querySelector(".initials");
 const profileName = document.querySelector(".profile-name");
 const profileMeta = document.querySelector(".profile-meta")
 const profileUuid = document.querySelector(".profile-uuid")
+const logoutBtn = document.getElementById("logout")
+const deleteBtn = document.getElementById("deleteAcc")
 
 if (!token) {
     window.location.href = "signin.html";
@@ -133,3 +135,21 @@ function cancelEdit(formId) {
     form.dataset.editing = 'false';
     loadProfile()
 }
+
+
+logoutBtn.addEventListener("click", (e) => {
+    e.preventDefault()
+    alert("Are you sure you want to log out?")
+    localStorage.clear("token")
+    localStorage.clear("initials")
+    setTimeout(() => {
+        location.reload();
+    }, 2000);
+
+})
+
+deleteBtn.addEventListener("click",(e)=>{
+    e.preventDefault()
+    confirm("Do you want to delete your account?")
+    alert("Sikeeee!!!!! 😂😂")
+})
