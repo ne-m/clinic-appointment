@@ -200,7 +200,7 @@ window.cancelAppointment = async function cancelAppointment(appointmentId) {
         if (data.success) {
             alert("Appointment cancelled successfully");
             // Refresh the appointments list
-            appointmentHTML = "";
+            // appointmentHTML = "";
             loadAppointments();
         } else {
             alert(data.message || "Failed to cancel appointment");
