@@ -61,7 +61,7 @@ async function fetchDoctors() {
 }
 
 async function fetchNextAppointment() {
-    const res = await fetch("http://localhost:4000/api/user/upcoming-appointment", {
+    const res = await fetch(`${API_BASE_URL}/api/user/upcoming-appointment`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
