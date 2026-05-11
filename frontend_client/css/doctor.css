@@ -1,3 +1,17 @@
+:root {
+    --radius-sm: 10px;
+
+    /* success */
+    --surface-success: #F1F5F9;
+    --text-success: #475569;
+    --teal: #1D9E75;
+
+    /* error */
+    --surface-error: #f9f2f1;
+    --text-error: #734541;
+    --red: #DC2626;
+}
+
 .hero {
     /* background: var(--surface); */
     border-bottom: 0.5px solid var(--border);
@@ -7,8 +21,6 @@
     border: 0.5px solid var(--border-tertiary);
     border-radius: 16px;
 }
-
-
 
 .hero-inner {
     max-width: 760px;
@@ -122,7 +134,7 @@
 }
 
 
-.calendar-header{
+.calendar-header {
     width: 30%;
     display: flex;
     margin-left: auto;
@@ -131,7 +143,7 @@
     align-items: center;
 }
 
-.calendar-header button{
+.calendar-header button {
     padding: 10px;
     text-align: center;
     border-radius: 8px;
@@ -140,16 +152,16 @@
     color: white;
     font-weight: bold;
     border: transparent;
-    
+
 }
 
-.calendar-days{
+.calendar-days {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     gap: 6px;
 }
 
-.calendar-days span{
+.calendar-days span {
     padding: 10px;
     text-align: center;
     font-weight: bold;
@@ -177,7 +189,7 @@
     color: white;
 }
 
-.slot-container{
+.slot-container {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -195,4 +207,39 @@
     pointer-events: none;
     border-color: #e0e0e0;
     text-decoration: line-through;
+}
+
+
+.message-box {
+    opacity: 0;
+    transform: translateY(-5px);
+    pointer-events: none;
+    border-radius: var(--radius-sm);
+    padding: 12px 14px;
+    font-size: 14px;
+    line-height: 1.7;
+    margin: 10px 0;
+    transition: all 0.2s linear;
+}
+
+.message-box.success,
+.message-box.error {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+
+
+.message-box.success {
+    color: var(--text-success);
+    border-left: 3px solid var(--teal);
+    background: var(--surface-success);
+}
+
+.message-box.error {
+    color: var(--text-error);
+    border-left: 3px solid var(--red);
+    background: var(--surface-error);
 }

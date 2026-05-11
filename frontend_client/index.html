@@ -11,11 +11,14 @@
 
 <body>
     <div class="nav-bar">
-        <span class="nav-logo">ClinicBook</span>
+        <span class="nav-logo"> <a href="index.html">ClinicBook</a></span>
         <div class="nav-links">
             <a href="index.html">Home</a>
             <a href="appointments.html">My appointments</a>
             <a href="profile.html">Profile</a>
+        </div>
+        <div>
+            
         </div>
         <div class="row-flex" style="gap:8px;">
             <div class="av av-blue" style="width:32px;height:32px;font-size:12px;"></div>
@@ -38,12 +41,16 @@
 
                 <div class="hero-actions">
                     <button class="btn-primary">Book Appointment</button>
-                    <button class="btn-secondary" onclick="window.location.href='appointments.html?tab=upcoming'">View Schedule</button>
+                    <button class="btn-secondary" onclick="window.location.href='appointments.html?tab=upcoming'">ViewSchedule</button>
                 </div>
             </div>
 
             <!-- Decorative element -->
             <div class="hero-blob"></div>
+        </div>
+
+        <!-- Upcoming appointment alert -->
+        <div class="next-appt-card">
         </div>
 
         <h2 class="section-label" style="margin-bottom:10px;">What do you need?</h2>

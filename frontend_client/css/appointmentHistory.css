@@ -1,3 +1,9 @@
+:root{
+    
+    --purple: #7C3AED;
+    --purple-light: #F5F3FF;
+}
+
 .badge {
     display: inline-block;
     padding: 2px 8px;
@@ -38,10 +44,15 @@
     color: #0F6E56;
 }
 
-.badge-outline{
+.badge-outline {
     background: transparent;
     color: var(--text-secondary);
     border: 0.5px solid var(--border-secondary);
+}
+
+.badge-purple{
+    background: var(--purple-light);
+    color: var(--purple);
 }
 
 .appt-row {
@@ -51,31 +62,44 @@
     flex-wrap: wrap;
     gap: 8px;
     padding: 10px;
-    /* border-top: transparent;
-    border-left: transparent;
-    border-right: transparent; */
     border-bottom: 0.5px solid var(--border-tertiary);
     font-size: 13px;
     margin: 10px 0;
     outline: none;
     cursor: pointer;
     transition: transform 0.2s linear;
-    
+    width: 100%;
 }
 
-.appt-row:hover{
+.appt-row:hover {
     transform: scale(1.01);
     outline: solid 0.5px hsl(0, 1%, 71%);
-    /* border-top: transparent;
-    border-left: transparent;
-    border-right: transparent; */
-    /* border: transparent; */
     border-radius: 5px;
 }
 
 .appt-row:last-child {
     border-bottom: none;
 }
+
+/* Add this to your CSS */
+@media (max-width: 620px) {
+    .sm-wrap {
+        display: grid;
+        grid-template-columns: repeat(minmax(120px, auto));
+        gap: 8px;
+    }
+}
+
+.multiline-truncate {
+    font-style: italic;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    /* Limit to 3 lines */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    width: 90%;
+}
+
 
 .btn-outline {
     background: transparent;

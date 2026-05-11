@@ -1,6 +1,7 @@
 // Simple client-side validation
 import { saveToLocalStorage } from "../data/user.js";
 
+let API_BASE_URL = localStorage.getItem('apiMode') ?localStorage.getItem('apiMode') : 'https://clinic-appointment-4lxl.onrender.com';
 const form = document.getElementById('registrationForm')
 const message = document.getElementById("message")
 
@@ -15,19 +16,21 @@ form.addEventListener('submit', async (e) => {
     existingErrors.forEach(error => error.remove());
 
     if (password !== confirmPassword) {
-        const errorDiv = document.createElement('div');
-        errorDiv.className = 'error-message';
-        errorDiv.textContent = 'Passwords do not match';
-        document.getElementById('confirm_password').parentNode.appendChild(errorDiv);
+        // const errorDiv = document.createElement('div');
+        // errorDiv.className = 'error-message';
+        // errorDiv.textContent = 'Passwords do not match';
+        // document.getElementById('confirm_password').parentNode.appendChild(errorDiv);
+        showMessage("error", "Passwords do not match");
         return;
     }
 
     if (password.length > 0 && password.length < 8) {
         // e.preventDefault();
-        const errorDiv = document.createElement('div');
-        errorDiv.className = 'error-message';
-        errorDiv.textContent = 'Password must be at least 8 characters';
-        document.getElementById('password').parentNode.appendChild(errorDiv);
+        // const errorDiv = document.createElement('div');
+        // errorDiv.className = 'error-message';
+        // errorDiv.textContent = 'Password must be at least 8 characters';
+        // document.getElementById('password').parentNode.appendChild(errorDiv);
+        showMessage("error", "Password must be at least 8 characters");
         return;
     }
 
@@ -50,28 +53,29 @@ form.addEventListener('submit', async (e) => {
 
         const result = await res.json();
 
-
         if (result.success) {
-            console.log(result.token);
-            // Save token
-            // localStorage.setItem("token", result.token);
             saveToLocalStorage(result.token)
-
-            message.style.color = "green";
-            message.textContent = "Registration successful!";
-
-            // Redirect (optional)
+            showMessage("success", "Registration successful!");
             setTimeout(() => {
                 window.location.href = "index.html";
             }, 1000);
 
         } else {
-            message.style.color = "red";
-            message.textContent = result.message;
+            showMessage("error", result.message);
         }
 
     } catch (error) {
-        console.error(error);
-        message.textContent = "Something went wrong.";
+        showMessage("error", "Something went wrong. Pleas try again later");
     }
 });
+
+function showMessage(type, text) {
+    const message = document.getElementById("message");
+    message.classList.remove("success", "error");
+    message.classList.add(type);
+    message.textContent = text;
+    setTimeout(() => {
+        message.classList.remove("success", "error");
+        message.textContent = "";
+    }, 3000);
+}

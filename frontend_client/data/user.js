@@ -1,7 +1,8 @@
 let userInitials;
+let API_BASE_URL = localStorage.getItem('apiMode') ? localStorage.getItem('apiMode') : 'https://clinic-appointment-4lxl.onrender.com';
 
 export async function getProfile(token) {
-    const res = await fetch("https://clinic-appointment-4lxl.onrender.com/api/user/profile", {
+    const res = await fetch(`${API_BASE_URL}/api/user/profile`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",

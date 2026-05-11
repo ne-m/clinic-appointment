@@ -4,16 +4,6 @@
     box-sizing: border-box;
 }
 
-body {
-    background-color: #e8e6de;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-}
-
 /* CSS Variables */
 :root {
     --border-secondary: #ccc;
@@ -23,6 +13,34 @@ body {
     --primary-hover: #0f3a5e;
     --error-color: #dc3545;
     --success-color: #28a745;
+
+    
+    --bg: #f2f7f5;
+    --text: #12211e;
+
+    --radius-sm: 10px;
+
+    /* success */
+    --surface-success: #F1F5F9;
+    --text-success: #475569;
+    --teal: #1D9E75;
+
+    /* error */
+    --surface-error: #f9f2f1;
+    --text-error: #734541;
+    --red: #DC2626;
+}
+
+
+body {
+    /* background-color: #e8e6de; */
+    background: var(--bg);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
 }
 
 /* Registration Container */
@@ -77,7 +95,7 @@ body {
     border-radius: 6px;
     font-size: 13px;
     color: var(--text-secondary);
-    background: var(--bg-secondary);
+    background: var(--bg);
     margin-bottom: 8px;
     font-family: inherit;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
@@ -85,7 +103,6 @@ body {
 
 .input-mock:focus {
     outline: none;
-    /* border-color: #1A4B7A; */
     box-shadow: 0 0 0 2px rgba(26, 75, 122, 0.1);
 }
 
@@ -203,4 +220,36 @@ input:focus {
         flex-wrap: wrap;
         gap: 12px;
     }
+}
+
+.message-box {
+    opacity: 0;
+    transform: translateY(-5px);
+    pointer-events: none;
+    border-radius: var(--radius-sm);
+    padding: 12px 14px;
+    font-size: 14px;
+    line-height: 1.7;
+    margin: 10px 0;
+    transition: all 0.2s linear;
+}
+
+.message-box.success,
+.message-box.error {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+.message-box.success {
+    color: var(--text-success);
+    border-left: 3px solid var(--teal);
+    background: var(--surface-success);
+}
+
+.message-box.error {
+    color: var(--text-error);
+    border-left: 3px solid var(--red);
+    background: var(--surface-error);
 }

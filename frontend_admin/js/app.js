@@ -103,8 +103,8 @@ window.deleteDoctor = async function deleteDoctor(docID, docName) {
     if (!confirmed) return;
 
     try {
-        const res = await fetch("https://clinic-appointment-4lxl.onrender.com/api/admin/delete-doctor", {
-            method: "DELETE",
+        const res = await fetch("http://localhost:4000/api/admin/delete-doctor", {
+            method: "PUT",
             headers: {
                 "Content-Type": "application/json"
                 // "token": `${token}`
@@ -115,10 +115,10 @@ window.deleteDoctor = async function deleteDoctor(docID, docName) {
         const data = await res.json();
 
         if (data.success) {
-            alert("Doctor successfully");
+            alert("Account successfully deleted");
             loadDashboard()
         } else {
-            alert(data.message || "Failed to delete doctor");
+            alert(data.message || "Failed to delete account");
         }
     } catch (error) {
         console.error("Cancel error:", error);

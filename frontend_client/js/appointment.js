@@ -1,5 +1,7 @@
 const params = new URLSearchParams(window.location.search);
 const token = localStorage.getItem("token");
+let API_BASE_URL = localStorage.getItem('apiMode') ? localStorage.getItem('apiMode') : 'https://clinic-appointment-4lxl.onrender.com';
+
 
 const apptid = params.get("apptid");
 const role = params.get("role")
@@ -21,7 +23,7 @@ const apptId = document.getElementById("apptId")
 const notesViewMode = document.getElementById("notesViewMode")
 
 async function fetchAppointment(apptid, role) {
-    const res = await fetch(`https://clinic-appointment-4lxl.onrender.com/api/user/appointment/${apptid}/${role}`, {
+    const res = await fetch(`${API_BASE_URL}/api/user/appointment/${apptid}/${role}`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
@@ -35,14 +37,19 @@ async function fetchAppointment(apptid, role) {
         // console.log(data.appointmentData);
         return data.appointmentData
     } else {
-        console.log(data.message);
+        document.querySelector(".grid-2").innerHTML = data.message;
+        // return data.message
     }
 }
 
 async function loadApptDetails() {
     apptDetails = await fetchAppointment(apptid, role)
-    renderApptDetails()
-    renderTimeline()
+    // console.log(apptDetails);
+    
+    if (apptDetails) {
+        renderApptDetails()
+        renderTimeline()
+    } 
 }
 
 loadApptDetails()
@@ -70,6 +77,8 @@ async function renderApptDetails() {
         <span class="badge badge-${apptDetails.status}" id="statusBadge">${cfg.label}</span>
     `
     statusBanner.classList.add(`${cfg.cls}`)
+    // console.log(apptDetails);
+
 
     if (apptDetails.status === "cancelled" || apptDetails.status === "no-show" || apptDetails.status === "in-progress") {
         patientActionsStack.innerHTML = '<p style="font-size:13px;color:var(--text-3);text-align:center;padding:8px 0;">No further actions available.</p>'
@@ -88,18 +97,17 @@ async function renderApptDetails() {
                     </svg> Cancel appointment
                 </button>
             </div>`
-
     }
 
     if (apptDetails.notes.length > 0) {
         const notes = apptDetails.notes
-        let noteHTML= ""
-        notes.forEach((note)=>{
-            noteHTML +=  `
+        let noteHTML = ""
+        notes.forEach((note) => {
+            noteHTML += `
                 <p id="notesDisplay" style="font-size:13px;color:var(--text-3);line-height:1.7;font-style:italic;"> ${note.note}</p>
             `
         })
-        notesViewMode.innerHTML = noteHTML      
+        notesViewMode.innerHTML = noteHTML
     }
 }
 
@@ -152,6 +160,12 @@ const STATUS_CFG = {
         cls: "cancelled", badge: "badge-cancelled",
         iconSvg: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M18 6L6 18M6 6l12 12" stroke="#DC2626" stroke-width="2" stroke-linecap="round"/></svg>`,
         iconBg: "rgba(220,38,38,.10)",
+    },"follow-up": {
+        label: "Follow Up Appointment",
+        sub: "The doctor has set this appointment as a follow up",
+        cls: "pending", badge: "badge-outline",
+        iconSvg: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#D97706" stroke-width="1.8"/><path d="M12 7v5l3 3" stroke="#D97706" stroke-width="1.8" stroke-linecap="round"/></svg>`,
+        iconBg: "rgba(217,119,6,.12)",
     },
 };
 
@@ -182,12 +196,11 @@ document.getElementById("modalOverlay").addEventListener("click", e => {
 document.getElementById("modalConfirm").addEventListener("click", () => {
     cancelAppointment(apptDetails.id)
     document.getElementById("modalOverlay").classList.remove("open");
-
 })
 
 window.cancelAppointment = async function cancelAppointment(appointmentId) {
     try {
-        const res = await fetch("https://clinic-appointment-4lxl.onrender.com/api/user/cancel-appointment", {
+        const res = await fetch(`${API_BASE_URL}/api/user/cancel-appointment`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -227,6 +240,7 @@ const TL_STEPS = [
     { key: "declined", label: "Declined", icon: "✕", activeCls: "skipped" },
     { key: "no-show", label: "No-show", icon: "!", activeCls: "purple" },
     { key: "cancelled", label: "Cancelled", icon: "✕", activeCls: "skipped" },
+    { key: "follow-up", label: "Follow-up", icon: "✓✓", activeCls: "follow-up" },
 ];
 
 function timelineStepsFor(status) {
@@ -236,6 +250,7 @@ function timelineStepsFor(status) {
     if (status === "in-progress") return ["pending", "confirmed", "in-progress"];
     if (status === "completed") return ["pending", "confirmed", "in-progress", "completed"];
     if (status === "confirmed") return ["pending", "confirmed"];
+    if (status === "follow-up") return ["pending", "confirmed", "in-progress", "completed", "follow-up"];
     return ["pending"];
 }
 

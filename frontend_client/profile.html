@@ -12,11 +12,11 @@
 
 <body>
     <div class="nav-bar">
-        <span class="nav-logo">ClinicBook</span>
+        <span class="nav-logo"> <a href="index.html">ClinicBook</a></span>
         <div class="nav-links">
             <a href="index.html">Home</a>
             <a href="appointments.html">My appointments</a>
-            <a href="profile.html" >Profile</a>
+            <a href="profile.html">Profile</a>
         </div>
         <div class="row-flex" style="gap:8px;">
             <div class="av av-blue" style="width:32px;height:32px;font-size:12px;"></div>
@@ -50,6 +50,16 @@
 
 
         <div id="ptab-personal" class="ptab-panel active">
+            <!-- <div class="row-flex" style="margin-bottom: 20px;">
+                <div>
+                    <div style="font-size:13px;font-weight:500;">Change API</div>
+                </div>
+                <label class="toggle-label">
+                    <input type="checkbox" id="apiToggle" />
+                    <span class="toggle-track2"><span class="toggle-thumb"></span></span>
+                </label>
+            </div> -->
+
             <div class="card">
                 <div class="row-flex" style="justify-content:space-between;margin-bottom:16px;">
                     <p class="section-label">Personal details</p>
@@ -71,7 +81,12 @@
                         </div>
                         <div class="field-group">
                             <label class="field-label">Gender</label>
-                            <input class="field-input" id="gender" value="" readonly />
+                            <select class="field-input" id="gender" value="" readonly>
+                                <option value=""></option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                            </select>
+                            <!-- <input class="field-input" id="gender" value="" readonly /> -->
                         </div>
                         <div class="field-group">
                             <label class="field-label">Phone number</label>
@@ -85,16 +100,12 @@
                             <label class="field-label">Home address</label>
                             <input class="field-input" id="address" value="" readonly />
                         </div>
-                        <!-- <div class="field-group">
-                            <label class="field-label">National ID / Passport</label>
-                            <input class="field-input" value="KE-28374659" readonly />
-                        </div> -->
-                        <!-- <div class="field-group">
-                            <label class="field-label">Nationality</label>
-                            <input class="field-input" value="Kenyan" readonly />
-                        </div> -->
                     </div>
-                    <p id="message"></p>
+                    <!-- <p id="message"></p> -->
+                    <div>
+                        <div class="message-box" id="message"></div>
+                    </div>
+
                     <div id="personal-save-row" style="display:none;margin-top:14px;" class="row-flex" style="gap:8px;">
                         <button class="btn-primary" id="save-edit">Save changes</button>
                         <button class="btn-outline" id="cancel-edit">Cancel</button>
@@ -103,12 +114,36 @@
             </div>
         </div>
 
-        <div class="card" >
-            <button class="btn-outline" id="logout">Logout</button>
+        <div class="card">
+            <button class="btn-outline" id="logout" onclick="openModal()">Logout</button>
+        </div>
+
+        <div class="card" style="border-color:#F7C1C1;">
+            <p class="section-label" style="margin-bottom:4px;color:#A32D2D;">Danger zone</p>
+            <p style="font-size:12px;color:var(--text-secondary);margin-bottom:14px;">Permanently delete your account
+                and
+                all data. This cannot be undone.</p>
+            <!-- <button class="btn-outline" style="color:#A32D2D;border-color:#F7C1C1;">Delete my account</button> -->
             <button class="btn-outline btn-red" id="deleteAcc">Delete Account</button>
         </div>
 
 
+    </div>
+
+    <!-- Modal -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal">
+            <div class="modal-icon" id="modalIcon" style="background-color: rgba(220,38,38,.12);"><svg width="13"
+                    height="13" viewBox="0 0 16 16" fill="none">
+                    <path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+                </svg></div>
+            <div class="modal-title" id="modalTitle">Log out?</div>
+            <div class="modal-sub" id="modalSub">The doctor will be notified and your slot will be freed.</div>
+            <div class="modal-btns">
+                <button class="action-btn btn-outline" onclick="closeModal()">Cancel</button>
+                <button class="action-btn btn-red" id="modalConfirm">Confirm</button>
+            </div>
+        </div>
     </div>
 
     <script src="js/profile.js" type="module"></script>

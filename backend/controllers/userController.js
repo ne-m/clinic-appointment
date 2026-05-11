@@ -97,6 +97,10 @@ const updateProfile = async (req, res) => {
         const { first_name, last_name, email, phone, gender, dob, address } = req.body;
         // console.log(userId);
 
+        if (userId === "38e6618c-8271-43e2-b5c1-2a746a14da4c") {
+            return res.json({success: false, message:"Error Please Try Again Later"})
+        }
+
         if (!first_name || !last_name || !email || !phone) {
             return res.json({ success: false, message: "Missing details" })
         }
@@ -185,19 +189,17 @@ const bookAppointment = async (req, res) => {
 const listAppointment = async (req, res) => {
     try {
         const userId = req.user.id;
-        console.log(userId);
-
         // const appointments = await pool.query("SELECT * FROM appointment WHERE patient_id = $1", [userId]);
         const appointments = await pool.query(`
-    SELECT 
-        a.*,
-        u.first_name || ' ' || u.last_name AS doctor_name
-    FROM appointment a
-    JOIN doctors d ON a.doctor_id = d.user_id
-    JOIN users u ON d.user_id = u.id
-    WHERE a.patient_id = $1
-    ORDER BY a.appointment_date DESC
-`, [userId]);
+            SELECT 
+                a.*,
+                u.first_name || ' ' || u.last_name AS doctor_name
+            FROM appointment a
+            JOIN doctors d ON a.doctor_id = d.user_id
+            JOIN users u ON d.user_id = u.id
+            WHERE a.patient_id = $1
+            ORDER BY a.appointment_date DESC
+        `, [userId]);
 
         const appointmentData = appointments.rows; // return all appointments booked by patient
 
@@ -330,53 +332,54 @@ const getBookedSlots = async (req, res) => {
 const appointmentDetails = async (req, res) => {
     try {
         const { apptid, role } = req.params;
-        console.log(apptid, role);
 
         const userId = req.user.id
+        const notAppt = await pool.query("SELECT * FROM appointment WHERE id=$1", [apptid])
+
+        if (notAppt.rows.length === 0) {
+            res.json({ success: false, message: 'Appointment not found' });
+        }
         const appointmentDB = await pool.query(`
-    SELECT 
-        a.*,
+            SELECT 
+                a.*,
+                d_u.first_name || ' ' || d_u.last_name AS doctor_name,
+                d.specialization,
+                p.first_name || ' ' || p.last_name AS patient_name,
+                COALESCE(
+                    json_agg(
+                        json_build_object(
+                            'note', n.note,
+                            'created_at', n.created_at
+                        )
+                    ) FILTER (WHERE n.id IS NOT NULL),
+                    '[]'
+                ) AS notes
 
-        -- Doctor
-        d_u.first_name || ' ' || d_u.last_name AS doctor_name,
-        d.specialization,
+                FROM appointment a
 
-        -- Patient
-        p.first_name || ' ' || p.last_name AS patient_name,
+                JOIN doctors d ON a.doctor_id = d.user_id
+                JOIN users d_u ON d.user_id = d_u.id
 
-        -- Notes (array of notes)
-        COALESCE(
-            json_agg(
-                json_build_object(
-                    'note', n.note,
-                    'created_at', n.created_at
-                )
-            ) FILTER (WHERE n.id IS NOT NULL),
-            '[]'
-        ) AS notes
+                JOIN users p ON a.patient_id = p.id
 
-    FROM appointment a
+                -- Notes (LEFT JOIN because may not exist)
+                LEFT JOIN appointment_note n ON n.appointment_id = a.id
 
-    -- Doctor joins
-    JOIN doctors d ON a.doctor_id = d.user_id
-    JOIN users d_u ON d.user_id = d_u.id
+                WHERE a.id = $1
 
-    -- Patient join
-    JOIN users p ON a.patient_id = p.id
-
-    -- Notes (LEFT JOIN because may not exist)
-    LEFT JOIN appointment_note n ON n.appointment_id = a.id
-
-    WHERE a.id = $1
-
-    GROUP BY 
-        a.id,
-        d_u.first_name, d_u.last_name,
-        d.specialization,
-        p.first_name, p.last_name
-`, [apptid]);
+                GROUP BY 
+                    a.id,
+                    d_u.first_name, d_u.last_name,
+                    d.specialization,
+                    p.first_name, p.last_name
+            `, [apptid]);
 
         const appointmentData = appointmentDB.rows[0];
+        if (appointmentDB.rows[0].patient_id !== userId) {
+            res.json({ success: false, message: 'Access denied' })
+        }
+        console.log(appointmentData);
+
 
         res.json({ "success": true, appointmentData })
     } catch (error) {
@@ -385,8 +388,38 @@ const appointmentDetails = async (req, res) => {
             success: false,
             message: error.message
         });
-
     }
 }
 
-export { registerUser, loginUser, getProfile, updateProfile, bookAppointment, listAppointment, cancelAppointment, doctorList, doctorProfile, getBookedSlots, appointmentDetails }
+const nextAppointment = async (req, res) => {
+    try {
+        const userId = req.user.id
+        console.log(userId);
+
+
+        const appointmentDB = await pool.query(`
+            SELECT 
+                a.appointment_date, a.slot_time, a.status,
+                u.first_name || ' ' || u.last_name AS doctor_name,
+                d.specialization
+            FROM appointment a
+            JOIN doctors d ON a.doctor_id = d.user_id
+            JOIN users u ON d.user_id = u.id
+            WHERE a.patient_id = $1 AND a.status ='scheduled'
+            ORDER BY a.appointment_date DESC
+        `, [userId]);
+
+        const appointmentData = appointmentDB.rows[0] || "No upcoming appointment"
+        // console.log(appointmentData);   
+        res.json({ success: true, appointmentData })
+
+    } catch (error) {
+        console.error(error);
+        res.json({
+            success: false,
+            message: error.message
+        });
+    }
+}
+
+export { registerUser, loginUser, getProfile, updateProfile, bookAppointment, listAppointment, cancelAppointment, doctorList, doctorProfile, getBookedSlots, appointmentDetails, nextAppointment }

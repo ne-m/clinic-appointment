@@ -4,6 +4,8 @@ const token = localStorage.getItem("token");
 if (!token) {
     window.location.href = "signin.html";
 }
+let API_BASE_URL = localStorage.getItem('apiMode') ? localStorage.getItem('apiMode') : 'https://clinic-appointment-4lxl.onrender.com';
+
 
 const av = document.querySelector(".av");
 const appointmentsCard = document.querySelector(".card")
@@ -19,7 +21,7 @@ currentTab = params.get("tab") ? params.get("tab") : "upcoming"
 
 async function fetchAppointments() {
     try {
-        const res = await fetch("https://clinic-appointment-4lxl.onrender.com/api/user/appointments", {
+        const res = await fetch(`${API_BASE_URL}/api/user/appointments`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -52,7 +54,7 @@ loadAppointments()
 
 function renderAppointments() {
     appointmentHTML = `
-        <div style="display:flex; gap:20px; align-items:center; justify-content: space-between">
+        <div >
             <p class="section-label" style="margin-bottom:12px; font-weight: bold;">Appointment history</p>
             <p class="section-label" style="margin-bottom:12px; font-size:14px;">Select an appointment to view more details</p>
         </div>
@@ -74,25 +76,27 @@ function renderAppointments() {
 
     filtered.forEach((appointment) => {
         let badgeColor = "red";
-        if (appointment.status === "scheduled") badgeColor = "green";
+        if (appointment.status === "scheduled") badgeColor = "amber";
         else if (appointment.status === "confirmed") badgeColor = "blue";
-        else if (appointment.status === "completed") badgeColor = "gray";
+        else if (appointment.status === "completed") badgeColor = "green";
         else if (appointment.status === "cancelled") badgeColor = "red";
-        else if (appointment.status === "no-show") badgeColor = "orange";
+        else if (appointment.status === "no-show") badgeColor = "purple";
+        else if (appointment.status === "follow-up") badgeColor = "amber";
         else if (appointment.status === "declined") badgeColor = "outline";
+        else if (appointment.status === "in-progress") badgeColor = "blue";
 
         appointmentHTML += `
             <div class="appt-row" onclick="openAppointment('${appointment.id}','patient')">
-                <div style="display:flex;align-items:center;gap:10px;">
+                <div style="display:flex;align-items:center;gap:10px; width:60%;">
                     <div class="avatar av-blue" style="width:34px;height:34px;font-size:11px;border-radius:8px;">
                         ${appointment.doctor_name.split(" ").map(n => n[0]).join("").toUpperCase()}
                     </div>
-                    <div>
+                    <div >
                         <div style="font-size:13px;font-weight:500;">
                             Dr. ${appointment.doctor_name}
                         </div>
-                        <div style="font-size:12px;color:var(--text-secondary);">
-                            ${appointment.reason || "Consultation"} · ${appointment.appointment_date.split('T')[0]}
+                        <div class="multiline-truncate" style="font-size:12px;color:var(--text-secondary);">
+                            ${appointment.reason || "Consultation"} 
                         </div>
                     </div>
                 </div>
@@ -103,10 +107,13 @@ function renderAppointments() {
                 ? `onclick="cancelAppointment('${appointment.id}')"`
                 : "disabled"}
                 >
-                    ${appointment.status}
+                    ${appointment.status === "scheduled" ? "pending" : appointment.status}
                 </button> -->
-
-                <span class="badge badge-${badgeColor}">${appointment.status} </span>
+                <div class="sm-wrap">
+                    <span class="badge">${appointment.appointment_date.split('T')[0]} </span>
+                    <span style="text-transform: capitalize;" class="badge badge-${badgeColor}">
+                    ${appointment.status === "scheduled" ? "pending approval" : appointment.status} </span>
+                </div>
             </div>
         `
     });
@@ -119,7 +126,7 @@ window.cancelAppointment = async function cancelAppointment(appointmentId) {
     if (!confirmed) return;
 
     try {
-        const res = await fetch("https://clinic-appointment-4lxl.onrender.com/api/user/cancel-appointment", {
+        const res = await fetch(`"${API_BASE_URL}/api/user/cancel-appointment"`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -170,7 +177,7 @@ function setActiveTab(activeBtn) {
 }
 
 function isUpcoming(status) {
-    return ["scheduled", "confirmed", "in-progress"].includes(status);
+    return ["scheduled", "confirmed", "in-progress","follow-up"].includes(status);
 }
 
 function isHistory(status) {

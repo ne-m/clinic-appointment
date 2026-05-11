@@ -3,6 +3,8 @@ import { getProfile, getInitials } from "../data/user.js"
 
 const token = localStorage.getItem("token");
 // let userDetails;
+// Global API variable that updates with toggle
+let API_BASE_URL = localStorage.getItem('apiMode') ? localStorage.getItem('apiMode') : 'https://clinic-appointment-4lxl.onrender.com';
 
 const av = document.querySelector(".av");
 const message = document.getElementById("message")
@@ -95,7 +97,7 @@ async function saveEdit(formId) {
             address: document.getElementById('address').value
         };
 
-        const res = await fetch("https://clinic-appointment-4lxl.onrender.com/api/user/update/profile", {
+        const res = await fetch(`${API_BASE_URL}/api/user/update/profile`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -107,11 +109,9 @@ async function saveEdit(formId) {
         const result = await res.json();
 
         if (result.success) {
-            message.style.color = "green";
-            message.textContent = "Update successful!";
+            showMessage("success", "Update successful!");
         } else {
-            message.style.color = "red";
-            message.textContent = result.message;
+            showMessage("error", result.message);
         }
         loadProfile()
     } catch (error) {
@@ -119,9 +119,17 @@ async function saveEdit(formId) {
         message.textContent = "Something went wrong.";
 
     }
+}
 
-
-
+function showMessage(type, text) {
+    const message = document.getElementById("message");
+    message.classList.remove("success", "error");
+    message.classList.add(type);
+    message.textContent = text;
+    setTimeout(() => {
+        message.classList.remove("success", "error");
+        message.textContent = "";
+    }, 3000);
 }
 
 function cancelEdit(formId) {
@@ -134,20 +142,70 @@ function cancelEdit(formId) {
     loadProfile()
 }
 
+// logoutBtn.addEventListener("click", (e) => {
+//     e.preventDefault()
+//     confirm("Are you sure you want to log out?")
+//     localStorage.clear("token")
+//     localStorage.clear("initials")
+//     setTimeout(() => {
+//         location.reload();
+//     }, 1000);
+// })
 
-logoutBtn.addEventListener("click", (e) => {
-    e.preventDefault()
-    confirm("Are you sure you want to log out?")
+window.openModal = function openModal() {
+    document.getElementById("modalOverlay").classList.add("open")
+}
+window.closeModal = function closeModal() {
+    document.getElementById("modalOverlay").classList.remove("open");
+}
+
+document.getElementById("modalOverlay").addEventListener("click", e => {
+    if (e.target === e.currentTarget) closeModal();
+});
+
+document.getElementById("modalConfirm").addEventListener("click", () => {
+    // cancelAppointment(apptDetails.id)
     localStorage.clear("token")
     localStorage.clear("initials")
     setTimeout(() => {
         location.reload();
     }, 1000);
-
+    document.getElementById("modalOverlay").classList.remove("open");
 })
 
-deleteBtn.addEventListener("click",(e)=>{
+deleteBtn.addEventListener("click", (e) => {
     e.preventDefault()
     confirm("Do you want to delete your account?")
     alert("Sikeeee!!!!! 😂😂 ....... I ain't deleting your account")
 })
+
+// function initApiToggle() {
+//     const toggle = document.getElementById('apiToggle');
+//     if (!toggle) return;
+
+//     // Load saved preference
+//     const savedMode = localStorage.getItem('apiMode');
+//     if (savedMode === 'render') {
+//         toggle.checked = true;
+//         API_BASE_URL = 'https://clinic-appointment-4lxl.onrender.com';
+//         toggle.closest('.toggle-label').classList.add('on');
+//     }
+
+//     toggle.addEventListener('change', function () {
+//         if (this.checked) {
+//             API_BASE_URL = 'https://clinic-appointment-4lxl.onrender.com';
+//             localStorage.setItem('apiMode', API_BASE_URL);
+//         } else {
+//             API_BASE_URL = 'http://localhost:4000';
+//             localStorage.setItem('apiMode', API_BASE_URL);
+//         }
+
+//         console.log('API URL changed to:', API_BASE_URL);
+
+//         // Optional: Reload data with new API
+//         // location.reload(); // Or refresh your data
+//     });
+// }
+
+// // document.addEventListener('DOMContentLoaded', initApiToggle);
+// initApiToggle()

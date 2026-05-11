@@ -10,43 +10,29 @@ const addDoctor = async (req, res) => {
         const { first_name, last_name, email, phone, password, role } = req.body;
         const imageFile = req.file;
 
-        console.log("1 ", imageFile);
-
         //check for all inputs
         if (!first_name || !last_name || !email || !phone || !password || !role) {
             console.log(first_name, last_name, email, phone, password, role);
             return res.json({ sucess: false, message: "Missing details" })
         }
-        console.log("all inputs");
 
         //validating email format
         if (!validator.isEmail(email)) {
             return res.json({ sucess: false, message: "Please enter a valid email" })
         }
-        console.log("email");
-
 
         //validate strong password
         if (password.length < 8) {
             return res.json({ sucess: false, message: "Please enter a strong password" })
         }
 
-        console.log("pass");
-
-
         //encrypt password hashing doc pass
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt)
 
-        console.log("hashed");
-
-
         //upload img to cloudinary
         const imageUpload = await cloudinary.uploader.upload(imageFile.path, { resource_type: "image" });
         const imageURL = imageUpload.secure_url;
-
-        console.log(imageURL);
-
 
         const newUser = await pool.query(
             `INSERT INTO users (image, first_name, last_name, email, phone, password_hash, role)
@@ -55,23 +41,16 @@ const addDoctor = async (req, res) => {
             [imageURL, first_name, last_name, email, phone, hashedPassword, role]
         );
 
-        console.log('new user docotr');
-
-
         const doctor_id = newUser.rows[0].id;
         const { specialization, bio, start_time, end_time, day_of_week } = req.body;
         const newDoctor = await pool.query(
             `INSERT INTO doctors (user_id, specialization, bio, start_time, end_time, day_of_week)
-             VALUES ($1, $2, $3, $4, $5, $6)
-             RETURNING *`,
+                VALUES ($1, $2, $3, $4, $5, $6)
+                RETURNING *`,
             [doctor_id, specialization, bio, start_time, end_time, day_of_week]
         );
 
-        console.log("new doctor");
-
-        // res.json(newDoctor.rows[0]);
         res.json({ sucess: true, doctor: newDoctor.rows[0] })
-        // console.log(req.file);
 
     } catch (error) {
         console.error(error);
@@ -178,11 +157,15 @@ const deleteDoctor = async (req,res) => {
             return res.json({sucess: true, message:"Missing doctor ID!"})
         }
 
+        console.log(docID);
+        
+
         const doctorDB = await pool.query("UPDATE doctors SET is_active = NOT is_active WHERE user_id = $1",[docID]);
         res.json({success: true, message:"Account deactivated"})
     } catch (error) {
-        
+        console.error(error);
+        res.json({ success: false, message: error.message })
     }
 }
 
-export { addDoctor, loginAdmin, allDoctors, appointmentsAdmin, adminDashboard }
+export { addDoctor, loginAdmin, allDoctors, appointmentsAdmin, adminDashboard, deleteDoctor }

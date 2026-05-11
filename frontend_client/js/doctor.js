@@ -4,6 +4,7 @@ const token = localStorage.getItem("token");
 if (!token) {
     window.location.href = "signin.html";
 }
+let API_BASE_URL = localStorage.getItem('apiMode') ? localStorage.getItem('apiMode') : 'https://clinic-appointment-4lxl.onrender.com';
 
 const av = document.querySelector(".av");
 const params = new URLSearchParams(window.location.search);
@@ -18,9 +19,10 @@ const docName = document.getElementById("docName")
 const docSpec = document.getElementById("docSpec")
 const docBio = document.getElementById("docBio")
 // const docSpec = document.getElementById("docSpec")
+const message = document.getElementById("message");
 
 async function fetchDoctorProfile(docId) {
-    const res = await fetch(`https://clinic-appointment-4lxl.onrender.com/api/user/doctor/${docId}`, {
+    const res = await fetch(`${API_BASE_URL}/api/user/doctor/${docId}`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
@@ -59,7 +61,7 @@ async function loadSlots(date) {
     if (!date) return;
     if (!docDetails) return;
     const res = await fetch(
-        `https://clinic-appointment-4lxl.onrender.com/api/user/booked-slots/${doctorId}/${date}`, {
+        `${API_BASE_URL}/api/user/booked-slots/${doctorId}/${date}`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
@@ -67,7 +69,7 @@ async function loadSlots(date) {
         }
     }
     );
-    
+
     const data = await res.json();
 
     const bookedSlots = data.bookedSlots || [];
@@ -168,17 +170,18 @@ document.getElementById("bookBtn").onclick = async () => {
     const reason = document.getElementById("reason").value;
 
     if (!date || !selectedTime) {
-        alert("Please select a date and time");
+        // alert("Please select a date and time");
+            showMessage("error", "Please select a date and time");
         return;
     }
 
-        if (!reason) {
-        alert("Please enter a reason for visit");
+    if (!reason) {
+            showMessage("error", "Please enter a reason for visit");
         return;
     }
 
     try {
-        const res = await fetch(`https://clinic-appointment-4lxl.onrender.com/api/user/book-appointment`, {
+        const res = await fetch(`${API_BASE_URL}/api/user/book-appointment`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -188,14 +191,26 @@ document.getElementById("bookBtn").onclick = async () => {
         });
         const data = await res.json();
         if (data.success) {
-            alert("Appointment booked successfully!");
+            showMessage("success", "Update successful!");
             window.location.href = "appointments.html";
+
         } else {
-            alert(data.message);
+            showMessage("error", data.message);
         }
     } catch (err) {
         console.error(err);
-        alert("Error booking appointment");
+        // alert("Error booking appointment");
+            showMessage("error", "Error booking appointment");
     }
 };
 
+function showMessage(type, text) {
+    const message = document.getElementById("message");
+    message.classList.remove("success", "error");
+    message.classList.add(type);
+    message.textContent = text;
+    setTimeout(() => {
+        message.classList.remove("success", "error");
+        message.textContent = "";
+    }, 3000);
+}

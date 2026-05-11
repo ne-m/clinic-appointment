@@ -6,6 +6,23 @@
     padding: 0;
 }
 
+:root {
+    --surface: #FFFFFF;
+    --radius: 16px;
+    --radius-sm: 10px;
+    --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.12), 0 4px 12px rgba(0, 0, 0, 0.06);
+
+    /* success */
+    --surface-success: #F1F5F9;
+    --text-success: #475569;
+    --teal: #1D9E75;
+
+    /* error */
+    --surface-error: #f9f2f1;
+    --text-error: #734541;
+    --red: #DC2626;
+}
+
 body {
     width: 85%;
     margin: auto;
@@ -144,7 +161,7 @@ body {
     border-radius: 8px;
     font-size: 13px;
     color: var(--text-primary);
-    background: var(--bg-secondary);
+    background: var(--bg);
     font-family: inherit;
     transition: border-color .15s, background .15s;
 }
@@ -157,46 +174,6 @@ body {
 .field-input:focus {
     outline: none;
     border-color: var(--border-info);
-}
-
-/* Insurance card */
-.insurance-card {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 12px 14px;
-    background: var(--bg-secondary);
-    border-radius: 10px;
-    gap: 10px;
-}
-
-/* Session row */
-.session-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px 0;
-    border-bottom: 0.5px solid var(--border-tertiary);
-    gap: 8px;
-    flex-wrap: wrap;
-}
-
-.session-row:last-child {
-    border-bottom: none;
-}
-
-/* Notification row */
-.notif-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 12px 0;
-    border-bottom: 0.5px solid var(--border-tertiary);
-    gap: 12px;
-}
-
-.notif-row:last-child {
-    border-bottom: none;
 }
 
 /* Toggle switch */
@@ -281,4 +258,132 @@ body {
 .btn-red:hover {
     color: hsl(0, 74%, 95%);
     background-color: hsl(0, 57%, 41%);
+}
+
+/*  Modal  */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, .45);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .22s;
+}
+
+.modal-overlay.open {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.modal-overlay.open-modal {
+    visibility: visible;
+    z-index: 10;
+}
+
+.modal {
+    background: var(--surface);
+    border-radius: var(--radius);
+    padding: 28px;
+    max-width: 370px;
+    width: 90%;
+    box-shadow: var(--shadow-lg);
+    transform: translateY(12px) scale(.97);
+    transition: transform .22s ease;
+}
+
+.modal-overlay.open .modal {
+    transform: translateY(0) scale(1);
+}
+
+.modal-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 16px;
+}
+
+.modal-title {
+    font-family: 'Instrument Serif', serif;
+    font-size: 19px;
+    text-align: center;
+    margin-bottom: 8px;
+}
+
+.modal-sub {
+    font-size: 13px;
+    color: var(--text-2);
+    text-align: center;
+    line-height: 1.6;
+    margin-bottom: 22px;
+}
+
+.modal-btns {
+    display: flex;
+    gap: 10px;
+}
+
+.modal-btns .action-btn {
+    flex: 1;
+    padding: 11px;
+    font-size: 13px;
+}
+
+.action-btn {
+    width: 100%;
+    padding: 11px 16px;
+    border-radius: var(--radius-sm);
+    font-size: 13px;
+    font-weight: 500;
+    font-family: inherit;
+    cursor: pointer;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all .18s;
+}
+
+.btn-outline {
+    background: transparent;
+}
+
+.message-box {
+    opacity: 0;
+    transform: translateY(-5px);
+    pointer-events: none;
+    border-radius: var(--radius-sm);
+    padding: 12px 14px;
+    font-size: 14px;
+    line-height: 1.7;
+    margin: 10px 0;
+    transition: all 0.2s linear;
+}
+
+.message-box.success,
+.message-box.error {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+.message-box.success {
+    color: var(--text-success);
+    border-left: 3px solid var(--teal);
+    background: var(--surface-success);
+}
+
+.message-box.error {
+    color: var(--text-error);
+    border-left: 3px solid var(--red);
+    background: var(--surface-error);
 }
