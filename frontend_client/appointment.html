@@ -25,19 +25,28 @@
             <span style="font-size:13px;font-weight:500;color:var(--text-primary);">User</span>
         </div>
     </div>
+    
+        <div id="loadingScreen" class="loading-container card">
+            <div class="loading-spinner"></div>
+            <p class="loading-text">Loading appointment details. Please wait...</p>
+        </div>
+
 
     <!-- Appointment history -->
     <div class="status-banner" id="statusBanner">
     </div>
 
-    <div class="grid-2">
 
+
+    <div class="grid-2" style="visibility: hidden;">
         <div>
-            <div class="card">
+            <div class="card ">
                 <div class="card-label">Doctor</div>
                 <div class="doc-row">
                     <div class="doc-av docInitials" id="docAv"
-                        style="background: linear-gradient(135deg, rgb(29, 158, 117), rgb(24, 95, 165));"></div>
+                        style="background: linear-gradient(135deg, rgb(29, 158, 117), rgb(24, 95, 165));">
+                        <img src="" alt="">
+                    </div>
                     <div>
                         <div class="doc-name-lg" id="docName"></div>
                         <div class="doc-spec-sm" id="docSpec"></div>
@@ -84,7 +93,8 @@
                 <div class="card-label" style="font-weight: bold;">Doctor's notes</div>
                 <!-- Patient: read-only -->
                 <div id="notesViewMode" style="display: block;">
-                    <p id="notesDisplay" style="font-size:13px;color:var(--text-3);line-height:1.7;font-style:italic;"> No notes added yet.</p>
+                    <p id="notesDisplay" style="font-size:13px;color:var(--text-3);line-height:1.7;font-style:italic;">
+                        No notes added yet.</p>
                 </div>
             </div>
 
@@ -115,7 +125,10 @@
     <!-- Modal -->
     <div class="modal-overlay" id="modalOverlay">
         <div class="modal">
-            <div class="modal-icon" id="modalIcon" style="background-color: rgba(220,38,38,.12);"><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+            <div class="modal-icon" id="modalIcon" style="background-color: rgba(220,38,38,.12);"><svg width="13"
+                    height="13" viewBox="0 0 16 16" fill="none">
+                    <path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+                </svg></div>
             <div class="modal-title" id="modalTitle">Cancel your appointment?</div>
             <div class="modal-sub" id="modalSub">The doctor will be notified and your slot will be freed.</div>
             <div class="modal-btns">

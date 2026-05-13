@@ -18,7 +18,7 @@
             <a href="profile.html">Profile</a>
         </div>
         <div>
-            
+
         </div>
         <div class="row-flex" style="gap:8px;">
             <div class="av av-blue" style="width:32px;height:32px;font-size:12px;"></div>
@@ -30,18 +30,16 @@
         <div class="hero-banner">
             <div class="hero-content">
                 <div class="hero-date"></div>
-
                 <h1 class="hero-greeting">
                     Good morning, <span class="username"></span> 👋
                 </h1>
-
                 <p class="hero-sub">
                     Ready to take care of your health today? Book an appointment in seconds.
                 </p>
-
                 <div class="hero-actions">
                     <button class="btn-primary">Book Appointment</button>
-                    <button class="btn-secondary" onclick="window.location.href='appointments.html?tab=upcoming'">ViewSchedule</button>
+                    <button class="btn-secondary"
+                        onclick="window.location.href='appointments.html?tab=upcoming'">ViewSchedule</button>
                 </div>
             </div>
 
@@ -55,16 +53,6 @@
 
         <h2 class="section-label" style="margin-bottom:10px;">What do you need?</h2>
         <div class="quick-actions">
-            <!-- <button class="quick-btn" onclick="">
-            <div class="quick-icon" style="background:#e6f1fb;">
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                    <rect x="3" y="4" width="14" height="13" rx="2" stroke="#185fa5" stroke-width="1.5" />
-                    <path d="M7 2v4M13 2v4M3 8h14M10 11v4M8 13h4" stroke="#185fa5" stroke-width="1.5"
-                        stroke-linecap="round" />
-                </svg>
-            </div>
-            <span>Book appointment</span>
-        </button> -->
             <button class="quick-btn">
                 <a href="#find-doctor"
                     style="display: flex; flex-direction: column; align-items: center; text-decoration: none; color: inherit; width: 100%; height: 100%; padding: 14px 8px 12px;">
@@ -92,15 +80,6 @@
                 </a>
 
             </button>
-            <!-- <button class="quick-btn">
-            <div class="quick-icon" style="background:#FAECE7;">
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                    <path d="M15 10a5 5 0 11-10 0 5 5 0 0110 0z" stroke="#993C1D" stroke-width="1.5" />
-                    <path d="M10 8v2l1.5 1.5" stroke="#993C1D" stroke-width="1.5" stroke-linecap="round" />
-                </svg>
-            </div>
-            <span>Reschedule</span>
-        </button> -->
         </div>
 
         <div class="card spec-card" id="find-doctor">
@@ -146,6 +125,11 @@
             <hr> <br>
 
             <div class="doctor-list">
+                <!-- loader -->
+                <div id="loadingScreen" class="loading-container">
+                    <div class="loading-spinner"></div>
+                    <p class="loading-text">Loading doctors. Please wait...</p>
+                </div>
             </div>
         </div>
     </main>

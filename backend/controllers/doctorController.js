@@ -109,8 +109,10 @@ const doctorDashboard = async (req, res) => {
         const appointmentsDB = await pool.query("SELECT * FROM appointment WHERE doctor_id = $1", [doctorId]);
         const appointments = appointmentsDB.rows
         const latestAppointments = await pool.query(`SELECT * FROM appointment WHERE doctor_id = $1 ORDER BY appointment_date DESC, slot_time DESC LIMIT 5;`, [doctorId]);
+        const availability = await pool.query(`SELECT is_working FROM doctors WHERE user_id=$1`, [doctorId])
 
         let patients = []
+        // console.log(availability);        
 
         appointments.map((appointment) => {
             if (!patients.includes(appointment.patient_id)) {
@@ -121,12 +123,10 @@ const doctorDashboard = async (req, res) => {
         const dashData = {
             appointments: appointments.length,
             patients: patients.length,
-            latestAppointments: latestAppointments.rows //reverse
-        };
-
+            latestAppointments: latestAppointments.rows, //reverse
+            availability: availability.rows[0]
+        };  
         res.json({ success: true, dashData });
-
-
     } catch (error) {
         console.error(error);
         res.json({ success: false, message: error.message })
@@ -168,54 +168,40 @@ const updateDoctorProfile = async (req, res) => {
 const appointmentDetails = async (req, res) => {
     try {
         const { apptid, role } = req.params;
-        console.log(apptid, role);
-
         const userId = req.doctor.id
         const appointmentDB = await pool.query(`
-    SELECT 
-        a.*,
-
-        -- Doctor
-        d_u.first_name || ' ' || d_u.last_name AS doctor_name,
-        d.specialization,
-
-        -- Patient
-        p.first_name || ' ' || p.last_name AS patient_name,
-
-        -- Notes (array of notes)
-        COALESCE(
-            json_agg(
-                json_build_object(
-                    'note', n.note,
-                    'created_at', n.created_at
-                )
-            ) FILTER (WHERE n.id IS NOT NULL),
-            '[]'
-        ) AS notes
-
-    FROM appointment a
-
-    -- Doctor joins
-    JOIN doctors d ON a.doctor_id = d.user_id
-    JOIN users d_u ON d.user_id = d_u.id
-
-    -- Patient join
-    JOIN users p ON a.patient_id = p.id
-
-    -- Notes (LEFT JOIN because may not exist)
-    LEFT JOIN appointment_note n ON n.appointment_id = a.id
-
-    WHERE a.id = $1
-
-    GROUP BY 
-        a.id,
-        d_u.first_name, d_u.last_name,
-        d.specialization,
-        p.first_name, p.last_name
-`, [apptid]);
+            SELECT 
+                a.*,
+                d_u.first_name || ' ' || d_u.last_name AS doctor_name,
+                d_u.image AS doctor_image,  -- Added doctor's image
+                d.specialization,
+                p.first_name || ' ' || p.last_name AS patient_name,
+                p.image AS patient_image,   -- Optional: also get patient's image
+                COALESCE(
+                    json_agg(
+                        json_build_object(
+                            'note', n.note,
+                            'created_at', n.created_at
+                        )
+                    ) FILTER (WHERE n.id IS NOT NULL),
+                    '[]'
+                ) AS notes
+            FROM appointment a
+            JOIN doctors d ON a.doctor_id = d.user_id
+            JOIN users d_u ON d.user_id = d_u.id
+            JOIN users p ON a.patient_id = p.id
+            LEFT JOIN appointment_note n ON n.appointment_id = a.id
+            WHERE a.id = $1
+            GROUP BY 
+                a.id,
+                d_u.first_name, d_u.last_name,
+                d_u.image,  -- Added to GROUP BY
+                d.specialization,
+                p.first_name, p.last_name,
+                p.image     -- Added to GROUP BY if including patient image
+            `, [apptid]);
 
         const appointmentData = appointmentDB.rows[0];
-
         res.json({ "success": true, appointmentData })
     } catch (error) {
         console.error(error);

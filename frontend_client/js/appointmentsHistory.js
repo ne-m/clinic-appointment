@@ -1,5 +1,6 @@
 import { getInitials } from "../data/user.js";
-// check for token
+import { showLoading, hideLoading, showLoadingError } from "./loader.js"; 
+
 const token = localStorage.getItem("token");
 if (!token) {
     window.location.href = "signin.html";
@@ -21,6 +22,7 @@ currentTab = params.get("tab") ? params.get("tab") : "upcoming"
 
 async function fetchAppointments() {
     try {
+        showLoading()
         const res = await fetch(`${API_BASE_URL}/api/user/appointments`, {
             method: "GET",
             headers: {
@@ -32,10 +34,11 @@ async function fetchAppointments() {
         let data = await res.json();
 
         if (data.success) {
+            hideLoading()
             return data.appointmentData
         } else {
-            console.log(data.message);
-            return[]
+            // return[]
+            showLoadingError(data.message || 'Failed to load appointments');
         }
     } catch (error) {
         console.error(error);

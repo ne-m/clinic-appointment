@@ -44,7 +44,6 @@ function profile() {
     profileName.innerHTML = `${userDetails.first_name} ${userDetails.last_name}`
     profileMeta.innerHTML = `Doctor · Member since ${userDetails.created_at.split('T')[0]}`
     profileUuid.innerHTML = `UUID: ${userDetails.user_id}`
-    console.log();
 
     document.getElementById("first_name").value = userDetails.first_name
     document.getElementById("last_name").value = userDetails.last_name
@@ -76,8 +75,6 @@ toggleCancelBtn.addEventListener("click", () => {
 })
 
 function toggleEdit(formId) {
-    console.log(formId);
-
     const form = document.getElementById(formId);
     const editing = form.dataset.editing === 'true';
     const inputs = form.querySelectorAll('.field-input.editable');
@@ -123,11 +120,9 @@ async function saveEdit(formId) {
         const result = await res.json();
 
         if (result.success) {
-            message.style.color = "green";
-            message.textContent = "Update successful!";
+            showMessage("success", "Update successful!");
         } else {
-            message.style.color = "red";
-            message.textContent = result.message;
+            showMessage("error", result.message);
         }
         loadProfile()
     } catch (error) {
@@ -144,4 +139,36 @@ function cancelEdit(formId) {
     if (saveRow) saveRow.style.display = 'none';
     form.dataset.editing = 'false';
     loadProfile()
+}
+
+window.openModal = function openModal() {
+    document.getElementById("modalOverlay").classList.add("open")
+}
+window.closeModal = function closeModal() {
+    document.getElementById("modalOverlay").classList.remove("open");
+}
+
+document.getElementById("modalOverlay").addEventListener("click", e => {
+    if (e.target === e.currentTarget) closeModal();
+});
+
+document.getElementById("modalConfirm").addEventListener("click", () => {
+    // cancelAppointment(apptDetails.id)
+    localStorage.clear("token")
+    localStorage.clear("initials")
+    setTimeout(() => {
+        location.reload();
+    }, 1000);
+    document.getElementById("modalOverlay").classList.remove("open");
+})
+
+function showMessage(type, text) {
+    const message = document.getElementById("message");
+    message.classList.remove("success", "error");
+    message.classList.add(type);
+    message.textContent = text;
+    setTimeout(() => {
+        message.classList.remove("success", "error");
+        message.textContent = "";
+    }, 3000);
 }

@@ -1,11 +1,12 @@
 import { getInitials, getProfile } from "../data/user.js";
+import { showLoading, hideLoading, showLoadingError } from "./loader.js";
 
 const token = localStorage.getItem("token");
 if (!token) {
     window.location.href = "signin.html";
 }
 
-let API_BASE_URL = localStorage.getItem('apiMode')? localStorage.getItem('apiMode') : 'https://clinic-appointment-4lxl.onrender.com';
+let API_BASE_URL = localStorage.getItem('apiMode') ? localStorage.getItem('apiMode') : 'https://clinic-appointment-4lxl.onrender.com';
 
 const av = document.querySelector(".av");
 const greeting = document.querySelector('.hero-greeting');
@@ -115,7 +116,7 @@ function renderDoctors(doctorsParam) {
     doctorList.innerHTML = doctorHTML
 }
 
-function renderNextAppt(){
+function renderNextAppt() {
     nextApptHTML += `
         <div style="display:flex;align-items:center;gap:10px;flex:1;flex-wrap:wrap;">
             <div style="width:40px;height:40px;border-radius:10px;background:#1D9E75;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
@@ -152,20 +153,13 @@ window.openDoctor = function openDoctor(doctorId) {
 document.querySelectorAll(".spec-pill").forEach(pill => {
     pill.addEventListener("click", (e) => {
         const type = pill.dataset.type;
-
         if (e.currentTarget.dataset.type === "All Doctors") {
             const allDoctors = doctors
             renderDoctors(allDoctors);
         } else {
             const filtered = doctors.filter(d => d.specialization === type);
-
             renderDoctors(filtered);
-            // console.log(filtered);
         }
-        // console.log(e.currentTarget.dataset.type);
-
-
-
     });
 });
 

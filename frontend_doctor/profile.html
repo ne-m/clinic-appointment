@@ -85,13 +85,37 @@
                             <textarea class="field-input editable" id="bio" value="" readonly></textarea>
                         </div>
                     </div>
+
+                    <div>
+                        <div class="message-box" id="message"></div>
+                    </div>
                 </div>
 
             </div>
-            <p id="message"></p>
+
             <div id="personal-save-row" style="display:none;margin-top:14px;" class="row-flex" style="gap:8px;">
                 <button class="btn-primary" id="save-edit">Save changes</button>
                 <button class="btn-outline" id="cancel-edit">Cancel</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <button class="btn-outline" id="logout" onclick="openModal()">Logout</button>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal-overlay" id="modalOverlay">
+            <div class="modal">
+                <div class="modal-icon" id="modalIcon" style="background-color: rgba(220,38,38,.12);"><svg width="13"
+                        height="13" viewBox="0 0 16 16" fill="none">
+                        <path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+                    </svg></div>
+                <div class="modal-title" id="modalTitle">Log out?</div>
+                <div class="modal-sub" id="modalSub">Hope to see you soon. Continue to logout?</div>
+                <div class="modal-btns">
+                    <button class="action-btn btn-outline" onclick="closeModal()">Cancel</button>
+                    <button class="action-btn btn-red" id="modalConfirm">Confirm</button>
+                </div>
             </div>
         </div>
     </div>

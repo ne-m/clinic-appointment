@@ -11,20 +11,27 @@
 </head>
 
 <body>
-    <div id="panel-doctor" class="dash-panel">
-        <div class="nav-bar">
-            <span class="nav-logo">ClinicBook</span>
-            <div class="nav-links">
-                <a href="index.html"> Home</a>
-                <a href="#"> Availability</a>
-                <a href="profile.html"> Profile</a>
-            </div>
-            <div class="row-flex" style="gap:8px;">
-                <div class="av av-blue" style="width:32px;height:32px;font-size:12px;">US</div>
-                <span style="font-size:13px;font-weight:500;color:var(--text-primary);">Doctor</span>
-            </div>
+    <div class="nav-bar">
+        <span class="nav-logo">ClinicBook</span>
+        <div class="nav-links">
+            <a href="index.html"> Home</a>
+            <a href="#"> Availability</a>
+            <a href="profile.html"> Profile</a>
+        </div>
+        <div class="row-flex" style="gap:8px;">
+            <div class="av av-blue" style="width:32px;height:32px;font-size:12px;">US</div>
+            <span style="font-size:13px;font-weight:500;color:var(--text-primary);">Doctor</span>
+        </div>
+    </div>
+
+
+        <div id="loadingScreen" class="loading-container card">
+            <div class="loading-spinner"></div>
+            <p class="loading-text">Loading panel. Please wait...</p>
         </div>
 
+
+    <div id="panel-doctor" class="dash-panel" style="display: none;">
         <div class="stat-grid">
             <div class="stat-card">
                 <div class="stat-val appointment-count">1</div>
@@ -34,31 +41,29 @@
                 <div class="stat-val patient-count">1</div>
                 <div class="stat-lbl">Patients</div>
             </div>
-            <div class="stat-card">
-                <!-- <div class="stat-val">1</div>
-                <div class="stat-lbl">This week total</div> -->
-            </div>
-        </div>
-
-        <div class="card">
-            <p class="section-label">Upcoming appointments</p>
-            <div class="appointment-cards">
-
-            </div>
         </div>
 
         <div class="card">
             <p class="section-label">Set availability</p>
             <div class="row-flex" style="flex-wrap:wrap;">
                 <div class="btn-container">
-                    <button class="btn-primary change-availability-btn">Change Availability</button>
-                    <span class=" doctor-status"></span>
                 </div>
+            </div>
+        </div>
+
+        <div class="tabs">
+            <button class="tab-btn active" id="upcomingTab">Upcoming</button>
+            <button class="tab-btn" id="historyTab">History</button>
+        </div>
+
+        <div class="card">
+            <div class="appointment-cards">
+
             </div>
         </div>
     </div>
 
-    <script src="js/app.js" type="module"></script>
+    <script src="./js/app.js" type="module"></script>
 </body>
 
 </html>

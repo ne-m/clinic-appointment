@@ -11,18 +11,12 @@ form.addEventListener('submit', async (e) => {
     existingErrors.forEach(error => error.remove());
 
     if (!password) {
-        const errorDiv = document.createElement('div');
-        errorDiv.className = 'error-message';
-        errorDiv.textContent = 'Enter a password';
-        document.getElementById('password').parentNode.appendChild(errorDiv);
+        showMessage("error", "Password field is empty!");
         return;
     }
 
     if (!email) {
-        const errorDiv = document.createElement('div');
-        errorDiv.className = 'error-message';
-        errorDiv.textContent = 'Enter an email';
-        document.getElementById('email').parentNode.appendChild(errorDiv);
+        showMessage("error", "Email field is empty!");
         return;
     }
 
@@ -44,20 +38,27 @@ form.addEventListener('submit', async (e) => {
 
         if (result.success) {
             localStorage.setItem("dtoken", result.token);
-            message.style.color = "green";
-            message.textContent = "Logged in successful!";
-
+            showMessage("success", "Logged in successful!");
             setTimeout(() => {
                 window.location.href = "index.html";
             }, 1000);
-
         } else {
-            message.style.color = "red";
-            message.textContent = result.message;
+            showMessage("error", result.message);
         }
 
     } catch (error) {
-        console.error(error);
-        message.textContent = "Something went wrong.";
+        showMessage("error", "Something went wrong. Pleas try again later");
     }
 });
+
+
+function showMessage(type, text) {
+    const message = document.getElementById("message");
+    message.classList.remove("success", "error");
+    message.classList.add(type);
+    message.textContent = text;
+    setTimeout(() => {
+        message.classList.remove("success", "error");
+        message.textContent = "";
+    }, 3000);
+}

@@ -1,4 +1,5 @@
-const params = new URLSearchParams(window.location.search);
+import {  hideLoading, showLoadingError } from "./loader.js"; const params = new URLSearchParams(window.location.search);
+
 const token = localStorage.getItem("token");
 let API_BASE_URL = localStorage.getItem('apiMode') ? localStorage.getItem('apiMode') : 'https://clinic-appointment-4lxl.onrender.com';
 
@@ -8,7 +9,7 @@ const role = params.get("role")
 let apptDetails;
 
 
-const docInitials = document.getElementById("docInitials")
+const docAv = document.getElementById("docAv")
 const docName = document.getElementById("docName")
 const docSpec = document.getElementById("docSpec")
 
@@ -34,19 +35,19 @@ async function fetchAppointment(apptid, role) {
     let data = await res.json();
 
     if (data.success) {
-        // console.log(data.appointmentData);
         return data.appointmentData
     } else {
+        hideLoading()
+        document.querySelector(".grid-2").style.visibility = "visible"
         document.querySelector(".grid-2").innerHTML = data.message;
-        // return data.message
     }
 }
 
 async function loadApptDetails() {
     apptDetails = await fetchAppointment(apptid, role)
-    // console.log(apptDetails);
-    
     if (apptDetails) {
+        document.querySelector(".grid-2").style.visibility = "visible"
+        hideLoading()
         renderApptDetails()
         renderTimeline()
     } 
@@ -55,6 +56,7 @@ async function loadApptDetails() {
 loadApptDetails()
 
 async function renderApptDetails() {
+    docAv.innerHTML = `<img src="${apptDetails.doctor_image}" class="doctor-img" alt="">`
     docName.innerHTML = apptDetails.doctor_name
     docSpec.innerHTML = apptDetails.specialization
     apptPatient.innerHTML = apptDetails.patient_name
@@ -77,17 +79,13 @@ async function renderApptDetails() {
         <span class="badge badge-${apptDetails.status}" id="statusBadge">${cfg.label}</span>
     `
     statusBanner.classList.add(`${cfg.cls}`)
-    // console.log(apptDetails);
 
 
     if (apptDetails.status === "cancelled" || apptDetails.status === "no-show" || apptDetails.status === "in-progress") {
         patientActionsStack.innerHTML = '<p style="font-size:13px;color:var(--text-3);text-align:center;padding:8px 0;">No further actions available.</p>'
-        // patientActionsStack.classList.add("cancelled")
-
     }
 
     if (apptDetails.status === "scheduled" || apptDetails.status === "confirmed") {
-        // patientActionsStack.classList.remove("cancelled")
         patientActionsStack.innerHTML = `
             <div class="cancel-zone">
                 <p>Cancelling will free up this slot for another patient. You can rebook at any time.</p>

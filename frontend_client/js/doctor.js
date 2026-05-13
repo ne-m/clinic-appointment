@@ -1,4 +1,5 @@
 import { getInitials } from "../data/user.js";
+import { showLoading, hideLoading, showLoadingError } from "./loader.js"; 
 
 const token = localStorage.getItem("token");
 if (!token) {
@@ -6,6 +7,7 @@ if (!token) {
 }
 let API_BASE_URL = localStorage.getItem('apiMode') ? localStorage.getItem('apiMode') : 'https://clinic-appointment-4lxl.onrender.com';
 
+const heroSection = document.querySelector(".hero")
 const av = document.querySelector(".av");
 const params = new URLSearchParams(window.location.search);
 const doctorId = params.get("id");
@@ -42,6 +44,8 @@ async function fetchDoctorProfile(docId) {
 
 async function loadDoctorProfile() {
     docDetails = await fetchDoctorProfile(doctorId)
+    heroSection.style.display ="block"
+    hideLoading()
     renderDoctorProfile()
     renderCalendar();
     loadSlots(dateStr);
@@ -50,7 +54,8 @@ async function loadDoctorProfile() {
 loadDoctorProfile();
 
 function renderDoctorProfile() {
-    docName.innerHTML = docDetails.first_name + " " + docDetails.last_name;
+    docInitials.innerHTML = `${docDetails.first_name.charAt(0)}${docDetails.last_name.charAt(0)}`;
+    docName.innerHTML = `Dr. ${docDetails.first_name} ${docDetails.last_name}`
     docSpec.innerHTML = docDetails.specialization
     docBio.innerHTML = docDetails.bio
 }

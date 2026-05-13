@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>ClinicBook</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+    <!-- 🔵 Loading Screen -->
+    <div id="loader">
+        <div class="spinner"></div>
+        <p>Loading ClinicBook...</p>
+    </div>
+
+    <!-- 🔷 Landing Page -->
+    <div class="landing" id="landingContent">
+        <nav class="nav">
+            <h2 class="logo">ClinicBook</h2>
+            <div>
+                <button class="btn-outline" onclick="goToLogin()">Login</button>
+                <button class="btn-primary" onclick="goToRegister()">Sign Up</button>
+            </div>
+        </nav>
+
+        <div class="hero">
+            <h1>Book Appointments Effortlessly</h1>
+            <p>Find doctors, schedule visits, and manage your health — all in one place.</p>
+
+            <div class="hero-actions">
+                <button class="btn-primary" onclick="goToRegister()">Get Started</button>
+                <button class="btn-outline" onclick="goToLogin()">I already have an account</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- <script src="landing.js"></script> -->
+    <script>
+        // Simulate loading
+        window.addEventListener("load", () => {
+            setTimeout(() => {
+                document.getElementById("loader").style.display = "none";
+                document.getElementById("landingContent").style.display = "block";
+            }, 1000); // 1 second loader
+        });
+
+        // Navigation
+        function goToLogin() {
+            window.location.href = "login.html";
+        }
+
+        function goToRegister() {
+            window.location.href = "register.html";
+        }
+    </script>
+</body>
+
+</html>

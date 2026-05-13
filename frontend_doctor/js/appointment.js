@@ -1,3 +1,5 @@
+import { hideLoading, showLoadingError } from "./loader.js";
+
 const params = new URLSearchParams(window.location.search);
 const dtoken = localStorage.getItem("dtoken");
 
@@ -5,10 +7,9 @@ const apptid = params.get("apptid");
 const role = params.get("role")
 let appointmentStatus;
 let apptDetails;
-console.log(apptid, role);
 
 
-const docInitials = document.getElementById("docInitials")
+const docAv = document.getElementById("docAv")
 const docName = document.getElementById("docName")
 const docSpec = document.getElementById("docSpec")
 
@@ -33,7 +34,6 @@ async function fetchAppointment(apptid, role) {
     let data = await res.json();
 
     if (data.success) {
-        // console.log(data.appointmentData);
         return data.appointmentData
     } else {
         console.log(data.message);
@@ -43,8 +43,8 @@ async function fetchAppointment(apptid, role) {
 
 async function loadApptDetails() {
     apptDetails = await fetchAppointment(apptid, role)
-    console.log(apptDetails);
-
+    hideLoading()
+    document.querySelector(".grid-2").style.visibility ="visible"
     renderApptDetails()
     renderDoctorActions()
     renderTimeline()
@@ -53,6 +53,7 @@ async function loadApptDetails() {
 loadApptDetails()
 
 async function renderApptDetails() {
+    docAv.innerHTML = `<img src="${apptDetails.doctor_image}" class="doctor-img" alt="">`
     docName.innerHTML = apptDetails.doctor_name
     docSpec.innerHTML = apptDetails.specialization
     apptPatient.innerHTML = apptDetails.patient_name
@@ -348,8 +349,6 @@ function renderDoctorActions() {
     const divider = `<div class="divider"></div>`;
 
     let html = "";
-    console.log(appointmentStatus);
-
 
     if (appointmentStatus === "scheduled") {
         html =

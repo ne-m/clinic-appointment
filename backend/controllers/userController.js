@@ -343,8 +343,10 @@ const appointmentDetails = async (req, res) => {
             SELECT 
                 a.*,
                 d_u.first_name || ' ' || d_u.last_name AS doctor_name,
+                d_u.image AS doctor_image,  -- Added doctor's image
                 d.specialization,
                 p.first_name || ' ' || p.last_name AS patient_name,
+                p.image AS patient_image,   -- Optional: also get patient's image
                 COALESCE(
                     json_agg(
                         json_build_object(
@@ -354,24 +356,19 @@ const appointmentDetails = async (req, res) => {
                     ) FILTER (WHERE n.id IS NOT NULL),
                     '[]'
                 ) AS notes
-
-                FROM appointment a
-
-                JOIN doctors d ON a.doctor_id = d.user_id
-                JOIN users d_u ON d.user_id = d_u.id
-
-                JOIN users p ON a.patient_id = p.id
-
-                -- Notes (LEFT JOIN because may not exist)
-                LEFT JOIN appointment_note n ON n.appointment_id = a.id
-
-                WHERE a.id = $1
-
-                GROUP BY 
-                    a.id,
-                    d_u.first_name, d_u.last_name,
-                    d.specialization,
-                    p.first_name, p.last_name
+            FROM appointment a
+            JOIN doctors d ON a.doctor_id = d.user_id
+            JOIN users d_u ON d.user_id = d_u.id
+            JOIN users p ON a.patient_id = p.id
+            LEFT JOIN appointment_note n ON n.appointment_id = a.id
+            WHERE a.id = $1
+            GROUP BY 
+                a.id,
+                d_u.first_name, d_u.last_name,
+                d_u.image,  -- Added to GROUP BY
+                d.specialization,
+                p.first_name, p.last_name,
+                p.image     -- Added to GROUP BY if including patient image
             `, [apptid]);
 
         const appointmentData = appointmentDB.rows[0];
