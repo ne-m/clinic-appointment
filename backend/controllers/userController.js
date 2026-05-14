@@ -90,16 +90,11 @@ const getProfile = async (req, res) => {
     }
 }
 
-//update user profile *** 9.37.00***
+//update user profile
 const updateProfile = async (req, res) => {
     try {
         const userId = req.user.id;
         const { first_name, last_name, email, phone, gender, dob, address } = req.body;
-        // console.log(userId);
-
-        if (userId === "38e6618c-8271-43e2-b5c1-2a746a14da4c") {
-            return res.json({success: false, message:"Error Please Try Again Later"})
-        }
 
         if (!first_name || !last_name || !email || !phone) {
             return res.json({ success: false, message: "Missing details" })
@@ -334,11 +329,12 @@ const appointmentDetails = async (req, res) => {
         const { apptid, role } = req.params;
 
         const userId = req.user.id
-        const notAppt = await pool.query("SELECT * FROM appointment WHERE id=$1", [apptid])
+        const notAppt = await pool.query("SELECT * FROM appointment WHERE id=$1 AND patient_id=$2", [apptid,userId])
 
         if (notAppt.rows.length === 0) {
             res.json({ success: false, message: 'Appointment not found' });
         }
+
         const appointmentDB = await pool.query(`
             SELECT 
                 a.*,
@@ -391,8 +387,6 @@ const appointmentDetails = async (req, res) => {
 const nextAppointment = async (req, res) => {
     try {
         const userId = req.user.id
-        console.log(userId);
-
 
         const appointmentDB = await pool.query(`
             SELECT 
@@ -406,8 +400,7 @@ const nextAppointment = async (req, res) => {
             ORDER BY a.appointment_date DESC
         `, [userId]);
 
-        const appointmentData = appointmentDB.rows[0] || "No upcoming appointment"
-        // console.log(appointmentData);   
+        const appointmentData = appointmentDB.rows[0] || "None"
         res.json({ success: true, appointmentData })
 
     } catch (error) {

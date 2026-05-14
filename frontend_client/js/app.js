@@ -82,7 +82,11 @@ async function fetchNextAppointment() {
 async function loadDoctors() {
     doctors = await fetchDoctors()
     nextAppt = await fetchNextAppointment()
-    if (Object.keys(nextAppt).length !== 0) {
+    // if (Object.keys(nextAppt).length !== 0) {
+    //     renderNextAppt()
+    // }
+
+    if (nextAppt !== "none") {
         renderNextAppt()
     }
     renderDoctors(doctors)
