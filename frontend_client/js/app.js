@@ -86,7 +86,7 @@ async function loadDoctors() {
     //     renderNextAppt()
     // }
 
-    if (nextAppt !== "none") {
+    if (nextAppt !== "None") {
         renderNextAppt()
     }
     renderDoctors(doctors)
