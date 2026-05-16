@@ -175,7 +175,6 @@ document.getElementById("bookBtn").onclick = async () => {
     const reason = document.getElementById("reason").value;
 
     if (!date || !selectedTime) {
-        // alert("Please select a date and time");
             showMessage("error", "Please select a date and time");
         return;
     }

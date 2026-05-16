@@ -164,26 +164,6 @@ function renderAppointments() {
         else if (appointment.status === "follow-up") badgeColor = "amber";
         else if (appointment.status === "declined") badgeColor = "outline";
         else if (appointment.status === "in-progress") badgeColor = "blue";
-
-        // appointmentHTML += `
-        //     <div class="appt-row" onclick="openAppointment('${appointment.id}','doctor')">
-        //         <div>
-        //             <div style="font-size:13px;font-weight:500;">${appointment.patient_name}</div>
-        //             <div style="font-size:12px;color:var(--text-secondary)">${appointment.reason}</div>
-        //         </div>
-        //         <span style="color:var(--text-secondary)">
-        //             ${formatDate(appointment.appointment_date)} · ${appointment.slot_time}
-        //         </span>
-        //         ${appointment.status === "scheduled" ?
-        //         `<div class="row-flex" style="gap:6px">
-        //             <button class="btn-primary" onclick="confirmAppt('${appointment.id}','confirmed')"  >Confirm</button>
-        //             <button class="btn-outline" onclick="declineAppt('${appointment.id}','declined')">Decline</button>
-        //         </div>` :
-        //         `<span class="badge badge-${badgeColor}">${appointment.status}</span>`
-
-        //     }
-        //     </div>`
-
         appointmentHTML += `
             <div class="appt-row" onclick="openAppointment('${appointment.id}','doctor')">
                 <div style="display:flex; flex-direction:column; width:60%;">
