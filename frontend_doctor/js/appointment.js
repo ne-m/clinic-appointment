@@ -388,7 +388,7 @@ function renderDoctorActions() {
 window.toggleFollowUp = function toggleFollowUp() {
     document.getElementById("followupPanel").classList.toggle("open");
 }
-window.confirmFollowUp = function confirmFollowUp() {
+window.confirmFollowUp = async function confirmFollowUp() {
     const date = document.getElementById("fuDate").value;
     const time = document.getElementById("fuTime").value;
     if (!date || !time) { showToast("Please select a date and time"); return; }
