@@ -395,11 +395,11 @@ window.confirmFollowUp = async function confirmFollowUp() {
     // updateAppointmentStatus(apptDetails.id, "follow-up")
 
     try {
-        const res = await fetch(`${API_BASE_URL}/api/doctor/follow-up`, {
+        const res = await fetch(`https://clinic-appointment-4lxl.onrender.com/api/doctor/follow-up`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                "token": dtoken
+                "dtoken": dtoken
             },
             body: JSON.stringify({ status: "follow-up", parentId: apptDetails.id, doctorId: apptDetails.doctor_id, patientId: apptDetails.patient_id, slotDate: date, slotBooked: time})
         });
