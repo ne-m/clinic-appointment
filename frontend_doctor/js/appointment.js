@@ -406,16 +406,18 @@ window.confirmFollowUp = async function confirmFollowUp() {
 
         const data = await res.json();
         if (data.success) {
-            showMessage("success", "Follow up scheduled successfully!");
+            alert("Successful")
+            // showMessage("success", "Follow up scheduled successfully!");
             window.location.href = "appointments.html";
 
         } else {
-            showMessage("error", data.message);
+            // showMessage("error", data.message);
+            alert(data.message)
         }
     } catch (err) {
         console.error(err);
-        // alert("Error booking appointment");
-        showMessage("error", "Error booking follow up appointment");
+        alert("Error booking appointment");
+        // showMessage("error", "Error booking follow up appointment");
     }
 
     // TODO: POST /api/appointment { type:"followup", parentId: APPT.id, doctorId, patientId, date, time }
