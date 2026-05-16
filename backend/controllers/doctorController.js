@@ -8,10 +8,7 @@ const changeAvailability = async (req, res) => {
         const { docID } = req.body
         const updateAvailability = await pool.query("UPDATE doctors SET is_working = NOT is_working WHERE user_id = $1 RETURNING is_working, user_id;", [docID])
         const availability = updateAvailability.rows[0]
-        console.log(availability);
-
         res.json({ success: true, message: `Availability changed`, availability });
-
     } catch (error) {
         console.error(error);
         res.json({ success: false, message: error.message })
@@ -102,6 +99,57 @@ const appointmentStatus = async (req, res) => {
     }
 }
 
+//follow up appointment
+const followUpAppointment = async (req, res) => {
+    const { status, parentId, doctorId, patientId, slotDate, slotBooked } = req.body;
+    const docId = req.doctor.id
+
+    if (docId !== doctorId) {
+        res.json({success:false, message:"Unauthorized access!"})
+    }
+
+    // Verify parent appointment exists and is completed
+    if (status === 'follow-up') {
+        const parent = await db.query(
+            'SELECT id, status FROM appointment WHERE id = $1', [parentId]
+        );
+        if (!parent.rows.length || parent.rows[0].status !== 'completed') {
+            return res.status(400).json({ error: 'Parent appointment not found or not completed' });
+        }
+    }
+
+    // Check the slot isn't already taken
+    const conflict = await db.query(
+        `SELECT id FROM appointment
+        WHERE doctor_id = $1
+        AND appointment_date::date = $2
+        AND slot_booked = $3
+        AND status NOT IN ('cancelled','declined')`,
+        [doctorId, slotDate, slotBooked]
+    );
+    if (conflict.rows.length) {
+        return res.status(409).json({ error: 'That slot is already booked' });
+    }
+
+    const result = await db.query(
+        `INSERT INTO appointment
+        (doctor_id, patient_id, appointment_date, slot_booked, status,
+        parent_appointment_id)
+        VALUES ($1, $2, $3, $4, 'follow-up', $6)
+        RETURNING id`,
+        [
+            doctorId,
+            patientId,
+            `${slotDate}T${slotBooked}`,
+            slotBooked,
+            'follow-up',
+            status === 'followup' ? parentId : null
+        ]
+    );
+
+    res.json({ appointmentId: result.rows[0].id });
+}
+
 //doctor dashboard
 const doctorDashboard = async (req, res) => {
     try {
@@ -125,7 +173,7 @@ const doctorDashboard = async (req, res) => {
             patients: patients.length,
             latestAppointments: latestAppointments.rows, //reverse
             availability: availability.rows[0]
-        };  
+        };
         res.json({ success: true, dashData });
     } catch (error) {
         console.error(error);
@@ -168,15 +216,21 @@ const updateDoctorProfile = async (req, res) => {
 const appointmentDetails = async (req, res) => {
     try {
         const { apptid, role } = req.params;
-        const userId = req.doctor.id
+        const docId = req.doctor.id
+
+        const notAppt = await pool.query("SELECT * FROM appointment WHERE id=$1 AND doctor_id=$2", [apptid, docId])
+        if (notAppt.rows.length === 0) {
+            res.json({ success: false, message: 'Appointment not found!' });
+        }
+
         const appointmentDB = await pool.query(`
             SELECT 
                 a.*,
                 d_u.first_name || ' ' || d_u.last_name AS doctor_name,
-                d_u.image AS doctor_image,  -- Added doctor's image
+                d_u.image AS doctor_image,
                 d.specialization,
                 p.first_name || ' ' || p.last_name AS patient_name,
-                p.image AS patient_image,   -- Optional: also get patient's image
+                p.image AS patient_image,
                 COALESCE(
                     json_agg(
                         json_build_object(
@@ -195,10 +249,10 @@ const appointmentDetails = async (req, res) => {
             GROUP BY 
                 a.id,
                 d_u.first_name, d_u.last_name,
-                d_u.image,  -- Added to GROUP BY
+                d_u.image,  
                 d.specialization,
                 p.first_name, p.last_name,
-                p.image     -- Added to GROUP BY if including patient image
+                p.image     
             `, [apptid]);
 
         const appointmentData = appointmentDB.rows[0];
@@ -255,4 +309,4 @@ const addAppointmentNote = async (req, res) => {
     }
 }
 
-export { changeAvailability, doctorList, loginDoctor, appointmentsDoctor, appointmentStatus, doctorDashboard, doctorProfile, updateDoctorProfile, appointmentDetails, addAppointmentNote };
+export { changeAvailability, doctorList, loginDoctor, appointmentsDoctor, appointmentStatus, doctorDashboard, doctorProfile, updateDoctorProfile, appointmentDetails, addAppointmentNote, followUpAppointment };

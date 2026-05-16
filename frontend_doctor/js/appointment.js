@@ -1,5 +1,6 @@
 import { hideLoading, showLoadingError } from "./loader.js";
 
+let API_BASE_URL ='https://clinic-appointment-4lxl.onrender.com';
 const params = new URLSearchParams(window.location.search);
 const dtoken = localStorage.getItem("dtoken");
 
@@ -44,7 +45,7 @@ async function fetchAppointment(apptid, role) {
 async function loadApptDetails() {
     apptDetails = await fetchAppointment(apptid, role)
     hideLoading()
-    document.querySelector(".grid-2").style.visibility ="visible"
+    document.querySelector(".grid-2").style.visibility = "visible"
     renderApptDetails()
     renderDoctorActions()
     renderTimeline()
@@ -78,16 +79,16 @@ async function renderApptDetails() {
     `
     statusBanner.classList.add(`${cfg.cls}`)
 
-        if (apptDetails.notes.length > 0) {
+    if (apptDetails.notes.length > 0) {
         const notes = apptDetails.notes
-        let noteHTML= ""
-        notes.forEach((note)=>{
-            noteHTML +=  `
+        let noteHTML = ""
+        notes.forEach((note) => {
+            noteHTML += `
                 <p id="notesDisplay" style="font-size:13px;color:var(--text-3);line-height:1.7;font-style:italic;"> ${note.note}</p>
             `
         })
 
-        notesViewMode.innerHTML = noteHTML      
+        notesViewMode.innerHTML = noteHTML
     }
 
 }
@@ -330,8 +331,8 @@ window.updateAppointmentStatus = async function updateAppointmentStatus(appointm
 
         if (data.success) {
             // alert("Appointment confirmed successfully");
-            // appointmentHTML = "";
-            // loadDashboard();
+            appointmentHTML = "";
+            loadDashboard();
         } else {
             alert(data.message || "Failed to confirm the appointment");
         }
@@ -391,7 +392,31 @@ window.confirmFollowUp = function confirmFollowUp() {
     const date = document.getElementById("fuDate").value;
     const time = document.getElementById("fuTime").value;
     if (!date || !time) { showToast("Please select a date and time"); return; }
-    updateAppointmentStatus(apptDetails.id, "follow-up")
+    // updateAppointmentStatus(apptDetails.id, "follow-up")
+
+    try {
+        const res = await fetch(`${API_BASE_URL}/api/doctor/follow-up`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "token": dtoken
+            },
+            body: JSON.stringify({ status: "follow-up", parentId: apptDetails.id, doctorId: apptDetails.doctor_id, patientId: apptDetails.patient_id, slotDate: date, slotBooked: time})
+        });
+
+        const data = await res.json();
+        if (data.success) {
+            showMessage("success", "Follow up scheduled successfully!");
+            window.location.href = "appointments.html";
+
+        } else {
+            showMessage("error", data.message);
+        }
+    } catch (err) {
+        console.error(err);
+        // alert("Error booking appointment");
+        showMessage("error", "Error booking follow up appointment");
+    }
 
     // TODO: POST /api/appointment { type:"followup", parentId: APPT.id, doctorId, patientId, date, time }
     toggleFollowUp();
