@@ -399,7 +399,7 @@ window.confirmFollowUp = async function confirmFollowUp() {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                "token": dtoken
+                "dtoken": dtoken
             },
             body: JSON.stringify({ status: "follow-up", parentId: apptDetails.id, doctorId: apptDetails.doctor_id, patientId: apptDetails.patient_id, slotDate: date, slotBooked: time})
         });
