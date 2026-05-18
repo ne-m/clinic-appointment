@@ -285,15 +285,15 @@ window.cancelAppointment = async function cancelAppointment(appointmentId) {
         const data = await res.json();
 
         if (data.success) {
-            alert("Appointment cancelled successfully");
-            // Refresh the appointments list
-            loadAppointments();
+            showMessage("success", "Appointment cancelled successfully")
+            loadApptDetails
         } else {
-            alert(data.message || "Failed to cancel appointment");
+            // alert(data.message || "Failed to cancel appointment");
+            showMessage("error", "Failed to cancel appointment")
         }
     } catch (error) {
         console.error("Cancel error:", error);
-        alert("An error occurred. Please try again.");
+        showMessage("error", "An error occurred. Please try again.")
     }
 }
 
@@ -335,14 +335,13 @@ window.updateAppointmentStatus = async function updateAppointmentStatus(appointm
         const data = await res.json();
 
         if (data.success) {
-            // alert("Appointment confirmed successfully");
-            loadDashboard();
+            loadApptDetails()
         } else {
-            alert(data.message || "Failed to confirm the appointment");
+            showMessage("error", "Failed to confirm the appointment")
         }
     } catch (error) {
         console.error("Cancel error:", error);
-        alert("An error occurred. Please try again.");
+        showMessage("error", "An error occurred. Please try again.")
     }
 }
 
@@ -396,7 +395,6 @@ window.confirmFollowUp = async function confirmFollowUp() {
     const date = document.getElementById("fuDate");
     const time = document.getElementById("fuTime");
     const note = document.getElementById("fuNote");
-    console.log(date, time, note);
 
     if (!date.value || !time.value) { showToast("Please select a date and time"); return; }
     if (!note.value) { showToast("Please enter a note for follow up"); return; }
@@ -424,7 +422,6 @@ window.confirmFollowUp = async function confirmFollowUp() {
         }
     } catch (err) {
         console.error(err);
-        // alert("Error booking appointment");
         showMessage("error", "Error booking follow up appointment");
     }
 
@@ -449,7 +446,7 @@ window.addNote = async function addNote() {
 
         const data = await res.json();
     } catch (error) {
-
+        showMessage("error", error)
     }
     const saved = document.getElementById("notesSaved");
     saved.style.display = "inline";
