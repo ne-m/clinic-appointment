@@ -287,7 +287,6 @@ window.cancelAppointment = async function cancelAppointment(appointmentId) {
         if (data.success) {
             alert("Appointment cancelled successfully");
             // Refresh the appointments list
-            appointmentHTML = "";
             loadAppointments();
         } else {
             alert(data.message || "Failed to cancel appointment");
@@ -337,7 +336,6 @@ window.updateAppointmentStatus = async function updateAppointmentStatus(appointm
 
         if (data.success) {
             // alert("Appointment confirmed successfully");
-            appointmentHTML = "";
             loadDashboard();
         } else {
             alert(data.message || "Failed to confirm the appointment");
