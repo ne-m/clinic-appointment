@@ -41,6 +41,7 @@ loadProfile();
 function profile() {
     initials.innerHTML = `${userDetails.first_name.charAt(0)}${userDetails.last_name.charAt(0)}`
     av.innerHTML = `${userDetails.first_name.charAt(0)}${userDetails.last_name.charAt(0)}`
+    localStorage.setItem("docInitials", `${userDetails.first_name.charAt(0)}${userDetails.last_name.charAt(0)}`)
     profileName.innerHTML = `${userDetails.first_name} ${userDetails.last_name}`
     profileMeta.innerHTML = `Doctor · Member since ${userDetails.created_at.split('T')[0]}`
     profileUuid.innerHTML = `UUID: ${userDetails.user_id}`
@@ -153,9 +154,8 @@ document.getElementById("modalOverlay").addEventListener("click", e => {
 });
 
 document.getElementById("modalConfirm").addEventListener("click", () => {
-    // cancelAppointment(apptDetails.id)
-    localStorage.clear("token")
-    localStorage.clear("initials")
+    localStorage.clear("dtoken")
+    localStorage.clear("docInitials")
     setTimeout(() => {
         location.reload();
     }, 1000);

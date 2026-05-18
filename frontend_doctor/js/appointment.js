@@ -10,6 +10,9 @@ let appointmentStatus;
 let apptDetails;
 
 
+const av = document.querySelector(".av");
+av.innerHTML = localStorage.getItem("docInitials")
+
 const docAv = document.getElementById("docAv")
 const docName = document.getElementById("docName")
 const docSpec = document.getElementById("docSpec")
@@ -23,6 +26,7 @@ const statusBanner = document.getElementById("statusBanner")
 const apptId = document.getElementById("apptId")
 const parentApptId = document.getElementById("parentApptId")
 const notesViewMode = document.getElementById("notesViewMode")
+
 
 async function fetchAppointment(apptid, role) {
     const res = await fetch(`https://clinic-appointment-4lxl.onrender.com/api/doctor/appointment/${apptid}/${role}`, {

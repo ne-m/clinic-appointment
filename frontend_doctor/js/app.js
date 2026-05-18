@@ -18,6 +18,9 @@ const changeAvailabilityBtn = document.querySelector(".change-availability-btn")
 const docstatusSpan = document.querySelector(".doctor-status")
 const availabilityBtnContainer = document.querySelector(".btn-container")
 
+const av = document.querySelector(".av");
+av.innerHTML = localStorage.getItem("docInitials")
+
 let appointments;
 let appointmentHTML = ""
 const appointmentCards = document.querySelector(".appointment-cards")
