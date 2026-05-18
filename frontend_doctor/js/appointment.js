@@ -1,6 +1,6 @@
 import { hideLoading, showLoadingError } from "./loader.js";
 
-let API_BASE_URL ='https://clinic-appointment-4lxl.onrender.com';
+let API_BASE_URL = 'https://clinic-appointment-4lxl.onrender.com';
 const params = new URLSearchParams(window.location.search);
 const dtoken = localStorage.getItem("dtoken");
 
@@ -21,6 +21,7 @@ const apptBooked = document.getElementById("apptBooked")
 const apptReason = document.getElementById("apptReason")
 const statusBanner = document.getElementById("statusBanner")
 const apptId = document.getElementById("apptId")
+const parentApptId = document.getElementById("parentApptId")
 const notesViewMode = document.getElementById("notesViewMode")
 
 async function fetchAppointment(apptid, role) {
@@ -63,6 +64,11 @@ async function renderApptDetails() {
     apptBooked.innerHTML = apptDetails.created_at.split('T')[0]
     apptReason.innerHTML = apptDetails.reason
     apptId.innerHTML = apptDetails.id
+
+    if (apptDetails.parent_appointment_id) {
+        parentApptId.parentElement.style.display = "block"
+        parentApptId.innerHTML = apptDetails.parent_appointment_id
+    }
     const cfg = STATUS_CFG[apptDetails.status];
     appointmentStatus = apptDetails.status
 
@@ -146,9 +152,9 @@ const STATUS_CFG = {
     "follow-up": {
         label: "Follow up Appointment",
         sub: "followup",
-        cls: "pending", badge: "badge-outline",
-        iconSvg: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#D97706" stroke-width="1.8"/><path d="M12 7v5l3 3" stroke="#D97706" stroke-width="1.8" stroke-linecap="round"/></svg>`,
-        iconBg: "rgba(217,119,6,.12)",
+        cls: "confirmed", badge: "badge-confiremd",
+        iconSvg: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#1D9E75" stroke-width="1.8"/><path d="M12 7v5l3 3" stroke="#1D9E75" stroke-width="1.8" stroke-linecap="round"/></svg>`,
+        iconBg: "rgba(29,158,117,.12)",
     },
 };
 
@@ -209,6 +215,7 @@ function timelineStepsFor(status) {
     if (status === "in-progress") return ["pending", "confirmed", "in-progress"];
     if (status === "completed") return ["pending", "confirmed", "in-progress", "completed"];
     if (status === "confirmed") return ["pending", "confirmed"];
+    if (status === "follow-up") return ["pending", "confirmed"];
     return ["pending"];
 }
 
@@ -292,7 +299,6 @@ window.cancelAppointment = async function cancelAppointment(appointmentId) {
 }
 
 //appointment status
-
 window.setStatus = function setStatus(newStatus) {
     appointmentStatus = newStatus;
     updateAppointmentStatus(apptDetails.id, appointmentStatus)
@@ -356,7 +362,7 @@ function renderDoctorActions() {
             btn("Confirm appointment", "btn-teal", ico("check"), "setStatus('confirmed')") +
             btn("Decline appointment", "btn-red", ico("x"), "openModal('decline')");
     }
-    else if (appointmentStatus === "confirmed") {
+    else if (appointmentStatus === "confirmed" || appointmentStatus === "follow-up") {
         html =
             btn("Mark as in progress", "btn-blue", ico("play"), "setStatus('in-progress')") +
             divider +
@@ -389,10 +395,14 @@ window.toggleFollowUp = function toggleFollowUp() {
     document.getElementById("followupPanel").classList.toggle("open");
 }
 window.confirmFollowUp = async function confirmFollowUp() {
-    const date = document.getElementById("fuDate").value;
-    const time = document.getElementById("fuTime").value;
-    if (!date || !time) { showToast("Please select a date and time"); return; }
-    // updateAppointmentStatus(apptDetails.id, "follow-up")
+    const date = document.getElementById("fuDate");
+    const time = document.getElementById("fuTime");
+    const note = document.getElementById("fuNote");
+    console.log(date, time, note);
+
+    if (!date.value || !time.value) { showToast("Please select a date and time"); return; }
+    if (!note.value) { showToast("Please enter a note for follow up"); return; }
+    // const timeSlot = document.getElementById("timeSlot").value;
 
     try {
         const res = await fetch(`https://clinic-appointment-4lxl.onrender.com/api/doctor/follow-up`, {
@@ -401,26 +411,25 @@ window.confirmFollowUp = async function confirmFollowUp() {
                 "Content-Type": "application/json",
                 "dtoken": dtoken
             },
-            body: JSON.stringify({ status: "follow-up", parentId: apptDetails.id, doctorId: apptDetails.doctor_id, patientId: apptDetails.patient_id, slotDate: date, slotBooked: time})
+            body: JSON.stringify({ status: "follow-up", parentId: apptDetails.id, doctorId: apptDetails.doctor_id, patientId: apptDetails.patient_id, slotDate: date.value, slotBooked: time.value, reason: note.value })
         });
 
         const data = await res.json();
         if (data.success) {
-            alert("Successful")
-            // showMessage("success", "Follow up scheduled successfully!");
+            // alert("Successful")
+            showMessage("success", "Follow up scheduled successfully!");
             window.location.href = "appointments.html";
 
         } else {
-            // showMessage("error", data.message);
-            alert(data.message)
+            showMessage("error", data.message);
+            // alert(data.message)
         }
     } catch (err) {
         console.error(err);
-        alert("Error booking appointment");
-        // showMessage("error", "Error booking follow up appointment");
+        // alert("Error booking appointment");
+        showMessage("error", "Error booking follow up appointment");
     }
 
-    // TODO: POST /api/appointment { type:"followup", parentId: APPT.id, doctorId, patientId, date, time }
     toggleFollowUp();
     const d = new Date(date).toLocaleDateString("en-KE", { day: "numeric", month: "short", year: "numeric" });
     showToast(`Follow-up scheduled for ${d} at ${time} ✓`);
@@ -448,4 +457,15 @@ window.addNote = async function addNote() {
     saved.style.display = "inline";
     setTimeout(() => saved.style.display = "none", 2500);
     showToast("Notes saved ✓");
+}
+
+window.showMessage = function showMessage(type, text) {
+    const message = document.getElementById("message");
+    message.classList.remove("success", "error");
+    message.classList.add(type);
+    message.textContent = text;
+    setTimeout(() => {
+        message.classList.remove("success", "error");
+        message.textContent = "";
+    }, 3000);
 }

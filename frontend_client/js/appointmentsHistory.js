@@ -84,7 +84,7 @@ function renderAppointments() {
         else if (appointment.status === "completed") badgeColor = "green";
         else if (appointment.status === "cancelled") badgeColor = "red";
         else if (appointment.status === "no-show") badgeColor = "purple";
-        else if (appointment.status === "follow-up") badgeColor = "amber";
+        else if (appointment.status === "follow-up") badgeColor = "blue";
         else if (appointment.status === "declined") badgeColor = "outline";
         else if (appointment.status === "in-progress") badgeColor = "blue";
 

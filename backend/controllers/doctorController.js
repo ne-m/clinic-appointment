@@ -101,53 +101,66 @@ const appointmentStatus = async (req, res) => {
 
 //follow up appointment
 const followUpAppointment = async (req, res) => {
-    const { status, parentId, doctorId, patientId, slotDate, slotBooked } = req.body;
-    const docId = req.doctor.id
 
-    if (docId !== doctorId) {
-        res.json({success:false, message:"Unauthorized access!"})
-    }
+    try {
 
-    // Verify parent appointment exists and is completed
-    if (status === 'follow-up') {
-        const parent = await db.query(
-            'SELECT id, status FROM appointment WHERE id = $1', [parentId]
-        );
-        if (!parent.rows.length || parent.rows[0].status !== 'completed') {
-            return res.status(400).json({ error: 'Parent appointment not found or not completed' });
+
+        const { status, parentId, doctorId, patientId, slotDate, slotBooked, reason } = req.body;
+        const docId = req.doctor.id
+
+        console.log(status,"parent", parentId,"docid",doctorId, "patient",patientId, "date",slotDate,"time", slotBooked , reason);
+
+
+        if (docId !== doctorId) {
+            res.json({ success: false, message: "Unauthorized access!" })
         }
-    }
 
-    // Check the slot isn't already taken
-    const conflict = await db.query(
-        `SELECT id FROM appointment
+        // Verify parent appointment exists and is completed
+        if (status === 'followup') {
+            const parent = await db.query(
+                'SELECT id, status FROM appointment WHERE id = $1', [parentId]
+            );
+            if (!parent.rows.length || parent.rows[0].status !== 'completed') {
+                return res.status(400).json({ error: 'Parent appointment not found or not completed' });
+            }
+        }
+
+        // Check the slot isn't already taken
+        const conflict = await pool.query(
+            `SELECT id FROM appointment
         WHERE doctor_id = $1
         AND appointment_date::date = $2
-        AND slot_booked = $3
+        AND slot_time = $3
         AND status NOT IN ('cancelled','declined')`,
-        [doctorId, slotDate, slotBooked]
-    );
-    if (conflict.rows.length) {
-        return res.status(409).json({ error: 'That slot is already booked' });
-    }
+            [doctorId, slotDate, slotBooked]
+        );
+        if (conflict.rows.length) {
+            return res.status(409).json({ error: 'That slot is already booked' });
+        }
 
-    const result = await db.query(
-        `INSERT INTO appointment
-        (doctor_id, patient_id, appointment_date, slot_booked, status,
-        parent_appointment_id)
-        VALUES ($1, $2, $3, $4, 'follow-up', $6)
+        const result = await pool.query(
+            `INSERT INTO appointment
+        (doctor_id, patient_id, appointment_date, slot_time, status,
+        parent_appointment_id, reason)
+        VALUES ($1, $2, $3, $4, $5, $6, $7)
         RETURNING id`,
-        [
-            doctorId,
-            patientId,
-            `${slotDate}T${slotBooked}`,
-            slotBooked,
-            'follow-up',
-            status === 'followup' ? parentId : null
-        ]
-    );
+            [
+                doctorId,
+                patientId,
+                `${slotDate}T${slotBooked}`,
+                slotBooked,
+                'follow-up',
+                status === 'follow-up' ? parentId : null,
+                reason
+            ]
+        );
 
-    res.json({ appointmentId: result.rows[0].id });
+        res.json({ appointmentId: result.rows[0].id });
+
+    } catch (error) {
+        console.error(error);
+        res.json({ success: false, message: error.message })
+    }
 }
 
 //doctor dashboard
@@ -255,7 +268,7 @@ const appointmentDetails = async (req, res) => {
                 p.image     
             `, [apptid]);
 
-        const appointmentData = appointmentDB.rows[0];
+        const appointmentData = appointmentDB.rows[0];        
         res.json({ "success": true, appointmentData })
     } catch (error) {
         console.error(error);

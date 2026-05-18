@@ -127,14 +127,26 @@
                 <div class="followup-panel" id="followupPanel">
                     <div class="fu-label">Schedule follow-up</div>
                     <input type="date" class="fu-input" id="fuDate" min="2026-05-09">
-                    <input type="time" class="fu-input" id="fuTime" value="09:00">
-                    <textarea class="fu-input" rows="2" id="fuNote" placeholder="Follow-up note (optional)…"
+                    <select name="" id="fuTime" value="" class="fu-input">
+                        <option value="">__:__</option>
+                        <option value="09:00">09:00</option>
+                        <option value="10:00">10:00</option>
+                        <option value="11:00">11:00</option>
+                        <option value="12:00">12:00</option>
+                        <option value="13:00">13:00</option>
+                    </select>
+                    <label for="" class="fu-label">Follow-up note</label>
+                    <textarea class="fu-input" rows="2" id="fuNote" placeholder="Follow-up note…"
                         style="resize:none;"></textarea>
                     <div style="display:flex;gap:8px;">
                         <button class="action-btn btn-teal" style="padding:9px;font-size:13px;"
                             onclick="confirmFollowUp()">Confirm</button>
                         <button class="action-btn btn-outline" style="padding:9px;font-size:13px;"
                             onclick="toggleFollowUp()">Cancel</button>
+                    </div>
+
+                    <div>
+                        <div class="message-box" id="message"></div>
                     </div>
                 </div>
             </div>
@@ -146,6 +158,12 @@
                 <div style="font-size:11px;color:var(--text-3);margin-bottom:2px;">Appointment ID</div>
                 <div style="font-size:14px;font-weight:600;font-family:monospace;letter-spacing:.06em;color:var(--text);"
                     id="apptId">#</div>
+
+                <div style="display: none;">
+                    <div style="font-size:11px;color:var(--text-3);margin-bottom:2px;">Parent Appointment ID</div>
+                    <div style="font-size:14px;font-weight:600;font-family:monospace;letter-spacing:.06em;color:var(--text);"
+                        id="parentApptId">#</div>
+                </div>
             </div>
 
         </div>
