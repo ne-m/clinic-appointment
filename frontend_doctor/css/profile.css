@@ -241,3 +241,64 @@ body {
     color: hsl(0, 74%, 95%);
     background-color: hsl(0, 57%, 41%);
 }
+
+/* Profile sub-tabs */
+.profile-tabs {
+    display: flex;
+    gap: 2px;
+    background: var(--bg-primary);
+    border: 0.5px solid var(--border-tertiary);
+    border-radius: 10px;
+    padding: 4px;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+}
+
+.ptab {
+    flex: 1;
+    min-width: 80px;
+    padding: 8px 10px;
+    border: none;
+    border-radius: 7px;
+    background: transparent;
+    color: var(--text-secondary);
+    font-size: 13px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all .15s;
+    text-align: center;
+}
+
+.ptab.active {
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+.ptab:hover:not(.active) {
+    background: var(--bg-secondary);
+    opacity: 0.7;
+}
+
+.ptab-panel {
+    display: none;
+}
+
+.ptab-panel.active {
+    display: block;
+}
+
+@media (max-width: 500px) {
+    .field-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .profile-tabs {
+        gap: 0;
+    }
+
+    .ptab {
+        font-size: 11px;
+        padding: 7px 6px;
+    }
+}

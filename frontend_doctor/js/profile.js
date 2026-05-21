@@ -154,8 +154,8 @@ document.getElementById("modalOverlay").addEventListener("click", e => {
 });
 
 document.getElementById("modalConfirm").addEventListener("click", () => {
-    localStorage.clear("dtoken")
-    localStorage.clear("docInitials")
+    localStorage.removeItem("dtoken")
+    localStorage.removeItem("docInitials")
     setTimeout(() => {
         location.reload();
     }, 1000);
@@ -164,6 +164,71 @@ document.getElementById("modalConfirm").addEventListener("click", () => {
 
 function showMessage(type, text) {
     const message = document.getElementById("message");
+    message.classList.remove("success", "error");
+    message.classList.add(type);
+    message.textContent = text;
+    setTimeout(() => {
+        message.classList.remove("success", "error");
+        message.textContent = "";
+    }, 3000);
+}
+
+window.switchPTab = function switchPTab(name, btn) {
+    document.querySelectorAll('.ptab-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.ptab').forEach(b => b.classList.remove('active'));
+    document.getElementById('ptab-' + name).classList.add('active');
+    btn.classList.add('active');
+}
+
+const newPwd = document.getElementById("newPwd").value
+const confirmNewPwd = document.getElementById("confirmNewPwd").value
+const updatePwdBtn = document.getElementById("updatePwd")
+
+updatePwdBtn.addEventListener("click", async (e) => {
+    e.preventDefault()
+
+    if (!newPwd || !confirmNewPwd) {
+        showPasswordMessage("error", "Passwords missing!")
+        return
+    }
+
+    if (newPwd !== confirmNewPwd) {
+        showPasswordMessage("error", "Passwords do not match!")
+        return
+    }
+
+    if (newPwd.length > 0 && newPwd.length < 8) {
+        showPasswordMessage("error", "Password must be at least 8 characters");
+        return;
+    }
+
+    try {
+        const data = { password: newPwd.value }
+
+        const res = await fetch("https://clinic-appointment-4lxl.onrender.com/api/doctor/update-password", {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                "dtoken": `${dtoken}`
+            },
+            body: JSON.stringify(data)
+        });
+
+        const result = await res.json();
+
+        if (result.success) {
+            showPasswordMessage("success", "Password changed successfully!");
+        } else {
+            showPasswordMessage("error", result.message);
+        }
+    } catch (error) {
+        showPasswordMessage("error", "Something went wrong. Please try again later");
+    }
+
+})
+
+function showPasswordMessage(type, text) {
+    const message = document.getElementById("passwordMessage");
     message.classList.remove("success", "error");
     message.classList.add(type);
     message.textContent = text;

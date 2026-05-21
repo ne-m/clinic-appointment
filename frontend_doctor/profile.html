@@ -38,6 +38,12 @@
             </div>
         </div>
 
+        <div class="profile-tabs" id="profileTabs">
+            <button class="ptab active" onclick="switchPTab('personal',this)">Personal info</button>
+            <button class="ptab" onclick="switchPTab('security',this)">Security</button>
+            <!-- <button class="ptab" onclick="switchPTab('notifications',this)">Notifications</button> -->
+        </div>
+
         <!--  Personal info -->
         <div id="ptab-personal" class="ptab-panel active">
             <div class="card">
@@ -49,35 +55,35 @@
                     <div class="field-grid">
                         <div class="field-group">
                             <label class="field-label">First name</label>
-                            <input class="field-input editable" id="first_name" value="First name" readonly />
+                            <input class="field-input editable" id="first_name" value="" readonly />
                         </div>
                         <div class="field-group">
                             <label class="field-label">Last name</label>
-                            <input class="field-input editable" id="last_name" value="Last Name" readonly />
+                            <input class="field-input editable" id="last_name" value="" readonly />
                         </div>
                         <div class="field-group">
                             <label class="field-label">Phone number</label>
-                            <input class="field-input editable" id="phone" value="+254 7220 000 000" readonly />
+                            <input class="field-input editable" id="phone" value="" readonly />
                         </div>
                         <div class="field-group">
                             <label class="field-label">Email address</label>
-                            <input class="field-input editable" id="email" value="email@gmail.com" readonly />
+                            <input class="field-input editable" id="email" value="" readonly />
                         </div>
                         <div class="field-group">
                             <label class="field-label">Start time</label>
-                            <input class="field-input editable" id="start_time" value="09:00" readonly />
+                            <input class="field-input editable" id="start_time" value="" readonly />
                         </div>
                         <div class="field-group">
                             <label class="field-label">End time</label>
-                            <input class="field-input editable" id="end_time" value="15:00" readonly />
+                            <input class="field-input editable" id="end_time" value="" readonly />
                         </div>
                         <div class="field-group">
                             <label class="field-label">Specialization</label>
-                            <input class="field-input" id="specialization" value="general" readonly />
+                            <input class="field-input" id="specialization" value="" readonly />
                         </div>
                         <div class="field-group">
                             <label class="field-label">Day of Week</label>
-                            <input class="field-input" id="day_of_week" value="2" readonly />
+                            <input class="field-input" id="day_of_week" value="" readonly />
                         </div>
                         <div class="field-group" style="grid-column:1/-1;">
                             <label class="field-label">Bio</label>
@@ -98,9 +104,34 @@
             </div>
         </div>
 
-        <div class="card">
-            <button class="btn-outline" id="logout" onclick="openModal()">Logout</button>
+        <!-- ── Security ── -->
+        <div id="ptab-security" class="ptab-panel">
+            <div class="card">
+                <p class="section-label" style="margin-bottom:16px;">Password</p>
+                <div class="field-group" style="margin-bottom:12px;">
+                    <label class="field-label">Current password</label>
+                    <input class="field-input" type="password" value="••••••••" readonly />
+                </div>
+                <div class="field-group" style="margin-bottom:12px;">
+                    <label class="field-label">New password</label>
+                    <input class="field-input" type="password" placeholder="Enter new password" id="newPwd" />
+                </div>
+                <div class="field-group" style="margin-bottom:16px;">
+                    <label class="field-label">Confirm new password</label>
+                    <input class="field-input" type="password" placeholder="Repeat new password" id="confirmNewPwd" />
+                </div>
+                <div>
+                    <div class="message-box" id="passwordMessage"></div>
+                </div>
+                <button class="btn-primary" id="updatePwd">Update password</button>
+            </div>
+
+            <div class="card">
+                <button class="btn-outline" id="logout" onclick="openModal()">Logout</button>
+            </div>
         </div>
+
+
 
         <!-- Modal -->
         <div class="modal-overlay" id="modalOverlay">

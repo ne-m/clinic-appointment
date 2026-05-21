@@ -48,6 +48,11 @@
             </div>
         </div>
 
+        <div class="profile-tabs" id="profileTabs">
+            <button class="ptab active" onclick="switchPTab('personal',this)">Personal info</button>
+            <button class="ptab" onclick="switchPTab('security',this)">Security</button>
+            <!-- <button class="ptab" onclick="switchPTab('notifications',this)">Notifications</button> -->
+        </div>
 
         <div id="ptab-personal" class="ptab-panel active">
             <!-- <div class="row-flex" style="margin-bottom: 20px;">
@@ -114,19 +119,41 @@
             </div>
         </div>
 
-        <div class="card">
-            <button class="btn-outline" id="logout" onclick="openModal()">Logout</button>
-        </div>
+        <!-- ── Security ── -->
+        <div id="ptab-security" class="ptab-panel">
+            <div class="card">
+                <p class="section-label" style="margin-bottom:16px;">Password</p>
+                <div class="field-group" style="margin-bottom:12px;">
+                    <label class="field-label">Current password</label>
+                    <input class="field-input" type="password" value="••••••••" readonly />
+                </div>
+                <div class="field-group" style="margin-bottom:12px;">
+                    <label class="field-label">New password</label>
+                    <input class="field-input" type="password" placeholder="Enter new password" id="newPwd" />
+                </div>
+                <div class="field-group" style="margin-bottom:16px;">
+                    <label class="field-label">Confirm new password</label>
+                    <input class="field-input" type="password" placeholder="Repeat new password" id="confirmNewPwd" />
+                </div>
+                <div>
+                    <div class="message-box" id="passwordMessage"></div>
+                </div>
+                <button class="btn-primary" id="updatePwd">Update password</button>
+            </div>
 
-        <div class="card" style="border-color:#F7C1C1;">
-            <p class="section-label" style="margin-bottom:4px;color:#A32D2D;">Danger zone</p>
-            <p style="font-size:12px;color:var(--text-secondary);margin-bottom:14px;">Permanently delete your account
-                and
-                all data. This cannot be undone.</p>
-            <!-- <button class="btn-outline" style="color:#A32D2D;border-color:#F7C1C1;">Delete my account</button> -->
-            <button class="btn-outline btn-red" id="deleteAcc">Delete Account</button>
-        </div>
+            <div class="card">
+                <button class="btn-outline" id="logout" onclick="openModal()">Logout</button>
+            </div>
 
+            <div class="card" style="border-color:#F7C1C1;">
+                <p class="section-label" style="margin-bottom:4px;color:#A32D2D;">Danger zone</p>
+                <p style="font-size:12px;color:var(--text-secondary);margin-bottom:14px;">Permanently delete your
+                    account
+                    and
+                    all data. This cannot be undone.</p>
+                <button class="btn-outline btn-red" id="deleteAcc">Delete Account</button>
+            </div>
+        </div>
 
     </div>
 

@@ -21,7 +21,7 @@ const registerUser = async (req, res) => {
         }
 
         if (password.length < 8) {
-            return res.json({ success: false, message: "Enter a strong password" })
+            return res.json({ success: false, message: "Password must be at least 8 characters" })
         }
 
         //hashing user password
@@ -29,8 +29,6 @@ const registerUser = async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, salt)
 
         const newUser = await pool.query("INSERT INTO users (first_name, last_name, email,phone, password_hash, role) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id", [first_name, last_name, email, phone, hashedPassword, role]);
-        // res.json(newUser.rows[0]);
-        // const newUserAdditionalInfo = await pool.query("INSERT INTO patients (user_id, dob, gender) VALUES ($1, $2, $3)", [newUser.rows[0], dob, gender])
         const userId = newUser.rows[0].id
 
         const token = jwt.sign(
@@ -117,9 +115,7 @@ const updateProfile = async (req, res) => {
 
             res.json({ success: true, message: "Details updated" });
         } else {
-            const updatePatientDB = await pool.query("UPDATE patients SET gender = $1, dob= $2, address= $3 WHERE user_id=$4", [gender, dob, address, userId]);
-
-            res.json({ success: true, message: "Details updated" });
+            res.json({ success: false, message: "Error in updateing credentials" });
         }
 
 
@@ -135,6 +131,26 @@ const updateProfile = async (req, res) => {
     } catch (error) {
         console.error(error);
         res.json({ success: false, message: error.message })
+    }
+}
+
+const updatePassword = async (req, res) => {
+    try {
+        const userId = req.user.id
+        
+        const { password } = req.body;
+
+        //hashing user password
+        const salt = await bcrypt.genSalt(10)
+        const hashedPassword = await bcrypt.hash(password, salt)
+
+        const updatePwd = await pool.query("UPDATE users SET password_hash = $1 WHERE id=$2", [hashedPassword, userId])
+
+        res.json({ success: true, message: `Password updated` });
+
+    } catch (error) {
+        console.error(error);
+        res.json({ success: false, message: "Could not update password!Try again" })
     }
 }
 
@@ -330,7 +346,7 @@ const appointmentDetails = async (req, res) => {
         const { apptid, role } = req.params;
 
         const userId = req.user.id
-        const notAppt = await pool.query("SELECT * FROM appointment WHERE id=$1 AND patient_id=$2", [apptid,userId])
+        const notAppt = await pool.query("SELECT * FROM appointment WHERE id=$1 AND patient_id=$2", [apptid, userId])
 
         if (notAppt.rows.length === 0) {
             res.json({ success: false, message: 'Appointment not found' });
@@ -413,4 +429,4 @@ const nextAppointment = async (req, res) => {
     }
 }
 
-export { registerUser, loginUser, getProfile, updateProfile, bookAppointment, listAppointment, cancelAppointment, doctorList, doctorProfile, getBookedSlots, appointmentDetails, nextAppointment }
+export { registerUser, loginUser, getProfile, updateProfile, bookAppointment, listAppointment, cancelAppointment, doctorList, doctorProfile, getBookedSlots, appointmentDetails, nextAppointment, updatePassword }

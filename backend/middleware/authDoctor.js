@@ -5,8 +5,9 @@ import "dotenv/config"
 const authDoctor = async (req,res,next)=>{
     try {
         const {dtoken} = req.headers;
+        
         if (!dtoken) {
-            return res.json({success:false, message:'Not authorized. Login again.'})
+            return res.status(401).json({success:false, message:'Not authorized. Login again.'})
         }
         const tokenDecode = jwt.verify(dtoken, process.env.JWT_SECRET);
         req.doctor = {id: tokenDecode.id};

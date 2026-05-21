@@ -226,6 +226,26 @@ const updateDoctorProfile = async (req, res) => {
     }
 }
 
+const updatePassword = async (req, res) => {
+    try {
+        const userId = req.doctor.id
+        
+        const { password } = req.body;
+
+        //hashing user password
+        const salt = await bcrypt.genSalt(10)
+        const hashedPassword = await bcrypt.hash(password, salt)
+
+        const updatePwd = await pool.query("UPDATE users SET password_hash = $1 WHERE id=$2", [hashedPassword, userId])
+
+        res.json({ success: true, message: `Password updated` });
+
+    } catch (error) {
+        console.error(error);
+        res.json({ success: false, message: "Could not update password!Try again" })
+    }
+}
+
 const appointmentDetails = async (req, res) => {
     try {
         const { apptid, role } = req.params;
@@ -322,4 +342,4 @@ const addAppointmentNote = async (req, res) => {
     }
 }
 
-export { changeAvailability, doctorList, loginDoctor, appointmentsDoctor, appointmentStatus, doctorDashboard, doctorProfile, updateDoctorProfile, appointmentDetails, addAppointmentNote, followUpAppointment };
+export { changeAvailability, doctorList, loginDoctor, appointmentsDoctor, appointmentStatus, doctorDashboard, doctorProfile, updateDoctorProfile, appointmentDetails, addAppointmentNote, followUpAppointment, updatePassword };

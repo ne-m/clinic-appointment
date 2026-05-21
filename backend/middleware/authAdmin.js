@@ -6,13 +6,12 @@ const authAdmin = async (req,res,next)=>{
     try {
         const {atoken} = req.headers;
         if (!atoken) {
-            return res.json({success:false, message:'Not authorized. Login again 1'})
+            return res.json({success:false, message:'Not authorized. Login again'})
         }
         const tokenDecode = jwt.verify(atoken, process.env.JWT_SECRET);
         if (tokenDecode.email !== process.env.ADMIN_EMAIL ) {
-            return res.json({success:false, message:'Not authorized. Login again 2'})
+            return res.json({success:false, message:'Not authorized. Login again'})
         }
-
         req.admin = tokenDecode;
         next();
     } catch (error) {
