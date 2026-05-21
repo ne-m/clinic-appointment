@@ -266,6 +266,7 @@ const doctorProfile = async (req, res) => {
                 u.first_name,
                 u.last_name,
                 u.image,
+                u.email,
                 d.bio,
                 d.specialization,
                 d.start_time,

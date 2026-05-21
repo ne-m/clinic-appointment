@@ -20,7 +20,7 @@ const docInitials = document.getElementById("docInitials")
 const docName = document.getElementById("docName")
 const docSpec = document.getElementById("docSpec")
 const docBio = document.getElementById("docBio")
-// const docSpec = document.getElementById("docSpec")
+const email = document.getElementById("email")
 const message = document.getElementById("message");
 
 async function fetchDoctorProfile(docId) {
@@ -58,6 +58,7 @@ function renderDoctorProfile() {
     docName.innerHTML = `Dr. ${docDetails.first_name} ${docDetails.last_name}`
     docSpec.innerHTML = docDetails.specialization
     docBio.innerHTML = docDetails.bio
+    email.innerHTML = docDetails.email
 }
 
 let selectedTime = null;
