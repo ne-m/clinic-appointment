@@ -48,7 +48,7 @@ const loginUser = async (req, res) => {
     try {
         const { email, password } = req.body
         console.log(email, password);
-        
+
 
         const { rows } = await pool.query("SELECT * FROM users WHERE email = $1 AND role = 'patient'", [email]);
         if (rows.length === 0) {
@@ -114,9 +114,9 @@ const updateProfile = async (req, res) => {
 
         if (rows.length === 0) {
             const insertPatientDB = await pool.query("INSERT INTO patients (user_id, dob, gender, address) VALUES ($1,$2,$3,$4)", [userId, dob, gender, address])
-
             res.json({ success: true, message: "Details updated" });
         } else {
+            const updatePatientDB = await pool.query("UPDATE patients SET dob = $1, gender= $2, address= $3 WHERE user_id=$5", [dob, gender, address, userId]);
             res.json({ success: true, message: "Details updated" });
         }
 
@@ -130,7 +130,7 @@ const updatePassword = async (req, res) => {
     try {
         const userId = req.user.id
         const { password } = req.body;
-        
+
         //hashing user password
         const salt = await bcrypt.genSalt(10)
         const hashedPassword = await bcrypt.hash(password, salt)
