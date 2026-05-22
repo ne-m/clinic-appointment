@@ -229,7 +229,6 @@ const updateDoctorProfile = async (req, res) => {
 const updatePassword = async (req, res) => {
     try {
         const userId = req.doctor.id
-        
         const { password } = req.body;
 
         //hashing user password

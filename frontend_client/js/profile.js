@@ -142,16 +142,6 @@ function cancelEdit(formId) {
     loadProfile()
 }
 
-// logoutBtn.addEventListener("click", (e) => {
-//     e.preventDefault()
-//     confirm("Are you sure you want to log out?")
-//     localStorage.removeItem("token")
-//     localStorage.removeItem("initials")
-//     setTimeout(() => {
-//         location.reload();
-//     }, 1000);
-// })
-
 window.openModal = function openModal() {
     document.getElementById("modalOverlay").classList.add("open")
 }
@@ -164,7 +154,6 @@ document.getElementById("modalOverlay").addEventListener("click", e => {
 });
 
 document.getElementById("modalConfirm").addEventListener("click", () => {
-    // cancelAppointment(apptDetails.id)
     localStorage.removeItem("token")
     localStorage.removeItem("initials")
     setTimeout(() => {
@@ -181,6 +170,8 @@ deleteBtn.addEventListener("click", (e) => {
 
 // function initApiToggle() {
 //     const toggle = document.getElementById('apiToggle');
+//     console.log(localStorage.getItem("apiMode"));
+    
 //     if (!toggle) return;
 
 //     // Load saved preference
@@ -207,7 +198,7 @@ deleteBtn.addEventListener("click", (e) => {
 //     });
 // }
 
-// // document.addEventListener('DOMContentLoaded', initApiToggle);
+//  // document.addEventListener('DOMContentLoaded', initApiToggle);
 // initApiToggle()
 
 window.switchPTab = function switchPTab(name, btn) {
@@ -217,33 +208,32 @@ window.switchPTab = function switchPTab(name, btn) {
     btn.classList.add('active');
 }
 
-const newPwd = document.getElementById("newPwd").value
-const confirmNewPwd = document.getElementById("confirmNewPwd").value
+const newPwd = document.getElementById("newPwd")
+const confirmNewPwd = document.getElementById("confirmNewPwd")
 const updatePwdBtn = document.getElementById("updatePwd")
 
 updatePwdBtn.addEventListener("click", async (e) => {
     e.preventDefault()
 
-    if (!newPwd || !confirmNewPwd) {
+    if (!newPwd.value || !confirmNewPwd.value) {
         showPasswordMessage("error", "Passwords missing!")
         return
     }
 
-
-    if (newPwd !== confirmNewPwd) {
+    if (newPwd.value !== confirmNewPwd.value) {
         showPasswordMessage("error", "Passwords do not match!")
         return
     }
 
-    if (newPwd.length > 0 && newPwd.length < 8) {
+    if (newPwd.value.length > 0 && newPwd.value.length < 8) {
         showPasswordMessage("error", "Password must be at least 8 characters");
         return;
     }
-
+    
     try {
         const data = { password: newPwd.value }
 
-        const res = await fetch("https://clinic-appointment-4lxl.onrender.com/api/user/update-password", {
+        const res = await fetch(`${API_BASE_URL}/api/user/update-password`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -262,7 +252,6 @@ updatePwdBtn.addEventListener("click", async (e) => {
     } catch (error) {
         showPasswordMessage("error", "Something went wrong. Please try again later");
     }
-
 })
 
 function showPasswordMessage(type, text) {

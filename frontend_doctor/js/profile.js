@@ -180,24 +180,24 @@ window.switchPTab = function switchPTab(name, btn) {
     btn.classList.add('active');
 }
 
-const newPwd = document.getElementById("newPwd").value
-const confirmNewPwd = document.getElementById("confirmNewPwd").value
+const newPwd = document.getElementById("newPwd")
+const confirmNewPwd = document.getElementById("confirmNewPwd")
 const updatePwdBtn = document.getElementById("updatePwd")
 
 updatePwdBtn.addEventListener("click", async (e) => {
     e.preventDefault()
 
-    if (!newPwd || !confirmNewPwd) {
+    if (!newPwd.value || !confirmNewPwd.value) {
         showPasswordMessage("error", "Passwords missing!")
         return
     }
 
-    if (newPwd !== confirmNewPwd) {
+    if (newPwd.value !== confirmNewPwd.value) {
         showPasswordMessage("error", "Passwords do not match!")
         return
     }
 
-    if (newPwd.length > 0 && newPwd.length < 8) {
+    if (newPwd.value.length > 0 && newPwd.value.length < 8) {
         showPasswordMessage("error", "Password must be at least 8 characters");
         return;
     }

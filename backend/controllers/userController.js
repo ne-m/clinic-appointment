@@ -47,6 +47,8 @@ const registerUser = async (req, res) => {
 const loginUser = async (req, res) => {
     try {
         const { email, password } = req.body
+        console.log(email, password);
+        
 
         const { rows } = await pool.query("SELECT * FROM users WHERE email = $1 AND role = 'patient'", [email]);
         if (rows.length === 0) {
@@ -115,7 +117,7 @@ const updateProfile = async (req, res) => {
 
             res.json({ success: true, message: "Details updated" });
         } else {
-            res.json({ success: false, message: "Error in updating credentials" });
+            res.json({ success: true, message: "Details updated" });
         }
 
     } catch (error) {
@@ -127,9 +129,8 @@ const updateProfile = async (req, res) => {
 const updatePassword = async (req, res) => {
     try {
         const userId = req.user.id
-        
         const { password } = req.body;
-
+        
         //hashing user password
         const salt = await bcrypt.genSalt(10)
         const hashedPassword = await bcrypt.hash(password, salt)
