@@ -115,18 +115,8 @@ const updateProfile = async (req, res) => {
 
             res.json({ success: true, message: "Details updated" });
         } else {
-            res.json({ success: false, message: "Error in updateing credentials" });
+            res.json({ success: false, message: "Error in updating credentials" });
         }
-
-
-
-
-        // const imageFile = req.imageFile
-
-        // if (condition) {
-
-        // }
-
 
     } catch (error) {
         console.error(error);
