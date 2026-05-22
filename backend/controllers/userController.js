@@ -116,7 +116,7 @@ const updateProfile = async (req, res) => {
             const insertPatientDB = await pool.query("INSERT INTO patients (user_id, dob, gender, address) VALUES ($1,$2,$3,$4)", [userId, dob, gender, address])
             res.json({ success: true, message: "Details updated" });
         } else {
-            const updatePatientDB = await pool.query("UPDATE patients SET dob = $1, gender= $2, address= $3 WHERE user_id=$5", [dob, gender, address, userId]);
+            const updatePatientDB = await pool.query("UPDATE patients SET dob = $1, gender= $2, address= $3 WHERE user_id=$4", [dob, gender, address, userId]);
             res.json({ success: true, message: "Details updated" });
         }
 
