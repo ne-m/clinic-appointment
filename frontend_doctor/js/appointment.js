@@ -59,7 +59,11 @@ async function loadApptDetails() {
 loadApptDetails()
 
 async function renderApptDetails() {
-    docAv.innerHTML = `<img src="${apptDetails.doctor_image}" class="doctor-img" alt="">`
+    docAv.innerHTML = `
+        ${apptDetails.doctor_image !== "default-avatar.png" ?
+            `<img src=${apptDetails.doctor_image} loading="lazy" class="doctor-img" alt="Doctor">` :
+            `<span id="docInitials" style="text-transform: uppercase;"> ${ splitString(apptDetails.doctor_name) } </span>`}     
+    `
     docName.innerHTML = apptDetails.doctor_name
     docSpec.innerHTML = apptDetails.specialization
     apptPatient.innerHTML = apptDetails.patient_name
@@ -467,4 +471,15 @@ window.showMessage = function showMessage(type, text) {
         message.classList.remove("success", "error");
         message.textContent = "";
     }, 3000);
+}
+
+function splitString(name){
+    const arr = name.split(" ").filter(item => item !== "");
+    let initials = ""
+
+    for (let i = 0; i < arr.length; i++) {
+        let secondArr = arr[i].split("")
+        initials += secondArr[0]
+    }
+    return initials;
 }

@@ -1,4 +1,4 @@
-import {  hideLoading, showLoadingError } from "./loader.js"; const params = new URLSearchParams(window.location.search);
+import { hideLoading, showLoadingError } from "./loader.js"; const params = new URLSearchParams(window.location.search);
 
 const token = localStorage.getItem("token");
 let API_BASE_URL = localStorage.getItem('apiMode') ? localStorage.getItem('apiMode') : 'https://clinic-appointment-4lxl.onrender.com';
@@ -52,13 +52,17 @@ async function loadApptDetails() {
         hideLoading()
         renderApptDetails()
         renderTimeline()
-    } 
+    }
 }
 
 loadApptDetails()
 
 async function renderApptDetails() {
-    docAv.innerHTML = `<img src="${apptDetails.doctor_image}" class="doctor-img" alt="">`
+    docAv.innerHTML = `
+        ${apptDetails.doctor_image !== "default-avatar.png" ?
+            `<img src=${apptDetails.doctor_image} loading="lazy" class="doctor-img" alt="Doctor">` :
+            `<span id="docInitials" style="text-transform: uppercase;"> ${ splitString(apptDetails.doctor_name) } </span>`}     
+    `
     docName.innerHTML = apptDetails.doctor_name
     docSpec.innerHTML = apptDetails.specialization
     apptPatient.innerHTML = apptDetails.patient_name
@@ -164,7 +168,7 @@ const STATUS_CFG = {
         cls: "cancelled", badge: "badge-cancelled",
         iconSvg: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M18 6L6 18M6 6l12 12" stroke="#DC2626" stroke-width="2" stroke-linecap="round"/></svg>`,
         iconBg: "rgba(220,38,38,.10)",
-    },"follow-up": {
+    }, "follow-up": {
         label: "Follow Up Appointment",
         sub: "The doctor has set this appointment as a follow up",
         cls: "confirmed", badge: "badge-confirmed",
@@ -283,4 +287,15 @@ function renderTimeline() {
                     </div>
                 </div>`;
     }).join("");
+}
+
+function splitString(name){
+    const arr = name.split(" ").filter(item => item !== "");
+    let initials = ""
+
+    for (let i = 0; i < arr.length; i++) {
+        let secondArr = arr[i].split("")
+        initials += secondArr[0]
+    }
+    return initials;
 }

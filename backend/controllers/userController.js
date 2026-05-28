@@ -4,6 +4,7 @@ import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
 import 'dotenv/config';
 import { v2 as cloudinary } from "cloudinary"
+import streamifier from "streamifier";
 import { json } from "express";
 
 //api to register user
@@ -142,6 +143,87 @@ const updatePassword = async (req, res) => {
     } catch (error) {
         console.error(error);
         res.json({ success: false, message: "Could not update password!Try again" })
+    }
+}
+
+const deleteAccount = async (req, res) => {
+    try {
+        const userId = req.user.id
+        const userDB = await pool.query("DELETE FROM users WHERE id=$1", [userId])
+
+        res.json("Account deleted succesfully!")
+
+    } catch (error) {
+        console.error(error);
+        res.json({ success: false, message: "Could not delete account!Try again" })
+
+    }
+}
+
+async function updateProfilePicture(req, res) {
+    try {
+        const userId = req.user?.id || req.doctor?.id;
+        if (!req.file) {
+            return res.status(400).json({ success: false, message: "No image file provided" });
+        }
+
+        if (!req.file.mimetype.startsWith("image/")) {
+            return res.json({
+                success: false,
+                message: "Only images allowed"
+            });
+        }
+
+        const uploadFromBuffer = () => {
+            return new Promise((resolve, reject) => {
+                const stream = cloudinary.uploader.upload_stream(
+                    {
+                        folder: "clinicbook_profiles",
+                        public_id: `user_${userId}`,
+                        overwrite: true,
+                        resource_type: "image",
+                        allowed_formats: ["jpg", "jpeg", "png", "webp"],
+                        transformation: [
+                            { width: 400, height: 400, crop: "fill", gravity: "face" },
+                            { quality: "auto", fetch_format: "auto" }
+                        ],
+                    },
+                    (error, result) => {
+                        if (error) reject(error);
+                        else resolve(result);
+                    }
+                );
+                streamifier
+                    .createReadStream(req.file.buffer)
+                    .pipe(stream);
+            });
+        };
+
+        const result = await uploadFromBuffer();
+        await pool.query("UPDATE users SET image = $1 WHERE id = $2", [result.secure_url, userId]);
+
+        res.json({ success: true, message: "Profile image updated", imageUrl: result.secure_url });
+    } catch (err) {
+        console.error("Avatar upload error:", err);
+        if (req.file?.filename) {
+            await cloudinary.uploader.destroy(req.file.filename).catch(() => { });
+        }
+        res.status(500).json({ success: false, message: "Failed to update profile picture" });
+    }
+}
+
+async function removeProfilePicture(req, res) {
+    try {
+        const userId = req.user?.id || req.doctor?.id;
+        const publicId = `user_${userId}`
+        console.log(publicId);
+
+        await cloudinary.uploader.destroy(`clinicbook_profiles/user_${userId}`);
+        const userDB = await pool.query("UPDATE users SET image = 'default-avatar.png' WHERE id = $1", [userId]);
+        res.json({ success: true, message: "Photo image deleted" });
+    } catch (err) {
+        console.error("Avatar remove error:", err);
+        res.status(500).json({ error: "Failed to remove profile picture" });
     }
 }
 
@@ -420,4 +502,4 @@ const nextAppointment = async (req, res) => {
     }
 }
 
-export { registerUser, loginUser, getProfile, updateProfile, bookAppointment, listAppointment, cancelAppointment, doctorList, doctorProfile, getBookedSlots, appointmentDetails, nextAppointment, updatePassword }
+export { registerUser, loginUser, getProfile, updateProfile, bookAppointment, listAppointment, cancelAppointment, doctorList, doctorProfile, getBookedSlots, appointmentDetails, nextAppointment, updatePassword, deleteAccount, updateProfilePicture, removeProfilePicture }

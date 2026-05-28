@@ -59,6 +59,18 @@ function renderDoctorProfile() {
     docSpec.innerHTML = docDetails.specialization
     docBio.innerHTML = docDetails.bio
     email.innerHTML = docDetails.email
+    docDetails.image === "default-avatar.png" ? "" : loadAvatar()
+}
+
+function loadAvatar() {
+    if (docDetails.image) {
+        document.getElementById("avatarImg").src = docDetails.image;
+        document.getElementById("avatarImg").style.display = "block";
+        document.getElementById("docInitials").style.display = "none";
+    } else {
+        document.getElementById("avatarImg").style.display = "none";
+        document.getElementById("docInitials").style.display = "block";
+    }
 }
 
 let selectedTime = null;

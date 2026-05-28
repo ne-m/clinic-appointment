@@ -38,7 +38,7 @@ else if (hour < 18) text = "Good afternoon";
 
 async function loadProfile() {
     userDetails = await getProfile(token);
-    greeting.innerHTML = `${text}, <span class="username">${userDetails.first_name}</span> 👋`;
+    greeting.innerHTML = `${text}, <span class="username">${userDetails.first_name}</span>`;
 }
 
 loadProfile();
@@ -82,10 +82,6 @@ async function fetchNextAppointment() {
 async function loadDoctors() {
     doctors = await fetchDoctors()
     nextAppt = await fetchNextAppointment()
-    // if (Object.keys(nextAppt).length !== 0) {
-    //     renderNextAppt()
-    // }
-
     if (nextAppt !== "None") {
         renderNextAppt()
     }
@@ -99,12 +95,15 @@ function renderDoctors(doctorsParam) {
     doctorsParam.forEach(doctor => {
         doctorHTML += `                
             <div class="doctor-card">
-                <img src=${doctor.image} loading="lazy" class="doctor-img" alt="Doctor">
-
+                <div class="doc-avatar" id="docAvatar" style="background: linear-gradient(135deg,#1D9E75,#185fa5);">
+                    ${doctor.image !== "default-avatar.png" ? 
+                        `<img src=${doctor.image} loading="lazy" class="doctor-img" alt="Doctor">` :
+                        `<span id="docInitials" style="text-transform: uppercase;"> ${doctor.first_name.charAt(0)}${doctor.last_name.charAt(0)} </span>`
+                    } 
+                </div>
                 <div class="doctor-info">
-                    <h3 class="doctor-name">${doctor.first_name + " " + doctor.last_name}</h3>
+                    <h3 class="doctor-name"> Dr. ${doctor.first_name + " " + doctor.last_name}</h3>
                     <p class="doctor-spec">${doctor.specialization}</p>
-
                     <div class="doctor-meta">
                         <span class="doctor-rating">                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                     <path d="M8 1l1.5 4.5H14l-3.5 2.5 1.5 4.5L8 10l-4 2.5 1.5-4.5L2 5.5h4.5z" fill="#FFC000" />
@@ -143,10 +142,6 @@ function renderNextAppt() {
     nextApptCard.style.border = "0.5px solid #9FE1CB";
     nextApptCard.style.borderRadius = "12px";
     nextApptCard.style.padding = "14px 16px";
-
-    // border: 0.5px solid #9FE1CB;
-    // border-radius: 12px;
-    // padding: 14px 16px;
     nextApptCard.innerHTML = nextApptHTML
 }
 
