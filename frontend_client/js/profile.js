@@ -90,7 +90,7 @@ async function uploadImage(file) {
     formData.append("image", file);
 
     try {
-        const res = await fetch(`http://localhost:4000/api/user/update-profile-picture`, {
+        const res = await fetch(`${API_BASE_URL}/api/user/update-profile-picture`, {
             method: "PUT",
             headers: { token: localStorage.getItem("token") },
             body: formData,
@@ -351,7 +351,7 @@ const MODAL_CFG = {
         requiresInput: false,
         async action() {
             try {
-                const res = await fetch(`http://localhost:4000/api/user/remove-profile-picture`, {
+                const res = await fetch(`${API_BASE_URL}/api/user/remove-profile-picture`, {
                         method: "DELETE",
                         headers: {
                             token: token
